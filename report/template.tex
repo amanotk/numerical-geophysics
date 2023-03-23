@@ -1,0 +1,189 @@
+\documentclass[10pt,a4j]{jarticle}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{bm}
+\usepackage{cancel}
+\usepackage{framed}
+\usepackage{ascmac}
+\usepackage{fancybox}
+\usepackage{indent}
+\usepackage{enumerate}
+\usepackage{fancyhdr}
+\usepackage{natbib}
+\usepackage[usenames]{color}
+\usepackage[dvipdfmx]{graphicx}
+\usepackage{wrapfig}
+\usepackage{xcolor}
+\usepackage{listings,jlisting}
+\usepackage{longtable}
+\usepackage{upquote}
+\usepackage{textcomp}
+\usepackage{booktabs}
+\usepackage{multicol}
+\usepackage{multirow}
+\usepackage{ulem}
+\usepackage[dvipdfmx]{hyperref}
+\usepackage{pxjahyper}
+\hypersetup{breaklinks=true,
+            bookmarks=true,
+            bookmarksnumbered=true,
+            bookmarksdepth=2,
+            colorlinks=true,
+            urlcolor=blue,
+            linkcolor=blue,
+            pdfborder={0 0 0}}
+\usepackage[top=25truemm,bottom=25truemm,left=20truemm,right=20truemm]{geometry}
+
+\def\tightlist{\itemsep1pt\parskip0pt\parsep0pt}
+
+\urlstyle{same}
+\renewcommand{\href}[2]{#2\footnote{\url{#1}}}
+
+\definecolor{fortranbg}{rgb}{1.0,1.0,0.9}
+\definecolor{shellbg}{rgb}{0.8,0.8,0.8}
+
+\makeatletter
+
+% header
+%\pagestyle{empty}
+\pagestyle{fancy}
+\lhead{}
+\chead{}
+\rhead{最終更新：\today}
+%$if(title)$
+%\lhead{$title$}
+%\rhead{$title$}
+%$endif$
+%$if(author)$
+%\rhead{$author$}
+%$endif$
+%\lhead{}
+%\rhead{}
+%\cfoot{}
+%\cfoot{\thepage}
+%\pagestyle{plain}
+
+\renewenvironment{itemize}%
+{%
+\begin{list}{$$\diamond$$}
+{%
+  \setlength{\topsep}{0.0em}
+  \setlength{\parskip}{0.0em}
+  \setlength{\parsep}{0.0em}
+  \setlength{\itemsep}{0.25em}
+  \setlength{\itemindent}{1zw}
+  \setlength{\leftmargin}{2zw}
+  \setlength{\rightmargin}{0zw}
+  \setlength{\labelsep}{0.5zw}
+  \setlength{\labelwidth}{1zw}
+  \setlength{\listparindent}{0zw}
+}
+}{%
+\end{list}%
+}
+
+
+\renewcommand{\labelenumi}{($chapter$-\arabic{enumi})}
+
+\renewenvironment{enumerate}%
+{%
+\begin{list}{(\arabic{enumi})}
+{%
+  \usecounter{enumi}
+  \setlength{\topsep}{0.0em}
+  \setlength{\parskip}{0.0em}
+  \setlength{\parsep}{0.0em}
+  \setlength{\itemsep}{0.25em}
+  \setlength{\itemindent}{1zw}
+  \setlength{\leftmargin}{2zw}
+  \setlength{\rightmargin}{0zw}
+  \setlength{\labelsep}{0.5zw}
+  \setlength{\labelwidth}{1zw}
+  \setlength{\listparindent}{0zw}
+}
+}{%
+\end{list}%
+}
+% emphasize
+\renewcommand{\emph}[1]{{\bf #1}}
+
+% title
+\renewcommand{\maketitle}{
+\begin{center}
+  {\LARGE\textbf \@title{}}
+ \vskip 1.5em
+  {\large \@author{}}
+ \vskip 1.5em
+  {\large \@date{}}
+\end{center}
+}
+
+% section centering
+\renewcommand{\section}{\@startsection{section}%
+   {1}%
+   {\z@}%
+   {1.5\Cvs \@plus.5\Cvs \@minus.2\Cvs}%
+   {1.0\Cvs \@plus.3\Cvs}%
+   {\centering\normalfont\LARGE\bfseries}}%
+
+\renewcommand{\thesection}{$chapter$}
+\renewcommand{\thesubsection}{$chapter$.\arabic{subsection}}
+\renewcommand{\thesubsubsection}{$chapter$.\arabic{subsection}.\arabic{subsubsection}}
+
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+
+\makeatother
+
+$for(header-includes)$
+$header-includes$
+$endfor$
+
+$if(title)$
+\title{$title$}
+$endif$
+\author{$for(author)$$author$$sep$ \and $endfor$}
+%\date{$date$}
+\date{\today}
+
+\begin{document}
+$if(title)$
+%\maketitle
+%\thispagestyle{empty}
+$endif$
+
+$for(include-before)$
+$include-before$
+
+$endfor$
+$if(toc)$
+{
+\setcounter{tocdepth}{2}
+\tableofcontents
+\clearpage
+}
+$endif$
+
+$body$
+
+$if(natbib)$
+$if(biblio-files)$
+$if(biblio-title)$
+$if(book-class)$
+\renewcommand\bibname{$biblio-title$}
+$else$
+\renewcommand\refname{$biblio-title$}
+$endif$
+$endif$
+\bibliography{$biblio-files$}
+
+$endif$
+$endif$
+$if(biblatex)$
+\printbibliography$if(biblio-title)$[title=$biblio-title$]$endif$
+
+$endif$
+$for(include-after)$
+$include-after$
+
+$endfor$
+\end{document}

@@ -1,0 +1,218 @@
+\documentclass[10pt,a4j]{jarticle}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{bm}
+\usepackage{cancel}
+\usepackage{framed}
+\usepackage{ascmac}
+\usepackage{fancybox}
+\usepackage{indent}
+\usepackage{enumerate}
+\usepackage{fancyhdr}
+\usepackage{natbib}
+\usepackage[usenames]{color}
+\usepackage[dvipdfmx]{graphicx}
+\usepackage{wrapfig}
+\usepackage{xcolor}
+\usepackage{listings,jlisting}
+\usepackage{longtable}
+\usepackage{upquote}
+\usepackage{textcomp}
+\usepackage{booktabs}
+\usepackage{multicol}
+\usepackage{multirow}
+\usepackage{ulem}
+\usepackage[dvipdfmx]{hyperref}
+\usepackage{pxjahyper}
+\hypersetup{breaklinks=true,
+            bookmarks=true,
+            bookmarksnumbered=true,
+            bookmarksdepth=2,
+            colorlinks=true,
+            urlcolor=blue,
+            linkcolor=blue,
+            pdfborder={0 0 0}}
+\usepackage[top=25truemm,bottom=25truemm,left=20truemm,right=20truemm]{geometry}
+
+\def\tightlist{\itemsep1pt\parskip0pt\parsep0pt}
+
+\urlstyle{same}
+\renewcommand{\href}[2]{#2\footnote{\url{#1}}}
+
+\definecolor{fortranbg}{rgb}{1.0,1.0,0.9}
+\definecolor{shellbg}{rgb}{0.8,0.8,0.8}
+
+\makeatletter
+
+% header
+%\pagestyle{empty}
+\pagestyle{fancy}
+\lhead{}
+\chead{}
+\rhead{最終更新：\today}
+%%%\lhead{}
+%\rhead{}
+%\cfoot{}
+%\cfoot{\thepage}
+%\pagestyle{plain}
+
+\renewenvironment{itemize}%
+{%
+\begin{list}{$\diamond$}
+{%
+  \setlength{\topsep}{0.0em}
+  \setlength{\parskip}{0.0em}
+  \setlength{\parsep}{0.0em}
+  \setlength{\itemsep}{0.25em}
+  \setlength{\itemindent}{1zw}
+  \setlength{\leftmargin}{2zw}
+  \setlength{\rightmargin}{0zw}
+  \setlength{\labelsep}{0.5zw}
+  \setlength{\labelwidth}{1zw}
+  \setlength{\listparindent}{0zw}
+}
+}{%
+\end{list}%
+}
+
+
+\renewcommand{\labelenumi}{(-\arabic{enumi})}
+
+\renewenvironment{enumerate}%
+{%
+\begin{list}{(\arabic{enumi})}
+{%
+  \usecounter{enumi}
+  \setlength{\topsep}{0.0em}
+  \setlength{\parskip}{0.0em}
+  \setlength{\parsep}{0.0em}
+  \setlength{\itemsep}{0.25em}
+  \setlength{\itemindent}{1zw}
+  \setlength{\leftmargin}{2zw}
+  \setlength{\rightmargin}{0zw}
+  \setlength{\labelsep}{0.5zw}
+  \setlength{\labelwidth}{1zw}
+  \setlength{\listparindent}{0zw}
+}
+}{%
+\end{list}%
+}
+% emphasize
+\renewcommand{\emph}[1]{{\bf #1}}
+
+% title
+\renewcommand{\maketitle}{
+\begin{center}
+  {\LARGE\textbf \@title{}}
+ \vskip 1.5em
+  {\large \@author{}}
+ \vskip 1.5em
+  {\large \@date{}}
+\end{center}
+}
+
+% section centering
+\renewcommand{\section}{\@startsection{section}%
+   {1}%
+   {\z@}%
+   {1.5\Cvs \@plus.5\Cvs \@minus.2\Cvs}%
+   {1.0\Cvs \@plus.3\Cvs}%
+   {\centering\normalfont\LARGE\bfseries}}%
+
+\renewcommand{\thesection}{}
+\renewcommand{\thesubsection}{.\arabic{subsection}}
+\renewcommand{\thesubsubsection}{.\arabic{subsection}.\arabic{subsubsection}}
+
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+
+\makeatother
+
+
+\author{}
+%\date{}
+\date{\today}
+
+\begin{document}
+
+
+\hypertarget{ux5730ux7403ux7269ux7406ux6570ux5024ux89e3ux6790-ux30ecux30ddux30fcux30c8ux8ab2ux984cux5929ux91ceux62c5ux5f53ux5206}{%
+\section{地球物理数値解析　レポート課題（天野担当分）}\label{ux5730ux7403ux7269ux7406ux6570ux5024ux89e3ux6790-ux30ecux30ddux30fcux30c8ux8ab2ux984cux5929ux91ceux62c5ux5f53ux5206}}
+
+以下の課題Aおよび課題Bのどちらか一方と，天野担当分の講義や資料に対する感想をまとめてITC-LMSからPDFファイルとして提出してください．感想の有無は評価しますが，感想の内容は評価には含めませんので自由に書いてください．課題A，Bが簡単すぎると感じる人は課題C（発展課題）にもトライしてみてください．質問などは適宜受け付けますので，メールか直接（理学部1号館803号室）天野まで連絡してください．提出期限は5月15日（日）とします．
+
+\hypertarget{ux8ab2ux984ca}{%
+\section{課題A}\label{ux8ab2ux984ca}}
+
+講義スライドに記載されている問題Q.3-1〜Q.3-14およびQ.4-1〜Q.4-9からそれぞれ5問以上を選んで解答せよ．
+
+\hypertarget{ux8ab2ux984cb}{%
+\section{課題B}\label{ux8ab2ux984cb}}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  線形移流方程式の数値解を1次精度風上差分法およびLax-Wendroff法を用いて求め，誤差\(\epsilon\)がそれぞれ\(\epsilon \propto \Delta x^1\)および\(\epsilon \propto \Delta x^2\)となることを示せ．なお，計算領域は\(0 \leq x \leq 1\)，境界条件は周期境界条件，初期条件は\\
+  \[
+  u(x) = \sin \left ( 2 \pi x \right)
+  \]\\
+  とする．ただし，\(t = 1\)における数値解と解析解の差の自乗平均\\
+  \[
+  \epsilon =
+  \int \vert u(x) - u_{\rm analytic}(x) \rvert^2 dx =
+  \sum_{i} \lvert u_{i}^{n} - u_{\rm analytic}(x_i) \rvert^2
+  \]\\
+  を誤差と定義せよ．もちろん\(\Delta x\)を小さくとるには\(\Delta t\)も小さくしなければならないので，\(t = 1\)まで計算するのに必要なステップ数が増えることに注意せよ．少なくとも1桁以上は\(\Delta x\)を変化させて，\(\epsilon\)と\(\Delta x\)の関係を両対数でプロットすること．
+\item
+  以下の設定のもとで非粘性Burgers方程式の数値解を1次精度風上差分法および2段階Lax-Wendroff法（人工粘性あり）を用いて求め，両者を比較・考察せよ．\\
+  計算領域は\(-1 \leq x \leq +1\)，境界条件は周期境界条件，初期条件は\\
+  \[
+  u(x) =
+  \begin{cases}
+  & 0 \quad -1 < x < -\frac{1}{3} \\
+  & 1 \quad -\frac{1}{3} < x < +\frac{1}{3} \\
+  & 0 \quad +\frac{1}{3} < x < 1 \\
+  \end{cases}
+  \]\\
+  とする．これはGoogle
+  ColabのBurgers方程式.ipynbにある計算例と同じものなので，解析解も同じものを使えばよい．
+\item
+  1次元Euler方程式について，エントロピー波，正方向，および負方向に伝播する音波の3種類の固有モードをそれぞれ初期条件に選んだときの時間発展を2段階Lax-Wendroff法によって数値的に求めよ．それぞれの場合について振幅依存性を考察すること．ただし，ある固有モードを考えているときには，それ以外の2つのモードの振幅はゼロになるように初期条件を選ぶこと.
+\item
+  1次元Euler方程式について，Sodの衝撃波管問題を考えよう．初期条件は\\
+  \[
+  (\rho, v, p)
+  =
+  \begin{cases}
+  (1, 0, 1) \quad & x < 0
+  \\
+  (0.125, 0, 0.1) \quad & x > 0
+  \end{cases}
+  \]\\
+  で，\(\gamma = 1.4\)とする．2段階Lax-Wendroff法を用い，数値的なパラメータを様々に変えて得られる数値解の精度を考察せよ．例えば，(i)
+  Courant数を固定して\(\Delta x\)を変える，(ii) Courant数を変える, (iii)
+  人工粘性係数や人工粘性の表式を変える，などが考えられる．この問題に適した人工粘性の与え方が他の初期条件（例えば衝撃波がより強い場合，弱い場合）でも有効かどうか試してみるのも面白い．
+\end{enumerate}
+
+\hypertarget{ux8ab2ux984ccux767aux5c55ux7de8}{%
+\section{課題C（発展編）}\label{ux8ab2ux984ccux767aux5c55ux7de8}}
+
+\begin{itemize}
+\item
+  Roe法（線形化されたRiemann解法）について調べてみよう．他の手法と比べたときの利点・欠点はそれぞれ何だろうか．
+\item
+  近似Riemann解法としてHLL法およびHLLC法を採用して1次元Euler方程式を解き，2段階Lax-Wendroff法と比較してみよう．ただしHLL/HLLC法は空間1次精度（いわゆるpiecewise
+  constant）でよい．
+\item
+  Euler方程式のRiemann問題の解析解（ただし数値的な反復計算が必要）を求めて，数値解と比較してみよう．
+\item
+  講義では扱わなかったが，宇宙流体は多くの場合において磁場が重要な役割を果たす磁気流体力学(MHD)で記述される．講義で議論した各種手法がMHDにも適用できるかどうか考察してみよう．MHDの近似Riemann解法については（ほぼ）業界標準となっているHLLD法とHLL法，HLLC法の違いは何だろうか．
+\item
+  講義で扱わなかった時間・空間ともに3次精度以上のいわゆる高次精度衝撃波捕獲法について調べてみよう．MUSCL，UNO,
+  ENO, WENO, MP5などの補間手法や，semi-discrete形式，SSP Runge-Kutta
+  (TVD
+  Runge-Kutta)，特性変数変換，などについて調べるとよいだろう．また多次元化について考察してみても面白い．
+\item
+  MPIライブラリを用いて差分法系の数値シミュレーションコードの並列化に挑戦しよう．
+\end{itemize}
+
+\end{document}

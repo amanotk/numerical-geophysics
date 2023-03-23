@@ -1,0 +1,111 @@
+---
+marp: true
+theme: lecture-theme
+math: mathjax
+footer: "地球物理数値解析 天野孝伸 <<amano@eps.s.u-tokyo.ac.jp>>"
+---
+
+<!--
+_class: title
+-->
+
+
+<style>
+img[alt~="center"] {
+  display: block;
+  margin: 0 auto;
+}
+</style>
+
+$$
+\renewcommand{\bm}[1]{{\boldsymbol{#1}}}
+$$
+
+# 1. 様々な偏微分方程式
+
+---
+## 1.1 偏微分方程式の分類
+一般に$u = u(x, y)$が独立変数$x, y$の関数であるとき，$u$と$x, y$および偏導関数($\partial u/\partial x, \partial u/\partial y, \partial^2 u/\partial x \partial y, ...$)の間に成り立つ関係式を偏微分方程式と呼ぶ．物理的に興味のある系の多くは低次の微分で表される．
+例えば
+$$
+a \frac{\partial^2 u}{\partial x^2} +
+b \frac{\partial^2 u}{\partial x \partial y} +
+c \frac{\partial^2 u}{\partial y^2} =
+F \left( u, x, y, \frac{\partial u}{\partial x}, \frac{\partial u}{\partial y} \right)
+$$
+の形で表される系を考えよう．このとき $D = b^2 - 4 a c$の値によって偏微分方程式は
+
+- $D < 0$ : 楕円型
+- $D = 0$ : 放物型
+- $D > 0$ : 双曲型
+
+と分類される．
+
+これは2次曲線
+$$
+a x^2 + b xy + c y^2 = F(x, y)
+$$
+が$D$の値によって楕円，放物線，双曲線に分類されるためである．
+物理的にもこれらの分類によって解の性質は大きく異なる．
+
+---
+### 例1：Laplace方程式（楕円型方程式）
+$a = c = 1, b = 0, F = 0$のとき，
+$$
+\frac{\partial^2 u}{\partial x^2} + \frac{\partial^2 u}{\partial y^2} = 0
+$$
+<!--
+例えば与えられた境界で電位が与えられたときの真空中の静電ポテンシャルを求める問題に現れる．
+-->
+
+### 例2：拡散方程式（放物型方程式）
+$a = 1, b = c = 0, F = \partial u/\partial y$で$y \rightarrow t$と置き換えて
+$$
+\frac{\partial u}{\partial t} = \frac{\partial^2 u}{\partial x^2}
+$$
+
+### 例3：波動方程式（双曲型方程式）
+$a = 1, b = 0, c = -1, F = 0$で$y \rightarrow t$と置き換えて
+$$
+\frac{\partial^2 u}{\partial t^2} = \frac{\partial^2 u}{\partial x^2}
+$$
+
+---
+## 1.2 境界条件（および初期条件）
+
+- 偏微分方程式の解は対象とする領域の境界で与えられる何らかの拘束条件（境界条件）によって決定される．変数の一つが時間($t$)であるときは，$t = 0$で与える境界条件を初期条件と呼ぶのが通例である．
+- 必要とされる境界条件の個数は微分の階数によって異なる．
+- 境界における解の値を与える境界条件を**Direchlet型境界条件**と呼ぶ．一方で境界における解の一階微分値を与える境界条件を**Neumann型境界条件**と呼ぶ．
+
+### 例
+一様重力場中の質点の運動方程式
+$$
+\frac{d^2 x}{d t^2} = -g
+\quad
+\left(
+   \frac{dx}{d t} = v, \quad \frac{d v}{d t} = -g
+\right)
+$$
+の一般解は
+$$
+x(t) = x_0 + v_0 t - \frac{1}{2} g t^2
+$$
+である．この解を決定するには$t = 0$における条件（初期条件）$x(0) = x_0$および$v(0) = v_0$が必要．
+
+---
+この問題を境界値問題として見れば，$t = 0$および$t = T$の2点において一つずつ条件を与えることでも解を決定できる．
+
+- Direchlet型境界条件
+  $x(0) = x_0$ や $x(T) = x_1$ を与える．
+
+- Neumann型境界条件
+  $x'(0) = v_0$ や $x'(T) = v_1$ を与える．
+
+<!--
+<img src="figure/parabola.png" height="300px" style="position: absolute; left: 350px; top: 250px"/>
+-->
+
+####
+
+偏微分方程式においても基本的に事情は同じであり，微分の階数に等しい条件を指定しなければならない．（境界条件を適当に与えると場合によっては解が無いということもあり得る！）
+
