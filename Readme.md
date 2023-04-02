@@ -18,3 +18,10 @@ Googleアカウントがあれば，各 `.ipynb` ファイル先頭に表示さ�
 ## Fortran
 [fortran](https://github.com/amanotk/numerical-geophysics/tree/main/fortran)にFortranのサンプルが置いてありますので，必要に応じて参照してください．
 
+## PDFファイル生成
+講義スライドPDFの自動生成は以下のコマンド
+```
+ $ npx @marp-team/marp-cli@latest \
+ 	--theme lecture-theme.css --allow-local-files --html --pdf \
+	introduction.md resume{01..04}.md
+```

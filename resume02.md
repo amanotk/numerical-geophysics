@@ -56,8 +56,9 @@ $$
 $$
 u_{i\pm1} = u(x_{i} \pm \Delta x) = u_{i} \pm
 \left( \frac{\partial u}{\partial x} \right)_{i} \Delta x^1 +
-\frac{1}{2} \left( \frac{\partial u}{\partial x} \right)_{i} \Delta x^2 +
-\mathcal{O} (\Delta x^3)
+\frac{1}{2} \left( \frac{\partial^2 u}{\partial x^2} \right)_{i} \Delta x^2
+\pm \frac{1}{6} \left( \frac{\partial^3 u}{\partial x^3} \right)_{i} \Delta x^3 +
+\mathcal{O} (\Delta x^4)
 $$
 これから直ちに
 $$
@@ -106,4 +107,5 @@ $$
 #### Q.2-2
 上記の差分近似が2次精度であることを示せ．Taylor展開を3次まで行う必要があることに注意せよ．
 
-
+#### Q.2-3
+高階微分の差分近似に広いステンシルが必要になるのは何故か．例えば，4階微分$\partial^4 u/\partial x^4$を表すには最低何点のステンシルが必要になるか考えよ．

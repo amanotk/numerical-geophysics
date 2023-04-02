@@ -62,15 +62,30 @@ $$
 $$
 と書ける．これを書き換えて
 $$
-u^{n+1}_{i} = u^{n}_{i} - \left( \frac{c \Delta t}{2 \Delta x} \right)
+\text{FTCS: } u^{n+1}_{i} = u^{n}_{i} - \left( \frac{c \Delta t}{2 \Delta x} \right)
 \left( u^{n}_{i+1} - u^{n}_{i-1} \right)
 $$
-を得る．右辺は$u^{n}_{i-1}, u^{n}_{i}, u^{n}_{i+1}$の情報のみで評価でき，これらから次のステップの解$u^{n}_{i}$が求まる．
+を得る．右辺は$u^{n}_{i-1}, u^{n}_{i}, u^{n}_{i+1}$の情報のみで評価でき，これらから次のステップの解$u^{n+1}_{i}$が求まる．
 
 数値解を求めるためのアルゴリズムは一般に数値計算**スキーム**と呼ばれる．この場合は時間方向に前進差分，空間方向に中心差分を用いているのでFTCSスキーム（Forward in Time and Centered in Space)と呼ばれる．
 
+同様に空間方向に前進差分を使ったFTFS（Forawrd in Space）や後退差分を使ったFTBS（Backward in Space）も以下のように定義できるだろう．
+$$
+\text{FTFS: } u^{n+1}_{i} = u^{n}_{i} - \left( \frac{c \Delta t}{\Delta x} \right)
+\left( u^{n}_{i+1} - u^{n}_{i} \right)
+\quad
+\quad
+\text{FTBS: } u^{n+1}_{i} = u^{n}_{i} - \left( \frac{c \Delta t}{\Delta x} \right)
+\left( u^{n}_{i} - u^{n}_{i-1} \right)
+$$
+
+
 ---
 ### 例：FTCSスキームによる数値解
+
+<a href="https://colab.research.google.com/github/amanotk/numerical-geophysics/blob/main/notebook/LinearAdvectionEquation.ipynb">
+<img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab">
+</a>
 
 <img src="figure/ftcs_rect.png" width="600px" style="position: absolute; left: 50px; top: 100px"/>
 
@@ -88,8 +103,8 @@ $$
 ####
 
 - 矩形波（急勾配がある場合）の計算結果は明らかにおかしい．
-- 初期条件が滑らかな関数であれば良さそうに見えるが・・・？
-
+- 一見すると初期条件が滑らかな関数であれば良さそうに見えるが・・・？
+- FTFSやFTBSはどうだろうか？
 
 ---
 ## 3.2 数値計算スキームの性質
@@ -141,9 +156,14 @@ _header: Ref: Matsumoto et al. (2019, PASJ)
 
 ---
 ## 3.3 von Neumannの安定性解析
+
+<a href="https://colab.research.google.com/github/amanotk/numerical-geophysics/blob/main/notebook/vonNeumannStabilityAnalysis.ipynb">
+<img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab">
+</a>
+
 差分法の数値的安定性を調べるために最も一般的に使われている手法がvon Neumannの安定性解析である．これは「等間隔格子($\Delta t$および$\Delta x$が一定)で構成した線形差分近似式による初期値問題の解法」に適用可能な手法である．適用可能範囲が狭いようにも思われるが，実用的にはこれによって十分に有用な結果が得られる．
 
-上記の定義により線形の問題を考えよう．空間方向の任意の関数はFourier級数で現すことができるが，各波数のモードは互いに独立であるから，一つの波数$k$について考えれば十分である．既に空間方向の格子点の添字に$i$を使っているので，以降では$j$を虚数単位として用いることとする．（すなわち $j^2 = -1$．）
+上記の定義により線形の問題を考えよう．周期境界の問題では，空間方向の任意の関数はFourier級数で現すことができるが，各波数のモードは互いに独立であるから，一つの波数$k$について考えれば十分である．既に空間方向の格子点の添字に$i$を使っているので，以降では$j$を虚数単位として用いることとする．（すなわち $j^2 = -1$．）
 
 $x_{i} = i \Delta x$とすれば，波数$k$のモードの解は以下のように書ける．
 $$
@@ -209,8 +229,9 @@ $$
 ###
 ###
 
-絶対値$|g|$は数値的な成長率（減衰率）を表すのに対して偏角$\phi$は数値的な位相速度を表す．一般に数値誤差は$\theta$依存性（波長依存性）を持つので，数値解は波長に依存して異なる位相速度を与えることになる．
+絶対値$|g|$は数値的な成長率（減衰率）を表すのに対して偏角$\phi$は数値的な位相速度を表す．一般に数値誤差は$\theta (= k \Delta x)$依存性（波長依存性）を持つので，数値解は波長に依存して異なる位相速度を与えることになる．
 
+数値誤差によって短波長で位相速度が速くなる場合には，物理的な波の伝播方向よりも前に，また位相速度が遅くなる場合には後ろに数値的な分散性のwave trainが伝播することになる．
 
 <!--
 _header: Ref: Mellott (1985)
@@ -235,7 +256,7 @@ $$
 を得る．ただし $\mu = D \Delta t /\Delta x^2$ である．従って安定性の条件は$\mu \leq 1/2$で与えられる．すなわち，$\Delta x$を細かくするには$\Delta t \propto \Delta x^2$となるように$\Delta t$も小さくとらなければならないことが分かる．
 
 #### Q.3-3
-実際に上記の複素増幅率$g = 1 - 2 \mu (1 - \cos \theta)$で与えられることを示せ．
+上記の例で複素増幅率が実際に$g = 1 - 2 \mu (1 - \cos \theta)$で与えられることを示せ．
 
 
 ---
@@ -290,7 +311,7 @@ $$
 
 - 非線形や多次元問題についての厳密な安定性解析が難しいが，経験上はこれよりも少し厳しい条件が安定性として課されることが多いようである．従って，これよりも小さなCourant数を採用することが常である．
 - 上記の風上差分スキームは空間精度が1次精度であり実用的ではない．しかし，現代の高精度数値流体計算スキームの多くはこのような風上差分の考え方を基に設計されており，この考え方は極めて重要である．
-
+- このような背景を考えればFTFSスキームの安定性が$-1 \leq \nu \leq 0$となることは直感的にも自然である．
 
 ---
 
@@ -425,7 +446,11 @@ CFL条件より$c \Delta t \lesssim \Delta x$であるから，このスキー�
 ---
 ## 3.6 線形波動方程式
 
-等温の状態方程式$p = \rho R T = \rho C_s^2$を採用した1次元のEuler方程式（流体方程式）は以下のように書ける．
+<a href="https://colab.research.google.com/github/amanotk/numerical-geophysics/blob/main/notebook/LinearWaveEquation.ipynb">
+<img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab">
+</a>
+
+等温の状態方程式$p = \rho R T = \rho C_s^2$を採用した1次元のEuler方程式（圧縮性流体方程式）は以下のように書ける．
 $$
 \begin{aligned}
 & \frac{\partial}{\partial t} \rho +
@@ -450,22 +475,28 @@ $$
 \frac{\partial g}{\partial t} + C_s \frac{\partial f}{\partial x} = 0
 \end{cases}
 $$
-または線形波動方程式
+となる．
+
+---
+
+ここで，$g$を消去すれば
 $$
 \frac{\partial^2 f}{\partial t^2} + C_s^2 \frac{\partial^2 f}{\partial x^2} = 0
 $$
-を得る．ただし$f = \delta \rho/\rho_0, g = \delta v/C_s$と置いた．
+を得る．これは線形波動方程式である．ただし$f = \delta \rho/\rho_0, g = \delta v/C_s$と置いた．
 
----
-波動方程式を書き換えると
+さらにこの波動方程式を書き換えると
 $$
 \frac{\partial}{\partial t} (f \pm g) \pm C_s
 \frac{\partial}{\partial x} (f \pm g) = 0
 $$
-と書ける．すなわち波動方程式の解は$u = f \pm g$に対する速度$c = \pm C_s$の線形移流方程式の解の線形結合から得られる．
+となる．すなわち波動方程式の解は$u = f \pm g$に対する速度$c = \pm C_s$の線形移流方程式の解の線形結合から得られる．
 
 #### Q.3-9
 等温の状態方程式を用いた1次元Euelr方程式を線形化し，実際に上記の（連立）線形移流方程式が得られることを示せ．
+
+#### Q.3-10
+周期境界条件のもとで任意の初期条件$f(x, t=0) = f_0(x)$および$g(x, t=0) = g_0(x)$が与えられたときの解析解$f(x, t)$および$g(x, t)$を求めよ．
 
 ---
 ## 3.7 保存形式
@@ -479,10 +510,10 @@ $$
 
 これまで考えてきた線形移流方程式や流体力学のEuler方程式もこの形式で書き下せる．Euler方程式においては質量，運動量，エネルギーなどの保存量が$\bm{u}$に対応する．
 
-#### Q.3-10
+#### Q.3-11
 保存形で書かれた上式において$\displaystyle \int \bm{u} dx$ が境界条件の影響を除いて保存することを示せ．
 
-#### Q.3-11
+#### Q.3-12
 線形移流方程式を保存形で書き表し，流束関数$f(u)$の表式を求めよ．
 
 ---
@@ -521,7 +552,7 @@ $$
 
 なお，厳密にはこれは**有限体積法**に分類される手法であり，特に圧縮性流体力学の数値解法としてよく用いられる．ただし，簡単に分かるように$\bar{\bm{u}}_{i} = \bm{u}_{i} + \mathcal{O} (\Delta x^2)$であり，2次精度以下ではこれまで扱ってきた有限差分法と有限体積法の差はほとんどない．この講義では3次精度以上のスキームは扱わないので，以下では$\bar{\bm{u}}_{i} \approx \bm{u}_{i}$として両者を区別せずに用いる．
 
-#### Q.3-12
+#### Q.3-13
 保存形式のスキームであれば境界条件の影響を除いて保存則を厳密に満たすことを示せ．
 
 ---
@@ -565,7 +596,7 @@ $$
 
 数値流束の評価は第1項だけでできるのが理想であるが，FTCSスキーム($\gamma = 0$)が数値的に不安定であるように，この項だけでは不安定になりやすい．そこで第2項を加えてスキームを安定化させていると考えることができる．
 
-#### Q.3-13
+#### Q.3-14
 各スキームに含まれる拡散項の大きさを比較せよ．
 
 ---
@@ -653,7 +684,7 @@ $$
 $$
 と近似しよう．これを2段階Lax-Wendroffスキームと呼ぶ．このスキームであれば方程式の具体的形に依存せず適用することが可能である．
 
-#### Q.3-14
+#### Q.3-15
 線形移流方程式については2段階Lax-WendroffスキームとオリジナルのLax-Wendroffスキームが一致することを示せ．
 
 ---
