@@ -446,10 +446,6 @@ CFL条件より$c \Delta t \lesssim \Delta x$であるから，このスキー�
 ---
 ## 3.6 線形波動方程式
 
-<a href="https://colab.research.google.com/github/amanotk/numerical-geophysics/blob/main/notebook/LinearWaveEquation.ipynb">
-<img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab">
-</a>
-
 等温の状態方程式$p = \rho R T = \rho C_s^2$を採用した1次元のEuler方程式（圧縮性流体方程式）は以下のように書ける．
 $$
 \begin{aligned}
@@ -474,29 +470,53 @@ $$
 \displaystyle
 \frac{\partial g}{\partial t} + C_s \frac{\partial f}{\partial x} = 0
 \end{cases}
+\tag{3.6.1} \label{eq:wave}
 $$
-となる．
+となる．ただし，ここで$f = \delta \rho/\rho_0, g = \delta v/C_s$と置いた．
 
 ---
 
-ここで，$g$を消去すれば
+ここで，式($\ref{eq:wave}$)より$g$を消去すれば線形波動方程式
 $$
 \frac{\partial^2 f}{\partial t^2} + C_s^2 \frac{\partial^2 f}{\partial x^2} = 0
 $$
-を得る．これは線形波動方程式である．ただし$f = \delta \rho/\rho_0, g = \delta v/C_s$と置いた．
-
-さらにこの波動方程式を書き換えると
+を得る．または，式($\ref{eq:wave}$)の和および差から
 $$
 \frac{\partial}{\partial t} (f \pm g) \pm C_s
 \frac{\partial}{\partial x} (f \pm g) = 0
 $$
-となる．すなわち波動方程式の解は$u = f \pm g$に対する速度$c = \pm C_s$の線形移流方程式の解の線形結合から得られる．
+が得られる．すなわち波動方程式の解は$u_{\pm} = f \pm g$に対する速度$c = \pm C_s$の線形移流方程式の解の線形結合から得られる．
 
 #### Q.3-9
-等温の状態方程式を用いた1次元Euelr方程式を線形化し，実際に上記の（連立）線形移流方程式が得られることを示せ．
+等温の状態方程式を用いた1次元Euelr方程式を線形化し，実際に式($\ref{eq:wave}$)が得られることを示せ．
 
 #### Q.3-10
 周期境界条件のもとで任意の初期条件$f(x, t=0) = f_0(x)$および$g(x, t=0) = g_0(x)$が与えられたときの解析解$f(x, t)$および$g(x, t)$を求めよ．
+
+---
+<a href="https://colab.research.google.com/github/amanotk/numerical-geophysics/blob/main/notebook/LinearWaveEquation.ipynb">
+<img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab">
+</a>
+
+<img src="figure/wave-solution1.png" width="600px" style="position: absolute; left: 50px; top: 50px"/>
+
+<img src="figure/wave-solution2.png" width="600px" style="position: absolute; left: 650px; top: 50px"/>
+
+####
+####
+####
+####
+####
+####
+####
+####
+####
+####
+####
+
+- 初期条件の$f_0$が同じであっても，$g_0$の選び方によって波動が左右両方向に伝播する解（左図）や，右方向のみに伝播する解（右図）が得られる．
+- 波動が左側のみに伝播する解を得るには初期条件をどのように選べば良いか？
+- 数値解と解析解を比較してみよう．
 
 ---
 ## 3.7 保存形式
@@ -539,6 +559,7 @@ _header: Ref: Toro (2009)
 $$
 \frac{\bar{\bm{u}}^{n+1}_{i} - \bar{\bm{u}}^{n}_{i}}{\Delta t} +
 \frac{\hat{\bm{f}}_{i+1/2} - \hat{\bm{f}}_{i-1/2}}{\Delta x} = 0
+\tag{3.7.1} \label{eq:discrete-form}
 $$
 を得る．ここでセル平均値$\bar{\bm{u}}_{i}$および数値流束$\hat{\bm{f}}^{i+1/2}$は以下で定義される．
 $$
@@ -591,13 +612,17 @@ $$
 \hat{f}_{i+1/2} =
 \frac{\alpha f_{i} + \beta f_{i+1}}{\alpha + \beta} -
 \gamma (u_{i+1} -u_{i})
+\tag{3.7.2} \label{eq:numerical-flux}
 $$
 の形で書けることが多い．ここで第1項は$f_{i}$と$f_{i+1}$の何らかの平均，第2項は$\hat{f}_{i+1/2} - \hat{f}_{i-1/2}$の形にしたときに数値拡散項として働くことが分かる．
 
 数値流束の評価は第1項だけでできるのが理想であるが，FTCSスキーム($\gamma = 0$)が数値的に不安定であるように，この項だけでは不安定になりやすい．そこで第2項を加えてスキームを安定化させていると考えることができる．
 
 #### Q.3-14
-各スキームに含まれる拡散項の大きさを比較せよ．
+式($\ref{eq:numerical-flux}$)を式($\ref{eq:discrete-form}$)に代入することにより，式($\ref{eq:numerical-flux}$)の第2項が$\gamma$に比例する数値拡散を表す項になっていることを確かめよ．
+
+#### Q.3-15
+各スキームに含まれる数値拡散項の大きさを比較せよ．
 
 ---
 ## 3.8 Godunovの定理
@@ -684,7 +709,7 @@ $$
 $$
 と近似しよう．これを2段階Lax-Wendroffスキームと呼ぶ．このスキームであれば方程式の具体的形に依存せず適用することが可能である．
 
-#### Q.3-15
+#### Q.3-16
 線形移流方程式については2段階Lax-WendroffスキームとオリジナルのLax-Wendroffスキームが一致することを示せ．
 
 ---
