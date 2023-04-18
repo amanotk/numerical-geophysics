@@ -331,7 +331,7 @@ _header: Ref: Toro (2009)
 ## 3.5 Lax-Friedrichsスキーム
 
 移流方程式においては空間1次精度の風上差分は安定であり，FTCSスキームは空間2次精度であるにも関わらず不安定となる．実用的には2次精度以上のスキームが欲しくなるので，空間精度を向上させるためにもFTCSスキームについてもう少し考察してみよう．
-打切り誤差の評価において時間微分を$\partial u/\partial t = - c \partial u/\partial x$を使って書き換えると
+打切り誤差の評価において，最低次の$\mathcal{O}(\Delta t)$の項の時間微分を$\partial u/\partial t = - c \partial u/\partial x$を使って書き換えると
 $$
 \begin{aligned}
 \frac{u^{n+1}_{i} - u^{n}_{i}}{\Delta t} + c \frac{u^{n}_{i+1} - u^{n}_{i-1}}{2 \Delta x}
@@ -342,7 +342,7 @@ c^2 \frac{\Delta t}{2} \left( \frac{\partial^2 u}{\partial x^2} \right)^{n}_{i}
 + \text{(higher orders)}
 \end{aligned}
 $$
-となる．ここで誤差の最低次の$\mathcal{O}(\Delta t)$の項が実質的な逆拡散として作用するため，FTCSスキームが無条件不安定になると解釈できる．逆に考えれば，FTCSスキームに逆拡散を打ち消すような拡散効果を加えればスキームは安定化すると予想される．
+となる．この誤差の最低次の項は拡散項の形をしているが，通常の拡散とは符号が逆になっている．すなわち，この項が実質的な逆拡散として作用するため，FTCSスキームが無条件不安定になると解釈できる．逆に考えれば，FTCSスキームに逆拡散を打ち消すような拡散効果を加えればスキームは安定化すると予想される．
 
 ここでは$u^{n}_{i} \rightarrow (u^{n}_{i+1} + u^{n}_{i-1})/2$のような平均化操作を加えて，以下のように修正したスキームを考えよう．
 $$
@@ -395,7 +395,7 @@ u^{n+1}_{i} &
 \left( \frac{\partial^2 u}{\partial t^2} \right)^{n}_{i} \frac{1}{2} \Delta t^2 +
 \mathcal{O} (\Delta t^3)
 \\
-&= u^{n}_{i} +
+&= u^{n}_{i} -
 \left( \frac{\partial u}{\partial x} \right)^{n}_{i}
 \left( c \Delta t \right) +
 \left( \frac{\partial^2 u}{\partial x^2} \right)^{n}_{i}
@@ -441,7 +441,21 @@ CFL条件より$c \Delta t \lesssim \Delta x$であるから，このスキー�
 
 ---
 
-![height:600px center](figure/linear_advection_lw.png)
+<img src="figure/linear_advection_lw.png" width="600px" style="position: absolute; left: 25px; top: 80px"/>
+
+<img src="figure/lax-wendroff-stability.png" width="600px" style="position: absolute; left: 650px; top: 80px"/>
+
+##
+##
+##
+##
+##
+##
+##
+##
+##
+
+- Lax-Wendroffスキームで得られる数値解と安定性解析から得られる位相誤差の関係について確認しよう．
 
 ---
 ## 3.6 線形波動方程式
@@ -574,7 +588,10 @@ $$
 なお，厳密にはこれは**有限体積法**に分類される手法であり，特に圧縮性流体力学の数値解法としてよく用いられる．ただし，簡単に分かるように$\bar{\bm{u}}_{i} = \bm{u}_{i} + \mathcal{O} (\Delta x^2)$であり，2次精度以下ではこれまで扱ってきた有限差分法と有限体積法の差はほとんどない．この講義では3次精度以上のスキームは扱わないので，以下では$\bar{\bm{u}}_{i} \approx \bm{u}_{i}$として両者を区別せずに用いる．
 
 #### Q.3-13
-保存形式のスキームであれば境界条件の影響を除いて保存則を厳密に満たすことを示せ．
+保存形式のスキームであれば境界条件の影響を除いて保存則が厳密に満たされる．したがって，周期境界条件の場合には以下の式が満たされる．このことを示せ．
+$$
+\sum_{i} \bar{\bm{u}}_{i} = \text{const}
+$$
 
 ---
 これまで線形移流方程式($f(u) = cu$)について考えてきたスキームは以下のように保存形式で書くことができる．
