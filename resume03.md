@@ -134,7 +134,7 @@ c \left( \frac{\partial u}{\partial x} \right)^{n}_{i}
 \\
 &+
 \frac{\Delta t}{2} \left( \frac{\partial^2 u}{\partial t^2} \right)^{n}_{i} +
-c\frac{\Delta x^2}{12} \left( \frac{\partial^3 u}{\partial x^3} \right)^{n}_{i}
+c\frac{\Delta x^2}{6} \left( \frac{\partial^3 u}{\partial x^3} \right)^{n}_{i}
 + \text{(higher orders)}
 \end{aligned}
 $$
