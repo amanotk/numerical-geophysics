@@ -35,6 +35,10 @@ _class: title
 
 ---
 ## 4.1 Burgers方程式
+<a href="https://colab.research.google.com/github/amanotk/numerical-geophysics/blob/main/notebook/BurgersEquation.ipynb">
+<img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab">
+</a>
+
 非線形の偏微分方程式として以下のBurgers方程式を考えよう．
 $$
 \frac{\partial u}{\partial t} + u \frac{\partial u}{\partial x} =
@@ -68,7 +72,6 @@ $$
 \frac{d x}{d t} \frac{\partial}{\partial x}
 $$
 を用いればよい．
-
 
 ---
 ### 衝撃波解
@@ -134,11 +137,11 @@ _header: Ref: Toro (2009)
 
 - 詳細な議論は適当な教科書に譲るとして，直感的には不連続な弱解があるとき， **特性線が不連続に収束する** （不連続から特性線が湧き出さない）ことをエントロピー条件として考えればよい．Burgers方程式やEuler方程式を始めとするconvexな流束関数($f'(u) > 0$)について考えると，これは以下のように表すことができる．
   $$
-    f'(u_{L}) \leq S \leq f'(u_{R})
+    f'(u_{R}) \leq S \leq f'(u_{L})
   $$
   具体的にBurgers方程式の場合には
   $$
-    u_{L} \leq S \leq u_{R}
+    u_{R} \leq S \leq u_{L}
   $$
   がエントロピー条件となる．膨張衝撃波はこれを満たさないことは明らかである．
 
@@ -184,7 +187,7 @@ $$
 ---
 ### 滑らかな初期条件の場合
 
-2段階Lax-Wendroffスキームは非線形問題にも適用できるようにオリジナルのLax-Wendroffスキームを改良したものである．実際にこれを用いてBurgers方程式を解いてみよう．具体的には
+2段階Lax-Wendroffスキームは非線形問題にも適用できるようにオリジナルのLax-Wendroffスキームを改良したものである．実際にこれを用いて粘性あり（$\alpha \neq 0$）のBurgers方程式を解いてみよう．具体的には
 $$
 \begin{aligned}
 & u_{i+1/2} = \frac{u_{i} + u_{i+1}}{2} - \frac{\Delta t}{2 \Delta x}
@@ -223,6 +226,7 @@ $$
 \rho v^2 + p \\
 (\varepsilon + p) v
 \end{pmatrix} = 0
+\tag{4.2.1} \label{eq:euler}
 $$
 ここで
 $$
@@ -230,7 +234,7 @@ $$
 $$
 は流体の全エネルギー密度，$\gamma$は比熱比である．
 
-Euler方程式は非線形連立双曲型保存則(System of Nonlinear Hyperbolic Conservation Laws)の実用的に重要な例の一つである．ここで$\bm{u} = (\rho, \rho v, \varepsilon)$の方程式はそれぞれ質量保存則，運動量保存則，エネルギー保存則を表す．
+式($\ref{eq:euler}$)は非線形連立双曲型保存則(System of Nonlinear Hyperbolic Conservation Laws)の実用的に重要な例の一つである．ここで$\bm{u} = (\rho, \rho v, \varepsilon)$の方程式はそれぞれ質量保存則，運動量保存則，エネルギー保存則を表す．
 
 ---
 #### Q.4-3
@@ -276,7 +280,7 @@ $$
 \left(
 	v \pm \frac{2 C_s}{\gamma-1}
 \right)
-= 0, \tag{A}
+= 0, \tag{4.2.2} \label{eq:riemann-invariant}
 %\end{aligned}
 $$
 となり，$J_{\pm} = v \pm 2 C_s/(\gamma-1)$が以下で定義される特性曲線に沿って一定となる（すなわちRiemann不変量である）ことが分かる．
@@ -285,7 +289,7 @@ $$
 $$
 
 #### Q.4-6
-式(A)を示せ．
+式($\ref{eq:riemann-invariant}$)を示せ．
 
 ---
 

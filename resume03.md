@@ -459,7 +459,6 @@ CFL条件より$c \Delta t \lesssim \Delta x$であるから，このスキー�
 
 ---
 ## 3.6 線形波動方程式
-
 等温の状態方程式$p = \rho R T = \rho C_s^2$を採用した1次元のEuler方程式（圧縮性流体方程式）は以下のように書ける．
 $$
 \begin{aligned}
