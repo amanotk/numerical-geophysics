@@ -213,6 +213,10 @@ $$
 
 ---
 ## 4.2 Euler方程式
+<a href="https://colab.research.google.com/github/amanotk/numerical-geophysics/blob/main/notebook/EulerEquation.ipynb">
+<img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab">
+</a>
+
 Euler方程式（圧縮性流体力学の支配方程式）は質量・運動量・エネルギー保存則から次のように書き表される．
 $$
 \frac{\partial}{\partial t}
@@ -377,7 +381,7 @@ $$
 ####
 
 - 実際にはEuler方程式は非線形なので$\lambda_i$も$\bm{u}$の関数であるが，定性的な性質は変わらない．
-- 一般に独立変数が$n$個ある方程式系では固有値・固有ベクトル（すなわち波動モードの数）も$n$個ある．全ての固有値が正（$\lambda_i > 0$）の方程式系は双曲型保存則と呼ばれる．
+- 一般に独立変数が$n$個ある方程式系では固有値・固有ベクトル（すなわち波動モードの数）も$n$個ある．全ての固有値（$\lambda_i$）が実数の方程式系は双曲型保存則と呼ばれる．
 
 ---
 ### 応用例1
