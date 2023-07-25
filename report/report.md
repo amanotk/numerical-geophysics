@@ -27,7 +27,7 @@ $$
 \begin{pmatrix}
 v & \rho & 0 \\
 0 & v & 1/\rho \\
-0 & -\gamma p & v
+0 & \gamma p & v
 \end{pmatrix}
 $$
 と書ける．この行列$\bm{A}$を対角化して，固有値と固有ベクトルを求めよ．

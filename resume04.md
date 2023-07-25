@@ -466,7 +466,7 @@ $$
 \displaystyle
 \left(
 \frac{\rho_L + \rho_R}{2} + \frac{\rho_0}{C_s} \frac{v_L - v_R}{2},
-\frac{v_L + v_R}{2} + \frac{C_s}{\rho_0} \frac{\rho_R - \rho_L}{2},
+\frac{v_L + v_R}{2} + \frac{C_s}{\rho_0} \frac{\rho_L - \rho_R}{2},
 \right)   & -C_s t < x < +C_s t \\
 (\rho_R, v_R) \quad & +C_s t < x
 \end{cases}
