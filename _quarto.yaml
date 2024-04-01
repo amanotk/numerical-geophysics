@@ -1,0 +1,11 @@
+project:
+  output-dir: docs
+  render:
+    - introduction.qmd
+    - chap01.qmd
+    - chap02.qmd
+    - chap03.qmd
+    - chap04.qmd
+
+execute:
+  freeze: auto

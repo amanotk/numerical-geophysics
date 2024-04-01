@@ -1,0 +1,92 @@
+/* @theme lecture-theme */
+
+@import "default";
+
+.reveal {
+  .slides {
+    text-align: left;
+
+    section {
+      padding: 0 40px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      height: 100%;
+      padding: 0;
+    }
+  }
+
+  .Mathjax {
+    font-size: 0.8em;
+  }
+
+  .cjk_fallback {
+    font-family: 'Noto Sans CJK JP';
+    font-size: 150%;
+  }
+
+  .slide-number {
+    font-size: 0.6em;
+    color: #000;
+  }
+
+  .reveal-header {
+    margin: 10px 0px 0px 0px;
+    grid-template-columns: 1px 1px 1fr 0fr;
+  }
+
+  h1 {
+    font-family: 'Noto Sans CJK JP';
+    font-weight: 600;
+    font-size: 48px;
+    text-align: center;
+    color: #234366;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+  }
+
+  h2 {
+    font-size: 32px;
+    color: #234366;
+  }
+
+  img {
+    display: block;
+    margin: 0 auto;
+
+    +br+em {
+      font-style: normal;
+      display: block;
+      text-align: center;
+      font-size: 90%;
+    }
+  }
+
+  table {
+    table-layout: fixed;
+    width: 80%;
+    margin: 0 auto;
+    border-collapse: collapse;
+
+    th,
+    td {
+      border: 1px solid;
+      text-align: center;
+      vertical-align: middle;
+      padding: 0.2em;
+    }
+  }
+
+  section {
+    font-family: 'Noto Sans CJK JP';
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 1.0;
+    color: #000;
+    padding: 0 20px;
+  }
+}

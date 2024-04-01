@@ -1,19 +1,20 @@
 ---
 format:
   revealjs:
-    html-math-method: mathjax
     width: 1280
     height: 720
     margin: 0.05
     transition: fade
+    slide-level: 0
+    css: lecture-theme.css
+    html-math-method: mathjax
     number-sections: true
     number-depth: 2
     number-offset: 0
-    slide-level: 0
-    css: lecture-theme.css
+    standalone: true
     footer: "地球物理数値解析（天野孝伸）"
-filters:
-  - reveal-header
+#filters:
+#  - reveal-header
 ---
 
 # 序論：様々な偏微分方程式

@@ -1,19 +1,20 @@
 ---
 format:
   revealjs:
-    html-math-method: mathjax
     width: 1280
     height: 720
     margin: 0.05
     transition: fade
+    slide-level: 0
+    css: lecture-theme.css
+    html-math-method: mathjax
     number-sections: true
     number-depth: 2
     number-offset: 3
-    slide-level: 0
-    css: lecture-theme.css
+    standalone: true
     footer: "地球物理数値解析（天野孝伸）"
-filters:
-  - reveal-header
+#filters:
+#  - reveal-header
 ---
 
 # 双曲型偏微分方程式の解法 (2)：非線形問題
@@ -32,8 +33,12 @@ filters:
 
 ## Burgers方程式
 
-::: header
-  [![](figure/colab-badge.svg){width=117, height=20}](https://colab.research.google.com/github/amanotk/numerical-geophysics/blob/main/notebook/BurgersEquation.ipynb)
+::: {.column-body}
+::: {.column-page width=800 height=600}
+::: {.absolute top=0 right=50 height=32}
+[![](figure/colab-badge.svg)](https://colab.research.google.com/github/amanotk/numerical-geophysics/blob/main/notebook/BurgersEquation.ipynb){target="_blank"}
+:::
+:::
 :::
 
 非線形の偏微分方程式として以下のBurgers方程式を考えよう．
@@ -43,11 +48,7 @@ $$
 $$
 ここで$\alpha$は粘性項（拡散項）であり，$\alpha = 0$であればこの方程式は双曲型偏微分方程式に分類される．線形移流方程式と異なり移流速度が$u$に依存する形になっている．例えば流体力学における音波の位相速度は振幅に依存し，有限振幅の音波は有限時間で衝撃波に発展する．Burgers方程式はこれを簡単化したものと考えることができる．
 
-![](figure/steepening.png){height=380}
-
-::: header
-Ref: Burgess & Scholer (Collisionless Shocks in Space Plasmas)
-:::
+![Ref: Burgess & Scholer (Collisionless Shocks in Space Plasmas)](figure/steepening.png){height=380}
 
 ---
 
@@ -75,11 +76,7 @@ $$
 
 ### 衝撃波解
 
-![](figure/burgers-shock.png){height=600}
-
-::: header
-Ref: Toro (2009)
-:::
+![Ref: Toro (2009)](figure/burgers-shock.png){height=600}
 
 ---
 
@@ -114,22 +111,13 @@ $$
 
 ### 膨張波解
 
-![](figure/burgers-rarefaction.png){height=600}
-
-::: header
-Ref: Toro (2009)
-:::
-
+![Ref: Toro (2009)](figure/burgers-rarefaction.png){height=600}
 
 ---
 
 ### 膨張衝撃波解
 
-![](figure/burgers-expansion-shock.png){height=600}
-
-::: header
-Ref: Toro (2009)
-:::
+![Ref: Toro (2009)](figure/burgers-expansion-shock.png){height=600}
 
 ---
 
@@ -215,14 +203,20 @@ $$
 
 ---
 
+### 数値解
+
 ![](figure/burgers-steepening.png){height=600}
 
 ---
 
-## 4.2 Euler方程式
+## Euler方程式
 
-::: header
-  [![](figure/colab-badge.svg){width=117, height=20}](https://colab.research.google.com/github/amanotk/numerical-geophysics/blob/main/notebook/EulerEquation.ipynb)
+::: {.column-body}
+::: {.column-page width=800 height=600}
+::: {.absolute top=0 right=50 height=32}
+[![](figure/colab-badge.svg)](https://colab.research.google.com/github/amanotk/numerical-geophysics/blob/main/notebook/EulerEquation.ipynb){target="_blank"}
+:::
+:::
 :::
 
 Euler方程式（圧縮性流体力学の支配方程式）は質量・運動量・エネルギー保存則から次のように書き表される．
@@ -308,11 +302,7 @@ $$
 
 ---
 
-::: header
-Ref: Laney (1998)
-:::
-
-![](figure/characteristics.png){height=500}
+![Ref: Laney (1998)](figure/characteristics.png){height=500}
 
 - 変数の個数の分だけ特性曲線および対応する不変量が存在する．
 - 異なる不変量に関する特性曲線は互いに交わる．
@@ -328,7 +318,7 @@ Ref: Laney (1998)
 
 ---
 
-## 4.3 Riemann問題
+## Riemann問題
 
 #### Sodの衝撃波管問題
 
@@ -351,11 +341,7 @@ $$
 $$
 が与えられたときの時間発展を求める問題をRiemann問題と呼ぶ．このとき固有値の数（すなわち変数の数）の分だけ$x = 0$から「波」が発生する．この「波」の影響がおよぶ領域をRiemann fanと呼ぶ．
 
-![](figure/riemann.png){height=300}
-
-::: header
-Ref: Toro (2009)
-:::
+![Ref: Toro (2009)](figure/riemann.png){height=300}
 
 ---
 
@@ -410,7 +396,7 @@ $$
 ---
 
 ### 応用例2
-![](figure/piecewise-linear.png){height=300}
+![Ref: Laney (1998)](figure/piecewise-linear.png){height=300}
 
 圧縮性流体力学では一般に不連続な解が発生するため，セル境界における解の連続性を要請しないスキームが好まれる．セル境界での数値流束$\hat{\bm{f}}_{i+1/2}$が決められれば
 $$
@@ -419,13 +405,9 @@ $$
 $$
 から解を更新することができる．ここで各セル境界においてRiemann問題の近似解を使って数値流束を決定するのが一般的な手法である．（Riemann問題の完全な解が必要なわけではなく，あくまでセル境界における数値流束だけが必要なことに注意．）
 
-::: header
-Ref: Laney (1998)
-:::
-
 ---
 
-## 4.4 線形化されたRiemann解法
+## 線形化されたRiemann解法
 
 ### 線形Riemann問題
 線形Riemann問題ではJacobian$\bm{A}$が$\bm{u}$に依存しない．したがって，対角化の結果は時間・空間によらず常に同じ結果となる．特性量に書き換えたRiemann問題は
@@ -439,11 +421,7 @@ $$
 $$
 となる．各特性量に関する線形移流方程式は互いに独立なので，線形Riemann問題の解はトリビアルに決まる．例えば独立変数の数が$n = 3$のときの解は下図の通り．
 
-![](figure/linear-riemann-problem.png){height=300}
-
-::: header
-Ref: Laney (1998)
-:::
+![Ref: Laney (1998)](figure/linear-riemann-problem.png){height=300}
 
 ---
 
@@ -544,15 +522,11 @@ $$
 
 ---
 
-## 4.5 HLL型Riemann解法
+## HLL型Riemann解法
 ### HLL法
 HLL（Harten-Lax-van Leer）法はRiemann fanの内部で物理量が一定だと仮定する．何らかの方法で最大固有値$\lambda_{\rm max} = S_R$および最小固有値$\lambda_{\rm min} = S_L$が求まれば，Riemann fanが定義される．
 
-![](figure/hll-riemann-solver.png){height=300}
-
-::: header
-Ref: Toro (2009)
-:::
+![Ref: Toro (2009)](figure/hll-riemann-solver.png){height=300}
 
 
 基礎方程式を$[0, t] \times [S_L t, S_R t]$で積分すると，Riemann fan内部の物理量$\bm{u}_{*}$は
@@ -622,11 +596,7 @@ HLL法の数値流束が$(*)$で与えられることを示せ．
 
 HLL法のRiemann fan内部で物理量が一定という仮定をやめて，内部構造を考えてみよう．一般にはRiemann fanの内部構造は方程式系に依存するので，どんな保存則にも使えるというHLL法の利点は失われてしまうが，それによって解像度が向上するのであれば一考の価値はあるだろう．ここでは下図のようにEuler方程式について中間固有値（エントロピーモード）を1つ考え，Riemann fan内部を2状態で近似してみよう．エントロピーモードに対応する不連続は接触不連続面(Contact Discontinuity)なので，この2状態近似のRimeann解法は名前に"C"をつけてHLLC法と呼ばれる．
 
-![](figure/hllc-riemann-solver.png){height=300}
-
-::: header
-Ref: Toro (2009)
-:::
+![Ref: Toro (2009)](figure/hllc-riemann-solver.png){height=300}
 
 ---
 
@@ -692,12 +662,8 @@ $$
 
 ### 様々なHLL型Riemann解法（MHD方程式の場合）
 
-![](figure/hll-family.png){height=500}
+![Ref: Miyoshi & Kusano (2007)](figure/hll-family.png){height=500}
 
 - 内部構造の近似の仕方によって様々な種類が存在する．
 - 最も簡単なHLL法以外は一般に方程式系に陽に依存する．
 - より正確に内部構造を考慮するRiemann解法は解像度は高いが，数値的に不安定になりやすい．
-
-::: header
-Miyoshi & Kusano (2007)
-:::
