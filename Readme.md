@@ -2,7 +2,7 @@
 
 これは東京大学理学部・理学系研究科の学部大学院共通講義「地球物理数値解析」の講義資料およびサンプルをまとめたリポジトリです．
 
-## 講義スライド（PDF）
+## 講義スライド（HTML）
 - [イントロダクション](https://amanotk.github.io/numerical-geophysics/introduction.html#/)
 - [様々な偏微分方程式](https://amanotk.github.io/numerical-geophysics/chap01.html#/)
 - [差分法の基礎](https://amanotk.github.io/numerical-geophysics/chap02.html#/)
