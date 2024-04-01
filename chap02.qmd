@@ -1,35 +1,28 @@
 ---
-marp: true
-theme: lecture-theme
-math: mathjax
-footer: "地球物理数値解析 天野孝伸 <<amano@eps.s.u-tokyo.ac.jp>>"
+format:
+  revealjs:
+    html-math-method: mathjax
+    width: 1280
+    height: 720
+    margin: 0.05
+    transition: fade
+    number-sections: true
+    number-depth: 2
+    number-offset: 1
+    slide-level: 0
+    css: lecture-theme.css
+    footer: "地球物理数値解析（天野孝伸）"
+filters:
+  - reveal-header
 ---
 
-<!--
-_class: title
--->
+# 差分法の基礎
 
-
-<style>
-img[alt~="center"] {
-  display: block;
-  margin: 0 auto;
-}
-</style>
-
-$$
-\renewcommand{\bm}[1]{{\boldsymbol{#1}}}
-$$
-
-
-<!--
-_class: title
--->
-
-# 2. 差分法の基礎
+{{< include macros.qmd >}}
 
 ---
-## 2.1 有限差分法による離散化
+
+## 有限差分法による離散化
 
 計算機は連続的な関数を厳密に表現することができないため，基礎方程式を数値的に解く際には何らかの離散化が必要となる．典型的には離散的な格子点 $x_{i} (i = 1, 2, \ldots, N)$ において定義される $u_{i} = u(x_{i})$ を用いる．
 
@@ -50,7 +43,8 @@ $$
 どのような差分近似を採用したら良いのだろうか？
 
 ---
-## 2.2 差分近似の誤差と精度
+
+## 差分近似の誤差と精度
 
 微分の差分近似は一意には決まらないが，その誤差は理論的に評価することができる．そのために$x = x_i$近傍でのTaylor展開を考えよう．
 $$
@@ -74,7 +68,8 @@ $$
 差分近似 $\displaystyle \left( \frac{\partial u}{\partial x} \right)_{i} \approx \frac{u_{i+1} - u_{i}}{\Delta x}$ および $\displaystyle \left( \frac{\partial u}{\partial x} \right)_{i} \approx \frac{u_{i} - u_{i-1}}{\Delta x}$ の精度（次数）を求めよ．
 
 ---
-## 2.3 前進差分・後退差分・中心差分
+
+## 前進差分・後退差分・中心差分
 
 差分近似の次数が同じであっても，その表現は必ずしも一つに定まるわけではない．それは評価点$x=x_i$における差分近似を構成するために近傍のどの点を採用するかに自由度があるためである．
 
@@ -88,7 +83,8 @@ $$
 （そもそも時間微分の近似以外の場合においては前進・後退という名前自体が物理的に全くナンセンスである．）
 
 ---
-## 2.4 高階微分の差分近似
+
+## 高階微分の差分近似
 基本的には1階微分の場合と同様にTaylor展開を用いて必要な微分係数以外の項を消去すればよい．
 例えば2階微分であれば
 $$

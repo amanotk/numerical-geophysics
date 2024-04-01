@@ -2,111 +2,91 @@
 
 @import "default";
 
-/*
- * common
- */
-.Mathjax {
-  font-size: 0.8em;
-}
+.reveal {
+  .slides {
+    text-align: left;
 
-.cjk_fallback {
-  font-family: 'Noto Sans CJK JP';
-  font-size: 150%;
-}
+    section {
+      padding: 0 40px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      height: 100%;
+      padding: 0;
+    }
+  }
 
-header {
-  top: 5px;
-  color: #000;
-}
+  .Mathjax {
+    font-size: 0.8em;
+  }
 
+  .cjk_fallback {
+    font-family: 'Noto Sans CJK JP';
+    font-size: 150%;
+  }
 
-footer {
-  bottom: 8px;
-  color: #000;
-  text-align: center;
-  position: fixed;
-  width: 100%;
-}
+  .slide-number {
+    font-size: 0.6em;
+    color: #000;
+  }
 
-/*
- * title
- */
-section.title h1 {
-  font-family: 'Noto Sans CJK JP';
-  font-style: bold;
-  font-weight: 600;
-  font-size: 36px;
-  text-align: center;
-  color: #234366;
-}
+  .reveal-header {
+    margin: 10px 0px 0px 0px;
+    grid-template-columns: 1px 1px 1fr 0fr;
+  }
 
-section.title {
-  justify-content: center;
-  padding: 24px;
-  font-size: 24px;
-  line-height: 1;
-}
-
-/*
- * slides
- */
-section h1 {
-  font-family: 'Noto Sans CJK JP';
-  font-style: bold;
-  font-weight: 600;
-  font-size: 36px;
-  text-align: center;
-  color: #234366;
-}
-
-section h2 {
-  font-size: 32px;
-  color: #234366;
-}
-
-section img {
-  display: inline-block;
-  margin: 0 auto;
-}
-
-section img + br + em {
-    font-style: normal;
-    display: inherit;
+  h1 {
+    font-family: 'Noto Sans CJK JP';
+    font-weight: 600;
+    font-size: 48px;
     text-align: center;
-    font-size: 90%;
-}
+    color: #234366;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+  }
 
-section table {
-  display: table;
-  width: 80%;
-  border: 0 !important;
-  margin: 0 auto;
-}
+  h2 {
+    font-size: 32px;
+    color: #234366;
+  }
 
-section tr {
-  background: transparent !important;
-  border: 0 !important;
-  display: table-row;
-}
+  img {
+    display: block;
+    margin: 0 auto;
 
-section th {
-  border: 1 !important;
-}
+    +br+em {
+      font-style: normal;
+      display: block;
+      text-align: center;
+      font-size: 90%;
+    }
+  }
 
-section td {
-  border: 1 !important;
-  display: table-cell;
-  text-align: center;
-  vertical-align: middle
-}
+  table {
+    table-layout: fixed;
+    width: 80%;
+    margin: 0 auto;
+    border-collapse: collapse;
 
-section {
-  justify-content: start;
-  padding: 24px;
-  font-family: 'Noto Sans CJK JP';
-  font-style: normal;
-  font-weight: 400;
-  font-size: 24px;
-  line-height: 1;
-  color: #000;
+    th,
+    td {
+      border: 1px solid;
+      text-align: center;
+      vertical-align: middle;
+      padding: 0.2em;
+    }
+  }
+
+  section {
+    font-family: 'Noto Sans CJK JP';
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 1.0;
+    color: #000;
+    padding: 0 20px;
+  }
 }

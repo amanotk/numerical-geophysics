@@ -1,32 +1,14 @@
 ---
-marp: true
-theme: lecture-theme
-math: mathjax
-footer: ""
+format:
+  revealjs:
+    width: 1280
+    height: 720
+    margin: 0.05
+    slide-level: 0
+    css: lecture-theme.css
 ---
 
-<!--
-_class: title
--->
-
-
-<style>
-img[alt~="center"] {
-  display: block;
-  margin: 0 auto;
-}
-</style>
-
-$$
-\renewcommand{\bm}[1]{{\boldsymbol{#1}}}
-$$
-
 # 地球物理数値解析／Numerical Analysis in Geophysics
-
-<style scoped>
-  table { table-layout: fixed; width: 80%; display:table; }
-  td, th { border: 1px solid #000000; }
-</style>
 
 時間割コード	| 0526084 / 35616-0004
 ----------------|-------------------------
@@ -41,15 +23,11 @@ $$
 ----------------|-------------------------
 
 ---
-<style scoped>
-  table { table-layout: fixed; width: 80%; display:table; }
-  td, th { border: 1px solid #000000; }
-</style>
 
-# 概要
+## 概要
 地球惑星物理学に関連する偏微分方程式を数値的に解くための手法を説明する。特に差分法について、その基礎概念から実際に用いられる方程式系の扱い方まで、宇宙惑星、大気海洋、固体の各分野での特性を踏まえて概説する。
 
-# 講義予定
+### 講義予定
 天野孝伸		| 4/5, 4/19, 4/26, 5/10
 ----------------|-------------------------
 
@@ -61,15 +39,15 @@ $$
 
 ※ 4/12は入学式，5/24はJpGU，7/19は予備日
 
-# 評価
+## 評価
 - 出席（毎回出席をとり，出席点1/4程度を成績評価に含める）
 - レポート（3名の教員のレポート課題を全て提出すること）
 
-
 ---
-# 天野担当分について
 
-## 講義内容
+## 天野担当分について
+
+### 講義内容
 1. 様々な偏微分方程式
 1. 差分法の基礎
 1. 双曲型偏微分方程式の解法 (1)：線形問題
@@ -77,7 +55,9 @@ $$
 
 ※ 基礎の基礎から扱います．数値シミュレーションを専門にしたい人，ある程度の基礎知識がある人には物足りない内容かと思います．より高度な話題については自分で勉強しましょう．天野担当分の講義ではそのための基礎知識を解説します．
 
-## 講義資料など
+---
+
+### 講義資料など
 - スライド（PDF）やサンプルコードは全て以下のGithubに置きます．
   https://github.com/amanotk/numerical-geophysics
 - 授業中に各自でサンプルを動かせるように，ノートパソコン等を持参してください．

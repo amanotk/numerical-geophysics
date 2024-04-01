@@ -1,31 +1,26 @@
 ---
-marp: true
-theme: lecture-theme
-math: mathjax
-footer: "地球物理数値解析 天野孝伸 <<amano@eps.s.u-tokyo.ac.jp>>"
+format:
+  revealjs:
+    html-math-method: mathjax
+    width: 1280
+    height: 720
+    margin: 0.05
+    transition: fade
+    number-sections: true
+    number-depth: 2
+    number-offset: 3
+    slide-level: 0
+    css: lecture-theme.css
+    footer: "地球物理数値解析（天野孝伸）"
+filters:
+  - reveal-header
 ---
 
-<!--
-_class: title
--->
+# 双曲型偏微分方程式の解法 (2)：非線形問題
 
+{{< include macros.qmd >}}
 
-<style>
-img[alt~="center"] {
-  display: block;
-  margin: 0 auto;
-}
-</style>
-
-$$
-\renewcommand{\bm}[1]{{\mathit{\boldsymbol{#1}}}}
-$$
-
-<!--
-_class: title
--->
-
-# 4. 双曲型偏微分方程式の解法 (2)：非線形問題
+---
 
 #### 参考文献
 - 藤井孝蔵. (1994). 流体力学の数値計算法. 東京大学出版会.
@@ -34,10 +29,12 @@ _class: title
 - Toro, E. F. (2009). Riemann Solvers and Numerical Methods for Fluid Dynamics. Riemann Solvers and Numerical Methods for Fluid Dynamics: A Practical Introduction. Berlin, Heidelberg: Springer Berlin Heidelberg. https://doi.org/10.1007/b79761
 
 ---
-## 4.1 Burgers方程式
-<a href="https://colab.research.google.com/github/amanotk/numerical-geophysics/blob/main/notebook/BurgersEquation.ipynb">
-<img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab">
-</a>
+
+## Burgers方程式
+
+::: header
+  [![](figure/colab-badge.svg){width=117, height=20}](https://colab.research.google.com/github/amanotk/numerical-geophysics/blob/main/notebook/BurgersEquation.ipynb)
+:::
 
 非線形の偏微分方程式として以下のBurgers方程式を考えよう．
 $$
@@ -46,13 +43,14 @@ $$
 $$
 ここで$\alpha$は粘性項（拡散項）であり，$\alpha = 0$であればこの方程式は双曲型偏微分方程式に分類される．線形移流方程式と異なり移流速度が$u$に依存する形になっている．例えば流体力学における音波の位相速度は振幅に依存し，有限振幅の音波は有限時間で衝撃波に発展する．Burgers方程式はこれを簡単化したものと考えることができる．
 
-![height:380px center](figure/steepening.png)
+![](figure/steepening.png){height=380}
 
-<!--
-_header: Ref: Burgess & Scholer (Collisionless Shocks in Space Plasmas)
--->
+::: header
+Ref: Burgess & Scholer (Collisionless Shocks in Space Plasmas)
+:::
 
 ---
+
 ### 特性曲線
 一般に
 $$
@@ -74,14 +72,17 @@ $$
 を用いればよい．
 
 ---
+
 ### 衝撃波解
 
-![height:600px center](figure/burgers-shock.png)
-<!--
-_header: Ref: Toro (2009)
--->
+![](figure/burgers-shock.png){height=600}
+
+::: header
+Ref: Toro (2009)
+:::
 
 ---
+
 初期条件
 $$
 u(x, t=0) =
@@ -110,25 +111,28 @@ $$
 
 
 ---
+
 ### 膨張波解
 
-![height:600px center](figure/burgers-rarefaction.png)
+![](figure/burgers-rarefaction.png){height=600}
 
-<!--
-_header: Ref: Toro (2009)
--->
+::: header
+Ref: Toro (2009)
+:::
 
 
 ---
+
 ### 膨張衝撃波解
 
-![height:600px center](figure/burgers-expansion-shock.png)
+![](figure/burgers-expansion-shock.png){height=600}
 
-<!--
-_header: Ref: Toro (2009)
--->
+::: header
+Ref: Toro (2009)
+:::
 
 ---
+
 ### エントロピー条件
 
 - 一般に非線形双曲型偏微分方程式の弱解は一意には定まらないため，可能な複数の数値解から物理的に妥当な解を選択しなければならない．例えば流体力学の場合には熱力学第2法則からエントロピーが増大することが要請され，これから膨張衝撃波解は物理的に棄却される．
@@ -149,6 +153,7 @@ _header: Ref: Toro (2009)
 ただし（膨張衝撃波も弱解の1つなので）収束する解が物理的な解とは限らず，エントロピー条件を満たす物理的な解に収束するようなスキームを選択する必要がある． いずれにしても，非保存形のスキームは一般に衝撃波速度を正しく与えないので，衝撃波（やそれに類する不連続面）が重要になる問題では保存形スキームがほぼ必須となっている．
 
 ---
+
 ### 1次精度風上差分法
 
 簡単のため$u > 0$および$\alpha = 0$を仮定しよう．このとき風上差分でも以下の3通りが考えられる．
@@ -179,13 +184,14 @@ $$
 
 ---
 
-![height:500px center](figure/burgers-upwind.png)
+![](figure/burgers-upwind.png){height=500}
 
 - (A): 衝撃波も膨張波も正しく捉えられている．
 - (B): 衝撃波が動いていない
 - (C): 衝撃波速度が正しくない．膨張波もできていない．
 
 ---
+
 ### 滑らかな初期条件の場合
 
 2段階Lax-Wendroffスキームは非線形問題にも適用できるようにオリジナルのLax-Wendroffスキームを改良したものである．実際にこれを用いて粘性あり（$\alpha \neq 0$）のBurgers方程式を解いてみよう．具体的には
@@ -209,13 +215,15 @@ $$
 
 ---
 
-![height:600px center](figure/burgers-steepening.png)
+![](figure/burgers-steepening.png){height=600}
 
 ---
+
 ## 4.2 Euler方程式
-<a href="https://colab.research.google.com/github/amanotk/numerical-geophysics/blob/main/notebook/EulerEquation.ipynb">
-<img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab">
-</a>
+
+::: header
+  [![](figure/colab-badge.svg){width=117, height=20}](https://colab.research.google.com/github/amanotk/numerical-geophysics/blob/main/notebook/EulerEquation.ipynb)
+:::
 
 Euler方程式（圧縮性流体力学の支配方程式）は質量・運動量・エネルギー保存則から次のように書き表される．
 $$
@@ -242,6 +250,7 @@ $$
 式($\ref{eq:euler}$)は非線形連立双曲型保存則(System of Nonlinear Hyperbolic Conservation Laws)の実用的に重要な例の一つである．ここで$\bm{u} = (\rho, \rho v, \varepsilon)$の方程式はそれぞれ質量保存則，運動量保存則，エネルギー保存則を表す．
 
 ---
+
 #### Q.4-3
 一様で静止した流体を平衡状態とし，これに対する微小摂動を考えることにより音波の分散関係$\omega^2 = k^2 C_s^2$が得られることを示せ．ただし，$C_s = \sqrt{\gamma p_0/\rho_0}$は音速である．
 
@@ -260,6 +269,7 @@ $$
 であればEuler方程式が満たされることを示せ．
 
 ---
+
 ### 有限振幅の音波
 簡単のためエントロピー$S = p/\rho^\gamma$が一定と仮定しよう．Euler方程式を書き直すと以下の2式が得られる．
 $$
@@ -298,11 +308,11 @@ $$
 
 ---
 
-<!--
-_header: Ref: Laney (1998)
--->
+::: header
+Ref: Laney (1998)
+:::
 
-![height:500px center](figure/characteristics.png)
+![](figure/characteristics.png){height=500}
 
 - 変数の個数の分だけ特性曲線および対応する不変量が存在する．
 - 異なる不変量に関する特性曲線は互いに交わる．
@@ -310,20 +320,22 @@ _header: Ref: Laney (1998)
 
 
 ---
+
 ### 音波の伝播と急峻化
 
-<img src="figure/soundwave1.png" width="600px" style="position: absolute; left: 40px; top: 80px"/>
-
-<img src="figure/soundwave2.png" width="600px" style="position: absolute; left: 650px; top: 80px"/>
+![](figure/soundwave1.png){.absolute left=040 top=80 width=600}
+![](figure/soundwave2.png){.absolute left=680 top=80 width=600}
 
 ---
+
 ## 4.3 Riemann問題
 
 #### Sodの衝撃波管問題
 
-![height:500px center](figure/sodproblem.png)
+![](figure/sodproblem.png){height=500}
 
 ---
+
 一般に保存則
 $$
 \frac{\partial \bm{u}}{\partial t} +
@@ -339,11 +351,11 @@ $$
 $$
 が与えられたときの時間発展を求める問題をRiemann問題と呼ぶ．このとき固有値の数（すなわち変数の数）の分だけ$x = 0$から「波」が発生する．この「波」の影響がおよぶ領域をRiemann fanと呼ぶ．
 
-![height:300px center](figure/riemann.png)
+![](figure/riemann.png){height=300}
 
-<!--
-_header: Ref: Toro (2009)
--->
+::: header
+Ref: Toro (2009)
+:::
 
 ---
 
@@ -384,6 +396,7 @@ $$
 - 一般に独立変数が$n$個ある方程式系では固有値・固有ベクトル（すなわち波動モードの数）も$n$個ある．全ての固有値（$\lambda_i$）が実数の方程式系は双曲型保存則と呼ばれる．
 
 ---
+
 ### 応用例1
 
 <img src="figure/cir.png" width="400px" style="position: absolute; left: 150px; top: 20px"/>
@@ -395,8 +408,9 @@ $$
 <img src="figure/pwn_xray.png" width="300px" style="position: absolute; left: 700px; top: 380px"/>
 
 ---
+
 ### 応用例2
-![height:300px center](figure/piecewise-linear.png)
+![](figure/piecewise-linear.png){height=300}
 
 圧縮性流体力学では一般に不連続な解が発生するため，セル境界における解の連続性を要請しないスキームが好まれる．セル境界での数値流束$\hat{\bm{f}}_{i+1/2}$が決められれば
 $$
@@ -405,11 +419,12 @@ $$
 $$
 から解を更新することができる．ここで各セル境界においてRiemann問題の近似解を使って数値流束を決定するのが一般的な手法である．（Riemann問題の完全な解が必要なわけではなく，あくまでセル境界における数値流束だけが必要なことに注意．）
 
-<!--
-_header: Ref: Laney (1998)
--->
+::: header
+Ref: Laney (1998)
+:::
 
 ---
+
 ## 4.4 線形化されたRiemann解法
 
 ### 線形Riemann問題
@@ -424,13 +439,14 @@ $$
 $$
 となる．各特性量に関する線形移流方程式は互いに独立なので，線形Riemann問題の解はトリビアルに決まる．例えば独立変数の数が$n = 3$のときの解は下図の通り．
 
-![height:300px center](figure/linear-riemann-problem.png)
+![](figure/linear-riemann-problem.png){height=300}
 
-<!--
-_header: Ref: Laney (1998)
--->
+::: header
+Ref: Laney (1998)
+:::
 
 ---
+
 #### Q.4-7
 
 簡単な例として線形化されたEuler方程式
@@ -475,6 +491,7 @@ $$
 
 
 ---
+
 ### 非線形問題への適用（Roe法）
 一般に非線形問題ではJacobianが$\bm{u}$に依存するが，セル境界で局所的にJacobianを一定だと仮定すると，問題は局所的には線形になる．したがって，線形Riemann問題の解を使って数値流束を
 $$
@@ -495,6 +512,7 @@ $$
 ※ Roe法では非物理的な膨張衝撃波が生じることがあり，回避するためにエントロピー補正を導入する必要がある．
 
 ---
+
 ### Burgers方程式への適用
 
 Burgers方程式において，右状態と左状態の単純な算術平均で
@@ -525,11 +543,17 @@ $$
 となり，このスキームが保存形の一次精度風上差分法「スキーム（A）」に一致することが分かる．
 
 ---
+
 ## 4.5 HLL型Riemann解法
 ### HLL法
 HLL（Harten-Lax-van Leer）法はRiemann fanの内部で物理量が一定だと仮定する．何らかの方法で最大固有値$\lambda_{\rm max} = S_R$および最小固有値$\lambda_{\rm min} = S_L$が求まれば，Riemann fanが定義される．
 
-![height:300px center](figure/hll-riemann-solver.png)
+![](figure/hll-riemann-solver.png){height=300}
+
+::: header
+Ref: Toro (2009)
+:::
+
 
 基礎方程式を$[0, t] \times [S_L t, S_R t]$で積分すると，Riemann fan内部の物理量$\bm{u}_{*}$は
 $$
@@ -541,6 +565,7 @@ $$
 と求まる．これはHLL平均などと呼ばれる．
 
 ---
+
 同様に基礎方程式を$[0, t] \times [0, S_R t]$で積分し，$\bm{u}_{*}$を代入すると数値流束は
 $$
 \hat{\bm{f}}^{\rm HLL} =
@@ -592,15 +617,17 @@ HLL法の数値流束が$(*)$で与えられることを示せ．
 
 
 ---
+
 ### HLLC法 (Euler方程式)
 
 HLL法のRiemann fan内部で物理量が一定という仮定をやめて，内部構造を考えてみよう．一般にはRiemann fanの内部構造は方程式系に依存するので，どんな保存則にも使えるというHLL法の利点は失われてしまうが，それによって解像度が向上するのであれば一考の価値はあるだろう．ここでは下図のようにEuler方程式について中間固有値（エントロピーモード）を1つ考え，Riemann fan内部を2状態で近似してみよう．エントロピーモードに対応する不連続は接触不連続面(Contact Discontinuity)なので，この2状態近似のRimeann解法は名前に"C"をつけてHLLC法と呼ばれる．
 
-![height:300px center](figure/hllc-riemann-solver.png)
+![](figure/hllc-riemann-solver.png){height=300}
 
-<!--
-_header: Ref: Toro (2009)
--->
+::: header
+Ref: Toro (2009)
+:::
+
 ---
 
 まずRiemann fan全体で積分をし，HLL平均$\bm{u}_{*}$の定義を用いると，以下の関係式を得る．
@@ -662,14 +689,15 @@ $$
 となる．
 
 ---
+
 ### 様々なHLL型Riemann解法（MHD方程式の場合）
 
-![height:500px center](figure/hll-family.png)
+![](figure/hll-family.png){height=500}
 
 - 内部構造の近似の仕方によって様々な種類が存在する．
 - 最も簡単なHLL法以外は一般に方程式系に陽に依存する．
 - より正確に内部構造を考慮するRiemann解法は解像度は高いが，数値的に不安定になりやすい．
 
-<!--
-_header: Ref: Miyoshi & Kusano (2007)
--->
+::: header
+Miyoshi & Kusano (2007)
+:::
