@@ -92,5 +92,21 @@
     color: #000;
     padding: 0 20px;
   }
-
 }
+
+    /* explicit vertical centering */
+.reveal .slides > section:first-child,
+.reveal.pdf-export .slides section:first-child {
+  display: flex !important;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+}
+
+.reveal.pdf-export > .slides section.center {
+  display: flex !important;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+}
+

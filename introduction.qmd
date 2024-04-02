@@ -4,7 +4,7 @@ format:
     width: 1280
     height: 720
     margin: 0.05
-    center: false
+    center: true
     transition: fade
     slide-level: 0
     css: lecture-theme.css
@@ -39,7 +39,7 @@ format:
 竹内希          | 6/19, 6/26, 7/3, 7/10
 ----------------|-------------------------
 
-※ 4/17は休講，7/18は予備日
+※ 4/17は休講，7/17は予備日
 
 ## 評価
 - 出席（毎回出席をとり，出席点1/4程度を成績評価に含める）
