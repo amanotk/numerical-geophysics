@@ -4,6 +4,7 @@ format:
     width: 1280
     height: 720
     margin: 0.05
+    center: false
     transition: fade
     slide-level: 0
     css: lecture-theme.css
@@ -12,12 +13,13 @@ format:
     number-depth: 2
     number-offset: 1
     standalone: true
-    footer: "地球物理数値解析（天野孝伸）"
-#filters:
-#  - reveal-header
+    footer: '<a href="https://github.com/amanotk/numerical-geophysics" target="_blank">地球物理数値解析（天野孝伸）</a>'
+crossref:
+  exr-prefix: "演習問題"
+  exr-title: "演習問題 2."
 ---
 
-# 差分法の基礎
+# 差分法の基礎 {.center}
 
 {{< include macros.qmd >}}
 
@@ -65,8 +67,9 @@ $$
 一般に差分近似の誤差が$\Delta x$の$n$乗に比例して小さくなるとき，その差分近似は$n$次精度と呼ばれる．
 
 
-#### Q.2-1
+::: {#exr-finite-difference-order}
 差分近似 $\displaystyle \left( \frac{\partial u}{\partial x} \right)_{i} \approx \frac{u_{i+1} - u_{i}}{\Delta x}$ および $\displaystyle \left( \frac{\partial u}{\partial x} \right)_{i} \approx \frac{u_{i} - u_{i-1}}{\Delta x}$ の精度（次数）を求めよ．
+:::
 
 ---
 
@@ -100,9 +103,10 @@ $$
 ある点の微分値を差分近似する際に必要となる周辺の範囲のことを**ステンシル**と呼ぶ．一般に，高階微分の差分近似や，同じ次数でも高次精度の差分を構成する際にはより広いステンシルが必要となる．
 
 
-
-#### Q.2-2
+::: {#exr-second-order-finite-difference}
 上記の差分近似が2次精度であることを示せ．Taylor展開を3次まで行う必要があることに注意せよ．
+:::
 
-#### Q.2-3
+::: {#exr-finite-difference-stencil}
 高階微分の差分近似に広いステンシルが必要になるのは何故か．例えば，4階微分$\partial^4 u/\partial x^4$を表すには最低何点のステンシルが必要になるか考えよ．
+:::

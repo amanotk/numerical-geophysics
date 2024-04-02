@@ -1,7 +1,5 @@
 /* @theme lecture-theme */
 
-@import "default";
-
 .reveal {
   .slides {
     text-align: left;
@@ -15,6 +13,15 @@
       height: 100%;
       padding: 0;
     }
+
+    /* explicit vertical centering */
+    section:first-child {
+      display: flex !important;
+      flex-direction: column;
+      justify-content: center;
+      text-align: center;
+    }
+
   }
 
   .Mathjax {
@@ -42,10 +49,6 @@
     font-size: 48px;
     text-align: center;
     color: #234366;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
     width: 100%;
   }
 
@@ -89,4 +92,5 @@
     color: #000;
     padding: 0 20px;
   }
+
 }

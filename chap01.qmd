@@ -4,6 +4,7 @@ format:
     width: 1280
     height: 720
     margin: 0.05
+    center: false
     transition: fade
     slide-level: 0
     css: lecture-theme.css
@@ -12,12 +13,10 @@ format:
     number-depth: 2
     number-offset: 0
     standalone: true
-    footer: "地球物理数値解析（天野孝伸）"
-#filters:
-#  - reveal-header
+    footer: '<a href="https://github.com/amanotk/numerical-geophysics" target="_blank">地球物理数値解析（天野孝伸）</a>'
 ---
 
-# 序論：様々な偏微分方程式
+# 序論：様々な偏微分方程式 {.center}
 
 {{< include macros.qmd >}}
 

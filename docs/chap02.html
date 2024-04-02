@@ -359,8 +359,9 @@ u_{i\pm1} = u(x_{i} \pm \Delta x) = u_{i} \pm
 \mathcal{O} (\Delta x^2)
 \]</span> を得る．すなわち，格子幅<span class="math inline">\(\Delta x\)</span>を小さくするとこの差分近似の誤差は<span class="math inline">\(\Delta x^2\)</span>に比例して小さくなることが分かる．このように展開を途中で打ち切ることから生じる誤差を打ち切り誤差と呼ぶ．</p>
 <p>一般に差分近似の誤差が<span class="math inline">\(\Delta x\)</span>の<span class="math inline">\(n\)</span>乗に比例して小さくなるとき，その差分近似は<span class="math inline">\(n\)</span>次精度と呼ばれる．</p>
-<h4 id="q.2-1">Q.2-1</h4>
-<p>差分近似 <span class="math inline">\(\displaystyle \left( \frac{\partial u}{\partial x} \right)_{i} \approx \frac{u_{i+1} - u_{i}}{\Delta x}\)</span> および <span class="math inline">\(\displaystyle \left( \frac{\partial u}{\partial x} \right)_{i} \approx \frac{u_{i} - u_{i-1}}{\Delta x}\)</span> の精度（次数）を求めよ．</p>
+<div id="exr-finite-difference-order" class="theorem exercise">
+<p><span class="theorem-title"><strong>演習問題 2. 1</strong></span> 差分近似 <span class="math inline">\(\displaystyle \left( \frac{\partial u}{\partial x} \right)_{i} \approx \frac{u_{i+1} - u_{i}}{\Delta x}\)</span> および <span class="math inline">\(\displaystyle \left( \frac{\partial u}{\partial x} \right)_{i} \approx \frac{u_{i} - u_{i-1}}{\Delta x}\)</span> の精度（次数）を求めよ．</p>
+</div>
 </section>
 <section class="slide level0">
 
@@ -384,13 +385,15 @@ u_{i\pm1} = u(x_{i} \pm \Delta x) = u_{i} \pm
 \]</span></p>
 <p>より高階の微分や前進差分・後退差分なども構成することができる． よく使われる差分公式について https://en.wikipedia.org/wiki/Finite_difference_coefficient を参照せよ．</p>
 <p>ある点の微分値を差分近似する際に必要となる周辺の範囲のことを<strong>ステンシル</strong>と呼ぶ．一般に，高階微分の差分近似や，同じ次数でも高次精度の差分を構成する際にはより広いステンシルが必要となる．</p>
-<h4 id="q.2-2">Q.2-2</h4>
-<p>上記の差分近似が2次精度であることを示せ．Taylor展開を3次まで行う必要があることに注意せよ．</p>
-<h4 id="q.2-3">Q.2-3</h4>
-<p>高階微分の差分近似に広いステンシルが必要になるのは何故か．例えば，4階微分<span class="math inline">\(\partial^4 u/\partial x^4\)</span>を表すには最低何点のステンシルが必要になるか考えよ．</p>
+<div id="exr-second-order-finite-difference" class="theorem exercise">
+<p><span class="theorem-title"><strong>演習問題 2. 2</strong></span> 上記の差分近似が2次精度であることを示せ．Taylor展開を3次まで行う必要があることに注意せよ．</p>
+</div>
+<div id="exr-finite-difference-stencil" class="theorem exercise">
+<p><span class="theorem-title"><strong>演習問題 2. 3</strong></span> 高階微分の差分近似に広いステンシルが必要になるのは何故か．例えば，4階微分<span class="math inline">\(\partial^4 u/\partial x^4\)</span>を表すには最低何点のステンシルが必要になるか考えよ．</p>
+</div>
 <div class="quarto-auto-generated-content">
 <div class="footer footer-default">
-<p>地球物理数値解析（天野孝伸）</p>
+<p><a href="https://github.com/amanotk/numerical-geophysics" target="_blank">地球物理数値解析（天野孝伸）</a></p>
 </div>
 </div>
 </section>

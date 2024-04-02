@@ -4,6 +4,7 @@ format:
     width: 1280
     height: 720
     margin: 0.05
+    center: false
     transition: fade
     slide-level: 0
     css: lecture-theme.css
@@ -12,16 +13,15 @@ format:
     number-depth: 2
     number-offset: 2
     standalone: true
-    footer: "地球物理数値解析（天野孝伸）"
-#filters:
-#  - reveal-header
+    footer: '<a href="https://github.com/amanotk/numerical-geophysics" target="_blank">地球物理数値解析（天野孝伸）</a>'
+crossref:
+  exr-prefix: "演習問題"
+  exr-title: "演習問題 3."
 ---
 
-# 双曲型偏微分方程式の解法 (1)：線形問題
+# 双曲型偏微分方程式の解法 (1)：線形問題 {.center}
 
 {{< include macros.qmd >}}
-
----
 
 #### 参考文献
 - 藤井孝蔵. (1994). 流体力学の数値計算法. 東京大学出版会.
@@ -132,8 +132,9 @@ $$
 
 $\Delta t$や$\Delta x$を小さくしていくにつれて差分近似は明らかに元の微分方程式に近づくので，このスキームは適合する．一方で，収束性は実際に得られた数値解によって判断すべきものなので，これだけからは分からない．ただし，我々は実験的にこのスキームが不安定であることを知っているので，収束性も満たさないことは明らかである．
 
-#### Q.3-1
+::: {#exr-ftcs-error-estimate}
 Taylor展開によって実際に上記のFTCSスキームの打ち切り誤差評価が正しいことを示せ．
+:::
 
 ---
 
@@ -200,8 +201,9 @@ $$
 つまり，厳密解は振幅が増大も減衰もせず一定なのにも関わらず，FTCSスキームによって得られる数値解の振幅は$\nu$や$\theta$の値に関わらず(すなわち$\Delta t$や$\Delta x$によらず)常に指数関数的に増大する．
 これはFTCSスキームが数値的に**無条件不安定**であることを意味する．
 
-#### Q.3-2
+::: {#exr-linear-advection-solution}
 線形移流方程式の厳密解では$|g|^2 = 1$および$\phi = - \nu\theta$となることを示せ．
+:::
 
 ---
 
@@ -242,9 +244,9 @@ g = 1 - 2 \mu (1 - \cos \theta)
 $$
 を得る．ただし $\mu = D \Delta t /\Delta x^2$ である．従って安定性の条件は$\mu \leq 1/2$で与えられる．すなわち，$\Delta x$を細かくするには$\Delta t \propto \Delta x^2$となるように$\Delta t$も小さくとらなければならないことが分かる．
 
-#### Q.3-3
+::: {#exr-ftcs-amplification-factor}
 上記の例で複素増幅率が実際に$g = 1 - 2 \mu (1 - \cos \theta)$で与えられることを示せ．
-
+:::
 
 ---
 
@@ -274,9 +276,10 @@ $$
 $$
 が必要なことが直ちに分かる．（同様にFTBSでは$0 \leq \nu \leq 1$が安定性の条件である．）
 
-#### Q.3-4
+::: {#exr-ftcs-stability-condition}
 FTFSの安定性条件が$-1 \leq \nu \leq 0$で与えられることを示せ．
 （この結果よりFTBSの安定性条件も直ちに明らかである．）
+:::
 
 ---
 
@@ -342,14 +345,15 @@ $$
 
 ---
 
-#### Q.3-5
+::: {#exr-lf-amplification-factor}
 Lax-Friedrichsスキームについてvon Neumannの安定性解析を行い，複素増幅率が
 $$
 g = \cos \theta - j \nu \sin \theta
 $$
 となることを示せ．これから直ちに$|\nu| \leq 1$のときにはこのスキームが安定となることが分かる．
+:::
 
-#### Q.3-6
+::: {#exr-lf-error-estimate}
 Lax-Friedrichsスキームについても同様にTaylor展開によって誤差評価を行うと
 $$
 \begin{aligned}
@@ -364,6 +368,7 @@ c \left( \frac{\partial u}{\partial x} \right)^{n}_{i} -
 \end{aligned}
 $$
 となることを示せ．これより$|\nu| \leq 1$のときには最低次の項が通常の拡散項として作用し，スキームは安定となる．ただしCFL条件より$c \Delta t \lesssim \Delta x$であることを考えれば，このスキームは空間1次精度でしかないことに注意せよ．
+:::
 
 ---
 
@@ -400,14 +405,15 @@ $$
 
 ---
 
-#### Q.3-7
+::: {#exr-lw-amplification-factor}
 Lax-Wendroffスキームについてvon Neumannの安定性解析を行い，複素増幅率が
 $$
 g = 1 - \nu^2 (1 - \cos \theta) - j \nu \sin \theta
 $$
 となることを示せ．このときも$|\nu| \leq 1$が安定性の条件となる．
+:::
 
-#### Q.3-8
+::: {#exr-lw-error-estimate}
 Lax-Wendroffスキームの誤差評価を行い，以下の式を示せ．
 $$
 \begin{aligned}
@@ -425,6 +431,7 @@ c \left( \frac{\partial u}{\partial x} \right)^{n}_{i} +
 \end{aligned}
 $$
 CFL条件より$c \Delta t \lesssim \Delta x$であるから，このスキームの精度は時間・空間ともに2次精度となることが分かる．
+:::
 
 ---
 
@@ -477,11 +484,13 @@ $$
 $$
 が得られる．すなわち波動方程式の解は$u_{\pm} = f \pm g$に対する速度$c = \pm C_s$の線形移流方程式の解の線形結合から得られる．
 
-#### Q.3-9
+::: {#exr-linear-euler-wave}
 等温の状態方程式を用いた1次元Euelr方程式を線形化し，実際に式($\ref{eq:wave}$)が得られることを示せ．
+:::
 
-#### Q.3-10
+::: {#exr-linear-wave-solution}
 周期境界条件のもとで任意の初期条件$f(x, t=0) = f_0(x)$および$g(x, t=0) = g_0(x)$が与えられたときの解析解$f(x, t)$および$g(x, t)$を求めよ．
+:::
 
 ---
 
@@ -515,11 +524,13 @@ $$
 
 これまで考えてきた線形移流方程式や流体力学のEuler方程式もこの形式で書き下せる．Euler方程式においては質量，運動量，エネルギーなどの保存量が$\bm{u}$に対応する．
 
-#### Q.3-11
+::: {#exr-conservation-form}
 保存形で書かれた上式において$\displaystyle \int \bm{u} dx$ が境界条件の影響を除いて保存することを示せ．
+:::
 
-#### Q.3-12
+::: {#exr-linear-advection-flux}
 線形移流方程式を保存形で書き表し，流束関数$f(u)$の表式を求めよ．
+:::
 
 ---
 
@@ -554,11 +565,12 @@ $$
 
 なお，厳密にはこれは**有限体積法**に分類される手法であり，特に圧縮性流体力学の数値解法としてよく用いられる．ただし，簡単に分かるように$\bar{\bm{u}}_{i} = \bm{u}_{i} + \mathcal{O} (\Delta x^2)$であり，2次精度以下ではこれまで扱ってきた有限差分法と有限体積法の差はほとんどない．この講義では3次精度以上のスキームは扱わないので，以下では$\bar{\bm{u}}_{i} \approx \bm{u}_{i}$として両者を区別せずに用いる．
 
-#### Q.3-13
+::: {#exr-discrete-conservation-law}
 保存形式のスキームであれば境界条件の影響を除いて保存則が厳密に満たされる．したがって，周期境界条件の場合には以下の式が満たされる．このことを示せ．
 $$
 \sum_{i} \bar{\bm{u}}_{i} = \text{const}
 $$
+:::
 
 ---
 
@@ -604,11 +616,13 @@ $$
 
 数値流束の評価は第1項だけでできるのが理想であるが，FTCSスキーム($\gamma = 0$)が数値的に不安定であるように，この項だけでは不安定になりやすい．そこで第2項を加えてスキームを安定化させていると考えることができる．
 
-#### Q.3-14
+::: {#exr-numerical-flux-dissipation}
 式($\ref{eq:numerical-flux}$)を式($\ref{eq:discrete-form}$)に代入することにより，式($\ref{eq:numerical-flux}$)の第2項が$\gamma$に比例する数値拡散を表す項になっていることを確かめよ．
+:::
 
-#### Q.3-15
+::: {#exr-compare-dissipation}
 各スキームに含まれる数値拡散項の大きさを比較せよ．
+:::
 
 ---
 
@@ -686,8 +700,9 @@ $$
 $$
 と近似しよう．これを2段階Lax-Wendroffスキームと呼ぶ．このスキームであれば方程式の具体的な形に依存せず適用することが可能である．
 
-#### Q.3-16
+::: {#exr-lw2-consistency}
 線形移流方程式については2段階Lax-WendroffスキームとオリジナルのLax-Wendroffスキームが一致することを示せ．
+:::
 
 ---
 

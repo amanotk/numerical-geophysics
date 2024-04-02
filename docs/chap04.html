@@ -332,9 +332,6 @@
 <p><span class="math display">\[
 \newcommand{\bm}[1]{\symbfit{#1}}
 \]</span></p>
-</section>
-<section class="slide level0">
-
 <h4 id="参考文献">参考文献</h4>
 <ul>
 <li>藤井孝蔵. (1994). 流体力学の数値計算法. 東京大学出版会.</li>
@@ -372,11 +369,12 @@
 \]</span> と書けるとき，<span class="math inline">\(\lambda(u)\)</span>を特性速度と呼ぶ．特性速度によって定義される <span class="math display">\[
 \frac{d x}{d t} = \lambda(u)
 \]</span> を特性曲線と呼ぶ．特性曲線に沿って物理量<span class="math inline">\(u\)</span>が保存することは簡単に示すことができる．特性曲線に沿って一定となる量は特性量やRiemann不変量などと呼ばれる． 線形移流方程式では<span class="math inline">\(\lambda(u) = c\)</span>で一定であるため，異なる特性曲線が交わることはない．一方でBurgers方程式では<span class="math inline">\(\lambda(u) = u\)</span>であるため，一般には有限時間で異なる特性曲線が交わることになる．このとき数学的に一意な解が存在しない．数学的には有限の粘性<span class="math inline">\(\alpha \neq 0\)</span>があれば，それが局所的に散逸として働き不連続な<strong>衝撃波</strong>が形成する．</p>
-<h4 id="q.4-1">Q.4-1</h4>
-<p>特性曲線に沿った物理量<span class="math inline">\(u\)</span>の微分をとることによって，特性曲線に沿って<span class="math inline">\(u\)</span>が保存することを示せ． <span class="math display">\[
+<div id="exr-characteristic-variable" class="theorem exercise">
+<p><span class="theorem-title"><strong>演習問題 4. 1</strong></span> 特性曲線に沿った物理量<span class="math inline">\(u\)</span>の微分をとることによって，特性曲線に沿って<span class="math inline">\(u\)</span>が保存することを示せ． <span class="math display">\[
 \frac{d}{d t} = \frac{\partial}{\partial t} +
 \frac{d x}{d t} \frac{\partial}{\partial x}
 \]</span> を用いればよい．</p>
+</div>
 </section>
 <section class="slide level0">
 
@@ -405,8 +403,9 @@ u_{R} \quad x &gt; 0
 S = \frac{f(u_{R}) - f(u_{L})}{u_{R} - u_{L}}
 \]</span> 非粘性のBurgers方程式(<span class="math inline">\(\alpha = 0\)</span>, <span class="math inline">\(f(u) = u^2/2\)</span>)について考えると，<span class="math inline">\(S = (u_{\rm R} + u_{\rm L})/2\)</span>となることがすぐに分かる．</p>
 <p>このように微分方程式の解のうち，滑らかな領域で微分形を満足し，不連続な領域も含めて至るところで積分形を満足する解を弱解（weak solution）と呼ぶ．</p>
-<h4 id="q.4-2">Q.4-2</h4>
-<p>上記の積分形式において<span class="math inline">\(x_1 &lt; x &lt; St\)</span>では<span class="math inline">\(u = u_{L}\)</span>, <span class="math inline">\(St &lt; x &lt; x_2\)</span>では<span class="math inline">\(u = u_{R}\)</span>であることを用いて，衝撃波の伝播速度<span class="math inline">\(S\)</span>を求めよ．ただし積分区間<span class="math inline">\([x_1, x_2]\)</span>は（この区間に衝撃波を含むよう十分大きくとれば）任意である．</p>
+<div id="exr-shock-speed" class="theorem exercise">
+<p><span class="theorem-title"><strong>演習問題 4. 2</strong></span> 上記の積分形式において<span class="math inline">\(x_1 &lt; x &lt; St\)</span>では<span class="math inline">\(u = u_{L}\)</span>, <span class="math inline">\(St &lt; x &lt; x_2\)</span>では<span class="math inline">\(u = u_{R}\)</span>であることを用いて，衝撃波の伝播速度<span class="math inline">\(S\)</span>を求めよ．ただし積分区間<span class="math inline">\([x_1, x_2]\)</span>は（この区間に衝撃波を含むよう十分大きくとれば）任意である．</p>
+</div>
 </section>
 <section class="slide level0">
 
@@ -526,16 +525,19 @@ u^{n}_{i-1} \frac{u^{n}_{i} - u^{n}_{i-1}}{\Delta x}
 </section>
 <section class="slide level0">
 
-<h4 id="q.4-3">Q.4-3</h4>
-<p>一様で静止した流体を平衡状態とし，これに対する微小摂動を考えることにより音波の分散関係<span class="math inline">\(\omega^2 = k^2 C_s^2\)</span>が得られることを示せ．ただし，<span class="math inline">\(C_s = \sqrt{\gamma p_0/\rho_0}\)</span>は音速である．</p>
-<h4 id="q.4-4">Q.4-4</h4>
-<p>Euler方程式のエネルギー保存則を書き換えると断熱の条件（流体素片の運動に沿ってエントロピーが一定） <span class="math display">\[
+<div id="exr-linear-sound-wave" class="theorem exercise">
+<p><span class="theorem-title"><strong>演習問題 4. 3</strong></span> 一様で静止した流体を平衡状態とし，これに対する微小摂動を考えることにより音波の分散関係<span class="math inline">\(\omega^2 = k^2 C_s^2\)</span>が得られることを示せ．ただし，<span class="math inline">\(C_s = \sqrt{\gamma p_0/\rho_0}\)</span>は音速である．</p>
+</div>
+<div id="exr-euler-adiabatic-condition" class="theorem exercise">
+<p><span class="theorem-title"><strong>演習問題 4. 4</strong></span> Euler方程式のエネルギー保存則を書き換えると断熱の条件（流体素片の運動に沿ってエントロピーが一定） <span class="math display">\[
 \frac{d}{dt} \left( \frac{p}{\rho^{\gamma}} \right) = 0
 \]</span> が得られる．このことを示せ．</p>
-<h4 id="q.4-5">Q.4-5</h4>
-<p>Euler方程式の固有モードには，音波以外にエントロピー波と呼ばれるモードが存在する．これは密度は非一様で圧力が一定（すなわちエントロピーが非一様）の構造が流体に流されているものと考えることができる．具体的に<span class="math inline">\(v = v_0 = const\)</span>, <span class="math inline">\(p = p_0 = const\)</span>の条件のとき， <span class="math display">\[
+</div>
+<div id="exr-euler-entropy-mode" class="theorem exercise">
+<p><span class="theorem-title"><strong>演習問題 4. 5</strong></span> Euler方程式の固有モードには，音波以外にエントロピー波と呼ばれるモードが存在する．これは密度は非一様で圧力が一定（すなわちエントロピーが非一様）の構造が流体に流されているものと考えることができる．具体的に<span class="math inline">\(v = v_0 = const\)</span>, <span class="math inline">\(p = p_0 = const\)</span>の条件のとき， <span class="math display">\[
 \frac{d}{dt} \rho = 0
 \]</span> であればEuler方程式が満たされることを示せ．</p>
+</div>
 </section>
 <section class="slide level0">
 
@@ -566,8 +568,9 @@ u^{n}_{i-1} \frac{u^{n}_{i} - u^{n}_{i-1}}{\Delta x}
 \]</span> となり，<span class="math inline">\(J_{\pm} = v \pm 2 C_s/(\gamma-1)\)</span>が以下で定義される特性曲線に沿って一定となる（すなわちRiemann不変量である）ことが分かる． <span class="math display">\[
 \frac{dx}{dt} = \lambda_{\pm} = v \pm C_s.
 \]</span></p>
-<h4 id="q.4-6">Q.4-6</h4>
-<p>式(<span class="math inline">\(\ref{eq:riemann-invariant}\)</span>)を示せ．</p>
+<div id="exr-riemann-invariant" class="theorem exercise">
+<p><span class="theorem-title"><strong>演習問題 4. 6</strong></span> 式(<span class="math inline">\(\ref{eq:riemann-invariant}\)</span>)を示せ．</p>
+</div>
 </section>
 <section class="slide level0">
 
@@ -686,8 +689,8 @@ u^{n}_{i-1} \frac{u^{n}_{i} - u^{n}_{i-1}}{\Delta x}
 </section>
 <section class="slide level0">
 
-<h4 id="q.4-7">Q.4-7</h4>
-<p>簡単な例として線形化されたEuler方程式 <span class="math display">\[
+<div id="exr-liner-riemann-problem" class="theorem exercise">
+<p><span class="theorem-title"><strong>演習問題 4. 7</strong></span> 簡単な例として線形化されたEuler方程式 <span class="math display">\[
 \begin{aligned}
 &amp; \frac{\partial \rho}{\partial t} +
 \rho_0 \frac{\partial v}{\partial x} = 0,
@@ -720,6 +723,7 @@ A =
 (\rho_R, v_R) \quad &amp; +C_s t &lt; x
 \end{cases}
 \]</span> で与えられることを示せ．</p>
+</div>
 </section>
 <section class="slide level0">
 
@@ -802,8 +806,9 @@ A =
 \right]
 \tag{*}
 \]</span> で与えられる．これがHLL法の数値流束である．流束の重み付き平均に散逸項<span class="math inline">\(\bm{u}_R - \bm{u}_L\)</span>が付加されていることが分かる．</p>
-<h4 id="q.4-8">Q.4-8</h4>
-<p>HLL法の数値流束が<span class="math inline">\((*)\)</span>で与えられることを示せ．</p>
+<div id="exr-hll-flux-formula" class="theorem exercise">
+<p><span class="theorem-title"><strong>演習問題 4. 8</strong></span> HLL法の数値流束が<span class="math inline">\((*)\)</span>で与えられることを示せ．</p>
+</div>
 </section>
 <section class="slide level0">
 
@@ -857,8 +862,9 @@ A =
 \bm{f}_R &amp; S_R \leq 0
 \end{cases}
 \]</span></p>
-<h4 id="q.4-9">Q.4-9</h4>
-<p>上記の式(A)，(B)，(C)を示せ．</p>
+<div id="exr-hllc-flux-formula" class="theorem exercise">
+<p><span class="theorem-title"><strong>演習問題 4. 9</strong></span> 上記の式(A)，(B)，(C)を示せ．</p>
+</div>
 </section>
 <section class="slide level0">
 
@@ -893,7 +899,7 @@ p_{*R} = p_R + \rho_R (S_R - v_R)(v_{*R} - v_R)
 </ul>
 <div class="quarto-auto-generated-content">
 <div class="footer footer-default">
-<p>地球物理数値解析（天野孝伸）</p>
+<p><a href="https://github.com/amanotk/numerical-geophysics" target="_blank">地球物理数値解析（天野孝伸）</a></p>
 </div>
 </div>
 </section>

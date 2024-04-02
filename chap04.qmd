@@ -4,6 +4,7 @@ format:
     width: 1280
     height: 720
     margin: 0.05
+    center: false
     transition: fade
     slide-level: 0
     css: lecture-theme.css
@@ -12,16 +13,15 @@ format:
     number-depth: 2
     number-offset: 3
     standalone: true
-    footer: "地球物理数値解析（天野孝伸）"
-#filters:
-#  - reveal-header
+    footer: '<a href="https://github.com/amanotk/numerical-geophysics" target="_blank">地球物理数値解析（天野孝伸）</a>'
+crossref:
+  exr-prefix: "演習問題"
+  exr-title: "演習問題 4."
 ---
 
-# 双曲型偏微分方程式の解法 (2)：非線形問題
+# 双曲型偏微分方程式の解法 (2)：非線形問題 {.center}
 
 {{< include macros.qmd >}}
-
----
 
 #### 参考文献
 - 藤井孝蔵. (1994). 流体力学の数値計算法. 東京大学出版会.
@@ -64,13 +64,14 @@ $$
 を特性曲線と呼ぶ．特性曲線に沿って物理量$u$が保存することは簡単に示すことができる．特性曲線に沿って一定となる量は特性量やRiemann不変量などと呼ばれる．
 線形移流方程式では$\lambda(u) = c$で一定であるため，異なる特性曲線が交わることはない．一方でBurgers方程式では$\lambda(u) = u$であるため，一般には有限時間で異なる特性曲線が交わることになる．このとき数学的に一意な解が存在しない．数学的には有限の粘性$\alpha \neq 0$があれば，それが局所的に散逸として働き不連続な**衝撃波**が形成する．
 
-#### Q.4-1
+::: {#exr-characteristic-variable}
 特性曲線に沿った物理量$u$の微分をとることによって，特性曲線に沿って$u$が保存することを示せ．
 $$
 \frac{d}{d t} = \frac{\partial}{\partial t} +
 \frac{d x}{d t} \frac{\partial}{\partial x}
 $$
 を用いればよい．
+:::
 
 ---
 
@@ -103,9 +104,9 @@ $$
 
 このように微分方程式の解のうち，滑らかな領域で微分形を満足し，不連続な領域も含めて至るところで積分形を満足する解を弱解（weak solution）と呼ぶ．
 
-#### Q.4-2
+::: {#exr-shock-speed}
 上記の積分形式において$x_1 < x < St$では$u = u_{L}$, $St < x < x_2$では$u = u_{R}$であることを用いて，衝撃波の伝播速度$S$を求めよ．ただし積分区間$[x_1, x_2]$は（この区間に衝撃波を含むよう十分大きくとれば）任意である．
-
+:::
 
 ---
 
@@ -245,22 +246,25 @@ $$
 
 ---
 
-#### Q.4-3
+::: {#exr-linear-sound-wave}
 一様で静止した流体を平衡状態とし，これに対する微小摂動を考えることにより音波の分散関係$\omega^2 = k^2 C_s^2$が得られることを示せ．ただし，$C_s = \sqrt{\gamma p_0/\rho_0}$は音速である．
+:::
 
-#### Q.4-4
+::: {#exr-euler-adiabatic-condition}
 Euler方程式のエネルギー保存則を書き換えると断熱の条件（流体素片の運動に沿ってエントロピーが一定）
 $$
 \frac{d}{dt} \left( \frac{p}{\rho^{\gamma}} \right) = 0
 $$
 が得られる．このことを示せ．
+:::
 
-#### Q.4-5
+::: {#exr-euler-entropy-mode}
 Euler方程式の固有モードには，音波以外にエントロピー波と呼ばれるモードが存在する．これは密度は非一様で圧力が一定（すなわちエントロピーが非一様）の構造が流体に流されているものと考えることができる．具体的に$v = v_0 = const$, $p = p_0 = const$の条件のとき，
 $$
 \frac{d}{dt} \rho = 0
 $$
 であればEuler方程式が満たされることを示せ．
+:::
 
 ---
 
@@ -297,8 +301,9 @@ $$
 \frac{dx}{dt} = \lambda_{\pm} = v \pm C_s.
 $$
 
-#### Q.4-6
+::: {#exr-riemann-invariant}
 式($\ref{eq:riemann-invariant}$)を示せ．
+:::
 
 ---
 
@@ -425,8 +430,7 @@ $$
 
 ---
 
-#### Q.4-7
-
+::: {#exr-liner-riemann-problem}
 簡単な例として線形化されたEuler方程式
 $$
 \begin{aligned}
@@ -466,7 +470,7 @@ $$
 \end{cases}
 $$
 で与えられることを示せ．
-
+:::
 
 ---
 
@@ -569,8 +573,9 @@ $$
 $$
 で与えられる．これがHLL法の数値流束である．流束の重み付き平均に散逸項$\bm{u}_R - \bm{u}_L$が付加されていることが分かる．
 
-#### Q.4-8
+::: {#exr-hll-flux-formula}
 HLL法の数値流束が$(*)$で与えられることを示せ．
+:::
 
 ---
 
@@ -630,8 +635,9 @@ $$
 \end{cases}
 $$
 
-#### Q.4-9
+::: {#exr-hllc-flux-formula}
 上記の式(A)，(B)，(C)を示せ．
+:::
 
 ---
 
