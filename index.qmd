@@ -1,0 +1,28 @@
+---
+title: "地球物理数値解析／Numerical Analysis in Geophysics"
+format: html
+---
+
+これは東京大学理学部・理学系研究科の学部大学院共通講義「地球物理数値解析」の講義スライドおよびサンプルコードです．
+
+# 講義スライド
+スライドはHTMLで用意してあります．一部のブラウザ（Safari）では正しく表示されないことがあるようです．Google ChromeやFirefoxなどでご覧ください．  
+PDFに変換したい場合には左下のメニューから「Tools」→「PDF Export Mode」を選択した上でPDFファイルとして印刷してください．
+
+## 目次
+0. [この講義について](introduction.html)
+1. [序論：様々な偏微分方程式](chap01.html)
+2. [差分法の基礎](chap02.html)
+3. [双曲型偏微分方程式の解法 (1)：線形問題](chap03.html)
+4. [双曲型偏微分方程式の解法 (2)：非線形問題](chap04.html)
+
+# サンプルコード
+## Jupyter Notebook
+[notebook](https://github.com/amanotk/numerical-geophysics/tree/main/notebook)にjupyter notebook（`.ipynb`）形式のファイルがあります．  
+Googleアカウントがあれば，各 `.ipynb` ファイル先頭に表示されているアイコン
+<img src="https://colab.research.google.com/assets/colab-badge.svg">
+をクリックすることでブラウザ上で（Google Colabで）サンプルを動かすことができます．
+
+## Fortran
+[fortran](https://github.com/amanotk/numerical-geophysics/tree/main/fortran)にFortranのサンプルが置いてありますので，必要に応じて参照してください．
+

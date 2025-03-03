@@ -9,6 +9,7 @@ format:
     slide-level: 0
     css: lecture-theme.css
     reference-location: block
+    footer: '<a href="index.html"> トップページに戻る </a>'
 bibliography: bibliography.bib
 csl: apa.csl
 notcite: |

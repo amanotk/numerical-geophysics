@@ -1,6 +1,7 @@
 project:
   output-dir: docs
   render:
+    - index.qmd
     - introduction.qmd
     - chap01.qmd
     - chap02.qmd

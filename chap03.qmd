@@ -13,7 +13,7 @@ format:
     number-depth: 2
     number-offset: 2
     standalone: true
-    footer: '<a href="https://github.com/amanotk/numerical-geophysics" target="_blank">地球物理数値解析（天野孝伸）</a>'
+    footer: '<a href="index.html"> トップページに戻る </a>'
 crossref:
   exr-prefix: "演習問題"
   exr-title: "演習問題 3."

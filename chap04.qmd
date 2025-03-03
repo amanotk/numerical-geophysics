@@ -13,7 +13,7 @@ format:
     number-depth: 2
     number-offset: 3
     standalone: true
-    footer: '<a href="https://github.com/amanotk/numerical-geophysics" target="_blank">地球物理数値解析（天野孝伸）</a>'
+    footer: '<a href="index.html"> トップページに戻る </a>'
 crossref:
   exr-prefix: "演習問題"
   exr-title: "演習問題 4."
@@ -21,7 +21,6 @@ bibliography: bibliography.bib
 suppress-bibliography: true
 csl: apa.csl
 ---
-
 # 双曲型偏微分方程式の解法 (2)：非線形問題 {.center}
 
 {{< include macros.qmd >}}
