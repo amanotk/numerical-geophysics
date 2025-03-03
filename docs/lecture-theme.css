@@ -1,112 +1,138 @@
 /* @theme lecture-theme */
 
-.reveal {
-  .slides {
-    text-align: left;
-
-    section {
-      padding: 0 40px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: flex-start;
-      height: 100%;
-      padding: 0;
-    }
-
-    /* explicit vertical centering */
-    section:first-child {
-      display: flex !important;
-      flex-direction: column;
-      justify-content: center;
-      text-align: center;
-    }
-
-  }
-
-  .Mathjax {
-    font-size: 0.8em;
-  }
-
-  .cjk_fallback {
-    font-family: 'Noto Sans CJK JP';
-    font-size: 150%;
-  }
-
-  .slide-number {
-    font-size: 0.6em;
-    color: #000;
-  }
-
-  .reveal-header {
-    margin: 10px 0px 0px 0px;
-    grid-template-columns: 1px 1px 1fr 0fr;
-  }
-
-  h1 {
-    font-family: 'Noto Sans CJK JP';
-    font-weight: 600;
-    font-size: 48px;
-    text-align: center;
-    color: #234366;
-    width: 100%;
-  }
-
-  h2 {
-    font-size: 32px;
-    color: #234366;
-  }
-
-  img {
-    display: block;
-    margin: 0 auto;
-
-    +br+em {
-      font-style: normal;
-      display: block;
-      text-align: center;
-      font-size: 90%;
-    }
-  }
-
-  table {
-    table-layout: fixed;
-    width: 80%;
-    margin: 0 auto;
-    border-collapse: collapse;
-
-    th,
-    td {
-      border: 1px solid;
-      text-align: center;
-      vertical-align: middle;
-      padding: 0.2em;
-    }
-  }
-
-  section {
-    font-family: 'Noto Sans CJK JP';
-    font-weight: 400;
-    font-size: 20px;
-    line-height: 1.0;
-    color: #000;
-    padding: 0 20px;
-  }
+/* ------- .reveal .slides ------- */
+.reveal .slides {
+  text-align: left;
 }
 
-    /* explicit vertical centering */
-.reveal .slides > section:first-child,
-.reveal.pdf-export .slides section:first-child {
+/* ------- .reveal .slides section ------- */
+.reveal .slides section {
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  height: 100%;
+}
+
+/* explicit vertical centering */
+.reveal .slides section:first-child {
   display: flex !important;
   flex-direction: column;
   justify-content: center;
   text-align: center;
 }
 
-.reveal.pdf-export > .slides section.center {
-  display: flex !important;
-  flex-direction: column;
-  justify-content: center;
+/* ------- .reveal .Mathjax ------- */
+.reveal .Mathjax {
+  font-size: 0.8em;
+}
+
+/* ------- .reveal .cjk_fallback ------- */
+.reveal .cjk_fallback {
+  font-family: 'Noto Sans CJK JP';
+  font-size: 150%;
+}
+
+/* ------- .reveal .slide-number ------- */
+.reveal .slide-number {
+  font-size: 0.6em;
+  color: #000;
+}
+
+/* ------- .reveal .reveal-header ------- */
+.reveal .reveal-header {
+  margin: 10px 0px 0px 0px;
+  grid-template-columns: 1px 1px 1fr 0fr;
+}
+
+/* ------- .reveal h1 ------- */
+.reveal h1 {
+  font-family: 'Noto Sans CJK JP';
+  font-weight: 600;
+  font-size: 48px;
   text-align: center;
+  color: #234366;
+  width: 100%;
+}
+
+/* ------- .reveal h2 ------- */
+.reveal h2 {
+  font-size: 32px;
+  color: #234366;
+}
+
+/* ------- .reveal img ------- */
+.reveal img {
+  display: block;
+  margin: 0 auto;
+}
+
+.reveal img + br + em {
+  font-style: normal;
+  display: block;
+  text-align: center;
+  font-size: 90%;
+}
+
+/* ------- .reveal table ------- */
+.reveal table {
+  table-layout: fixed;
+  width: 80%;
+  margin: 0 auto;
+  border-collapse: collapse;
+}
+
+.reveal table th,
+.reveal table td {
+  border: 1px solid;
+  text-align: center;
+  vertical-align: middle;
+  padding: 0.2em;
+}
+
+/* ------- .reveal section ------- */
+.reveal section {
+  font-family: 'Noto Sans CJK JP';
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 1.0;
+  color: #000;
+  padding: 0 20px;
+}
+
+/* overwrite #refs */
+
+.reveal .slide #refs.references.csl-bib-body {
+  font-family: 'Noto Sans CJK JP';
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 1.0;
+  color: #000;
+  margin-left: 0;
+  text-indent: 0;
+}
+
+.reveal .slide #refs.references.csl-bib-body .csl-entry {
+  margin-left: 0;
+  text-indent: 0;
+  margin-bottom: 0.5em;
+}
+
+.reveal .slide#references p {
+  font-size: 20px;
+}
+
+.reveal .slide#references h1,
+.reveal .slide#references h2 {
+  color: #234366;
+}
+
+.reveal .slide#references h1 {
+  font-size: 48px;
+  text-align: center;
+}
+.reveal .slide#references h2 {
+  font-size: 32px;
 }
 

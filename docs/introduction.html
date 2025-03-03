@@ -8,7 +8,7 @@
 <link href="introduction_files/libs/quarto-html/light-border.css" rel="stylesheet">
 <link href="introduction_files/libs/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
 <link href="introduction_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.4.552">
+  <meta name="generator" content="quarto-1.3.450">
 
   <title>introduction</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -28,7 +28,26 @@
       margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
       vertical-align: middle;
     }
-  </style>
+    /* CSS for citations */
+    div.csl-bib-body { }
+    div.csl-entry {
+      clear: both;
+    }
+    .hanging-indent div.csl-entry {
+      margin-left:2em;
+      text-indent:-2em;
+    }
+    div.csl-left-margin {
+      min-width:2em;
+      float:left;
+    }
+    div.csl-right-inline {
+      margin-left:2em;
+      padding-left:1em;
+    }
+    div.csl-indent {
+      margin-left: 2em;
+    }  </style>
   <link rel="stylesheet" href="introduction_files/libs/revealjs/dist/theme/quarto.css">
   <link rel="stylesheet" href="lecture-theme.css">
   <link href="introduction_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
@@ -156,8 +175,7 @@
   }
 
   .callout.callout-titled .callout-body > .callout-content > :last-child {
-    padding-bottom: 0.5rem;
-    margin-bottom: 0;
+    margin-bottom: 0.5rem;
   }
 
   .callout.callout-titled .callout-icon::before {
@@ -353,7 +371,7 @@
 <thead>
 <tr class="header">
 <th>教室</th>
-<th>理学部１号館２７９号室</th>
+<th>理学部１号館２８７号室</th>
 </tr>
 </thead>
 <tbody>
@@ -379,7 +397,7 @@
 <thead>
 <tr class="header">
 <th>天野孝伸</th>
-<th>4/10, 4/24, 5/1, 5/8</th>
+<th>4/9, 4/16, 4/23, 5/7</th>
 </tr>
 </thead>
 <tbody>
@@ -389,7 +407,7 @@
 <thead>
 <tr class="header">
 <th>升本順夫</th>
-<th>5/22, 5/29, 6/5, 6/12</th>
+<th>5/14, 5/21, 6/4, 6/11</th>
 </tr>
 </thead>
 <tbody>
@@ -399,13 +417,13 @@
 <thead>
 <tr class="header">
 <th>竹内希</th>
-<th>6/19, 6/26, 7/3, 7/10</th>
+<th>6/18, 6/25, 7/2, 7/9</th>
 </tr>
 </thead>
 <tbody>
 </tbody>
 </table>
-<p>※ 4/17は休講，7/17は予備日</p>
+<p>※ 5/28は休講，7/16は予備日</p>
 <h2 id="評価">評価</h2>
 <ul>
 <li>出席（毎回出席をとり，出席点1/4程度を成績評価に含める）</li>
@@ -414,7 +432,7 @@
 </section>
 <section class="slide level0 center">
 
-<h1>天野担当分について</h1>
+<h1>天野担当分について (1/2)</h1>
 <h2 id="講義内容">講義内容</h2>
 <ol type="1">
 <li>様々な偏微分方程式</li>
@@ -431,10 +449,27 @@
 <li>Fortranのサンプルも用意してありますので必要に応じて参照してください．</li>
 </ul>
 <p>※ 升本先生・竹内先生のレポート課題に取り組む際にも，何らかの言語（ただし言語は不問）によるプログラミングが必要となりますので，各自で準備をしておいてください．</p>
-<div class="quarto-auto-generated-content">
+</section>
+<section class="slide level0 smaller scrollable" id="references">
+
+<h1>天野担当分について (1/2)</h1>
+<h2 id="参考文献">参考文献</h2>
+<div id="refs" class="references csl-bib-body hanging-indent" data-line-spacing="2" role="list">
+<div id="ref-LaneyTextbook" class="csl-entry" role="listitem">
+Laney, C. B. (1998). <em>Computational <span>Gasdynamics</span></em>. Cambridge University Press. <a href="https://doi.org/10.1017/CBO9780511605604">https://doi.org/10.1017/CBO9780511605604</a>
+</div>
+<div id="ref-LeVequeTextbook" class="csl-entry" role="listitem">
+LeVeque, R. J. (1990). <em>Numerical <span>Methods</span> for <span>Conservation Laws</span></em>. Springer Berlin Heidelberg. <a href="https://doi.org/10.1007/978-3-0348-8629-1">https://doi.org/10.1007/978-3-0348-8629-1</a>
+</div>
+<div id="ref-ToroTextbook" class="csl-entry" role="listitem">
+Toro, E. F. (2009). <em>Riemann <span>Solvers</span> and <span>Numerical Methods</span> for <span>Fluid Dynamics</span></em>. Springer Berlin Heidelberg. <a href="https://doi.org/10.1007/b79761">https://doi.org/10.1007/b79761</a>
+</div>
+<div id="ref-FujiiTextbook" class="csl-entry" role="listitem">
+藤井孝蔵. (1994). <em>流体力学の数値計算法</em>. 東京大学出版会.
+</div>
+</div>
 <div class="footer footer-default">
 
-</div>
 </div>
 </section>
     </div>
@@ -463,6 +498,7 @@
       Reveal.initialize({
 'controlsAuto': true,
 'previewLinksAuto': false,
+'smaller': false,
 'pdfSeparateFragments': false,
 'autoAnimateEasing': "ease",
 'autoAnimateDuration': 1,
@@ -723,27 +759,10 @@
         // clear code selection
         e.clearSelection();
       });
-        var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
-        var mailtoRegex = new RegExp(/^mailto:/);
-          var filterRegex = new RegExp('/' + window.location.host + '/');
-        var isInternal = (href) => {
-            return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
-        }
-        // Inspect non-navigation links and adorn them if external
-     	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
-        for (var i=0; i<links.length; i++) {
-          const link = links[i];
-          if (!isInternal(link.href)) {
-            // undo the damage that might have been done by quarto-nav.js in the case of
-            // links that we want to consider external
-            if (link.dataset.originalHref !== undefined) {
-              link.href = link.dataset.originalHref;
-            }
-          }
-        }
-      function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      function tippyHover(el, contentFn) {
         const config = {
           allowHTML: true,
+          content: contentFn,
           maxWidth: 500,
           delay: 100,
           arrow: false,
@@ -753,17 +772,8 @@
           interactive: true,
           interactiveBorder: 10,
           theme: 'light-border',
-          placement: 'bottom-start',
+          placement: 'bottom-start'
         };
-        if (contentFn) {
-          config.content = contentFn;
-        }
-        if (onTriggerFn) {
-          config.onTrigger = onTriggerFn;
-        }
-        if (onUntriggerFn) {
-          config.onUntrigger = onUntriggerFn;
-        }
           config['offset'] = [0,0];
           config['maxWidth'] = 700;
         window.tippy(el, config); 
@@ -777,11 +787,7 @@
           try { href = new URL(href).hash; } catch {}
           const id = href.replace(/^#\/?/, "");
           const note = window.document.getElementById(id);
-          if (note) {
-            return note.innerHTML;
-          } else {
-            return "";
-          }
+          return note.innerHTML;
         });
       }
       const findCites = (el) => {

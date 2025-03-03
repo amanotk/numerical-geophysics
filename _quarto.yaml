@@ -6,6 +6,9 @@ project:
     - chap02.qmd
     - chap03.qmd
     - chap04.qmd
+  preview:
+    port: 4200
+    watch-inputs: true
 
 execute:
   freeze: auto

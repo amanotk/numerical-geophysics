@@ -17,6 +17,9 @@ format:
 crossref:
   exr-prefix: "演習問題"
   exr-title: "演習問題 2."
+bibliography: bibliography.bib
+suppress-bibliography: true
+csl: apa.csl
 ---
 
 # 差分法の基礎 {.center}

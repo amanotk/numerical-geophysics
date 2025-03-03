@@ -17,17 +17,14 @@ format:
 crossref:
   exr-prefix: "演習問題"
   exr-title: "演習問題 4."
+bibliography: bibliography.bib
+suppress-bibliography: true
+csl: apa.csl
 ---
 
 # 双曲型偏微分方程式の解法 (2)：非線形問題 {.center}
 
 {{< include macros.qmd >}}
-
-#### 参考文献
-- 藤井孝蔵. (1994). 流体力学の数値計算法. 東京大学出版会.
-- LeVeque, R. J. (1990). Numerical Methods for Conservation Laws. Numerical Methods for Conservation Laws. Basel: Springer Berlin Heidelberg. https://doi.org/10.1007/978-3-0348-5116-9
-- Laney, C. B. (1998). Computational Gasdynamics. Cambridge University Press. https://doi.org/10.1017/CBO9780511605604
-- Toro, E. F. (2009). Riemann Solvers and Numerical Methods for Fluid Dynamics. Riemann Solvers and Numerical Methods for Fluid Dynamics: A Practical Introduction. Berlin, Heidelberg: Springer Berlin Heidelberg. https://doi.org/10.1007/b79761
 
 ---
 
@@ -48,7 +45,7 @@ $$
 $$
 ここで$\alpha$は粘性項（拡散項）であり，$\alpha = 0$であればこの方程式は双曲型偏微分方程式に分類される．線形移流方程式と異なり移流速度が$u$に依存する形になっている．例えば流体力学における音波の位相速度は振幅に依存し，有限振幅の音波は有限時間で衝撃波に発展する．Burgers方程式はこれを簡単化したものと考えることができる．
 
-![Ref: Burgess & Scholer (Collisionless Shocks in Space Plasmas)](figure/steepening.png){height=380}
+![@BurgessTextbook](figure/steepening.png){height=380}
 
 ---
 
@@ -77,7 +74,7 @@ $$
 
 ### 衝撃波解
 
-![Ref: Toro (2009)](figure/burgers-shock.png){height=600}
+![@ToroTextbook](figure/burgers-shock.png){height=600}
 
 ---
 
@@ -112,13 +109,13 @@ $$
 
 ### 膨張波解
 
-![Ref: Toro (2009)](figure/burgers-rarefaction.png){height=600}
+![@ToroTextbook](figure/burgers-rarefaction.png){height=600}
 
 ---
 
 ### 膨張衝撃波解
 
-![Ref: Toro (2009)](figure/burgers-expansion-shock.png){height=600}
+![@ToroTextbook](figure/burgers-expansion-shock.png){height=600}
 
 ---
 
@@ -307,7 +304,7 @@ $$
 
 ---
 
-![Ref: Laney (1998)](figure/characteristics.png){height=500}
+![@LaneyTextbook](figure/characteristics.png){height=500}
 
 - 変数の個数の分だけ特性曲線および対応する不変量が存在する．
 - 異なる不変量に関する特性曲線は互いに交わる．
@@ -346,7 +343,7 @@ $$
 $$
 が与えられたときの時間発展を求める問題をRiemann問題と呼ぶ．このとき固有値の数（すなわち変数の数）の分だけ$x = 0$から「波」が発生する．この「波」の影響がおよぶ領域をRiemann fanと呼ぶ．
 
-![Ref: Toro (2009)](figure/riemann.png){height=300}
+![@ToroTextbook](figure/riemann.png){height=300}
 
 ---
 
@@ -401,7 +398,7 @@ $$
 ---
 
 ### 応用例2
-![Ref: Laney (1998)](figure/piecewise-linear.png){height=300}
+![@LaneyTextbook](figure/piecewise-linear.png){height=300}
 
 圧縮性流体力学では一般に不連続な解が発生するため，セル境界における解の連続性を要請しないスキームが好まれる．セル境界での数値流束$\hat{\bm{f}}_{i+1/2}$が決められれば
 $$
@@ -426,7 +423,7 @@ $$
 $$
 となる．各特性量に関する線形移流方程式は互いに独立なので，線形Riemann問題の解はトリビアルに決まる．例えば独立変数の数が$n = 3$のときの解は下図の通り．
 
-![Ref: Laney (1998)](figure/linear-riemann-problem.png){height=300}
+![@LaneyTextbook](figure/linear-riemann-problem.png){height=300}
 
 ---
 
@@ -530,7 +527,7 @@ $$
 ### HLL法
 HLL（Harten-Lax-van Leer）法はRiemann fanの内部で物理量が一定だと仮定する．何らかの方法で最大固有値$\lambda_{\rm max} = S_R$および最小固有値$\lambda_{\rm min} = S_L$が求まれば，Riemann fanが定義される．
 
-![Ref: Toro (2009)](figure/hll-riemann-solver.png){height=300}
+![@ToroTextbook](figure/hll-riemann-solver.png){height=300}
 
 
 基礎方程式を$[0, t] \times [S_L t, S_R t]$で積分すると，Riemann fan内部の物理量$\bm{u}_{*}$は
@@ -601,7 +598,7 @@ HLL法の数値流束が$(*)$で与えられることを示せ．
 
 HLL法のRiemann fan内部で物理量が一定という仮定をやめて，内部構造を考えてみよう．一般にはRiemann fanの内部構造は方程式系に依存するので，どんな保存則にも使えるというHLL法の利点は失われてしまうが，それによって解像度が向上するのであれば一考の価値はあるだろう．ここでは下図のようにEuler方程式について中間固有値（エントロピーモード）を1つ考え，Riemann fan内部を2状態で近似してみよう．エントロピーモードに対応する不連続は接触不連続面(Contact Discontinuity)なので，この2状態近似のRimeann解法は名前に"C"をつけてHLLC法と呼ばれる．
 
-![Ref: Toro (2009)](figure/hllc-riemann-solver.png){height=300}
+![@ToroTextbook](figure/hllc-riemann-solver.png){height=300}
 
 ---
 
@@ -668,8 +665,9 @@ $$
 
 ### 様々なHLL型Riemann解法（MHD方程式の場合）
 
-![Ref: Miyoshi & Kusano (2007)](figure/hll-family.png){height=500}
+![@Miyoshi2005a](figure/hll-family.png){height=500}
 
 - 内部構造の近似の仕方によって様々な種類が存在する．
 - 最も簡単なHLL法以外は一般に方程式系に陽に依存する．
 - より正確に内部構造を考慮するRiemann解法は解像度は高いが，数値的に不安定になりやすい．
+
