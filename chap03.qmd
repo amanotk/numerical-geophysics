@@ -26,9 +26,18 @@ csl: apa.csl
 
 {{< include macros.qmd >}}
 
+
 ---
 
 ## 線形移流方程式
+
+::: {.column-body}
+::: {.column-page width=800 height=600}
+::: {.absolute top=-5 right=50 height=24}
+[Notebook on GitHub](https://github.com/amanotk/numerical-geophysics/blob/main/notebook/LinearAdvectionEquation.ipynb) <a href="https://colab.research.google.com/github/amanotk/numerical-geophysics/blob/main/notebook/LinearAdvectionEquation.ipynb" target="_blank"><img src="figure/colab-badge.svg" alt="Open in Colab" style="display:inline; vertical-align:-0.2em; height:1.2em;"></a>
+:::
+:::
+:::
 
 ここでは特に断りの無い限りは以下の線形移流方程式の初期値・境界値問題を考える．ただし$c$は定数である．
 $$
@@ -75,14 +84,6 @@ $$
 ---
 
 ### 例：FTCSスキームによる数値解
-
-::: {.column-body}
-::: {.column-page width=800 height=600}
-::: {.absolute top=0 right=50 height=32}
-[![](figure/colab-badge.svg)](https://colab.research.google.com/github/amanotk/numerical-geophysics/blob/main/notebook/LinearAdvectionEquation.ipynb){target="_blank"}
-:::
-:::
-:::
 
 ![](figure/ftcs_rect.png){.absolute top=200 left=50 height="350"}
 ![](figure/ftcs_sine.png){.absolute top=200 left=700 height="350"}
@@ -145,8 +146,8 @@ Taylor展開によって実際に上記のFTCSスキームの打ち切り誤差�
 
 ::: {.column-body}
 ::: {.column-page width=800 height=600}
-::: {.absolute top=0 right=50 height=32}
-[![](figure/colab-badge.svg)](https://colab.research.google.com/github/amanotk/numerical-geophysics/blob/main/notebook/vonNeumannStabilityAnalysis.ipynb){target="_blank"}
+::: {.absolute top=-5 right=50 height=24}
+[Notebook on GitHub](https://github.com/amanotk/numerical-geophysics/blob/main/notebook/vonNeumannStabilityAnalysis.ipynb) <a href="https://colab.research.google.com/github/amanotk/numerical-geophysics/blob/main/notebook/vonNeumannStabilityAnalysis.ipynb" target="_blank"><img src="figure/colab-badge.svg" alt="Open in Colab" style="display:inline; vertical-align:-0.2em; height:1.2em;"></a>
 :::
 :::
 :::
@@ -239,7 +240,11 @@ $$
 $$
 g = 1 - 2 \mu (1 - \cos \theta)
 $$
-を得る．ただし $\mu = D \Delta t /\Delta x^2$ である．従って安定性の条件は$\mu \leq 1/2$で与えられる．すなわち，$\Delta x$を細かくするには$\Delta t \propto \Delta x^2$となるように$\Delta t$も小さくとらなければならないことが分かる．
+を得る．ただし $\mu = D \Delta t /\Delta x^2$ である．従って安定性の条件は$\mu \leq 1/2$で与えられる．
+すなわち，移流方程式では無条件不安定であったFTCSスキームが，拡散方程式では適切な条件のもとでは安定になっている．
+これは方程式の性質に合わせたスキーム選択が重要なことを示す好例である．
+
+なお，$\Delta x$を細かくするには$\Delta t \propto \Delta x^2$となるように$\Delta t$も小さくとらなければならないことに注意しよう．
 
 ::: {#exr-ftcs-amplification-factor}
 上記の例で複素増幅率が実際に$g = 1 - 2 \mu (1 - \cos \theta)$で与えられることを示せ．
@@ -310,10 +315,6 @@ $$
 
 ---
 
-![](figure/linear_advection_ftbs.png){height="600"}
-
----
-
 ## Lax-Friedrichsスキーム
 
 移流方程式においては空間1次精度の風上差分は安定であり，FTCSスキームは空間2次精度であるにも関わらず不安定となる．実用的には2次精度以上のスキームが欲しくなるので，空間精度を向上させるためにもFTCSスキームについてもう少し考察してみよう．
@@ -366,10 +367,6 @@ c \left( \frac{\partial u}{\partial x} \right)^{n}_{i} -
 $$
 となることを示せ．これより$|\nu| \leq 1$のときには最低次の項が通常の拡散項として作用し，スキームは安定となる．ただしCFL条件より$c \Delta t \lesssim \Delta x$であることを考えれば，このスキームは空間1次精度でしかないことに注意せよ．
 :::
-
----
-
-![](figure/linear_advection_lf.png){height="600"}
 
 ---
 
@@ -440,6 +437,15 @@ CFL条件より$c \Delta t \lesssim \Delta x$であるから，このスキー�
 ---
 
 ## 線形波動方程式
+
+::: {.column-body}
+::: {.column-page width=800 height=600}
+::: {.absolute top=-5 right=50 height=24}
+[Notebook on GitHub](https://github.com/amanotk/numerical-geophysics/blob/main/notebook/LinearWaveEquation.ipynb) <a href="https://colab.research.google.com/github/amanotk/numerical-geophysics/blob/main/notebook/LinearWaveEquation.ipynb" target="_blank"><img src="figure/colab-badge.svg" alt="Open in Colab" style="display:inline; vertical-align:-0.2em; height:1.2em;"></a>
+:::
+:::
+:::
+
 等温の状態方程式$p = \rho R T = \rho C_s^2$を採用した1次元のEuler方程式（圧縮性流体方程式）は以下のように書ける．
 $$
 \begin{aligned}
@@ -492,14 +498,6 @@ $$
 ---
 
 ### 数値解
-
-::: {.column-body}
-::: {.column-page width=800 height=600}
-::: {.absolute top=0 right=50 height=32}
-[![](figure/colab-badge.svg)](https://colab.research.google.com/github/amanotk/numerical-geophysics/blob/main/notebook/LinearWaveEquation.ipynb){target="_blank"}
-:::
-:::
-:::
 
 ![](figure/wave-solution1.png){.absolute left=50 top=250 width=600}
 ![](figure/wave-solution2.png){.absolute left=700 top=250 width=600}

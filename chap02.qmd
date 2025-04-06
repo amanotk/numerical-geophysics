@@ -101,7 +101,7 @@ $$
 $$
 
 より高階の微分や前進差分・後退差分なども構成することができる．
-よく使われる差分公式について https://en.wikipedia.org/wiki/Finite_difference_coefficient を参照せよ．
+よく使われる差分公式については例えば [Wikipedia](https://en.wikipedia.org/wiki/Finite_difference_coefficient) を参照せよ．
 
 ある点の微分値を差分近似する際に必要となる周辺の範囲のことを**ステンシル**と呼ぶ．一般に，高階微分の差分近似や，同じ次数でも高次精度の差分を構成する際にはより広いステンシルが必要となる．
 

@@ -8,7 +8,7 @@
 <link href="chap01_files/libs/quarto-html/light-border.css" rel="stylesheet">
 <link href="chap01_files/libs/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
 <link href="chap01_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.3.450">
+  <meta name="generator" content="quarto-1.5.57">
 
   <title>chap01</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -156,7 +156,8 @@
   }
 
   .callout.callout-titled .callout-body > .callout-content > :last-child {
-    margin-bottom: 0.5rem;
+    padding-bottom: 0.5rem;
+    margin-bottom: 0;
   }
 
   .callout.callout-titled .callout-icon::before {
@@ -373,8 +374,12 @@ a x^2 + b xy + c y^2 = F(x, y)
 <li>偏微分方程式の解は対象とする領域の境界で与えられる何らかの拘束条件（境界条件）によって決定される．変数の一つが時間(<span class="math inline">\(t\)</span>)であるときは，<span class="math inline">\(t = 0\)</span>で与える境界条件を初期条件と呼ぶのが通例である．</li>
 <li>必要とされる境界条件の個数は微分の階数によって異なる．</li>
 <li>境界における解の値を与える境界条件を<strong>Direchlet型境界条件</strong>と呼ぶ．一方で境界における解の一階微分値を与える境界条件を<strong>Neumann型境界条件</strong>と呼ぶ．</li>
+<li>実用的には数値シミュレーションにおいて一番難しいのは適切な境界条件を設定することかもしれない．初心者は境界条件を適当に設定しがちであるが，物理的に意味のある境界条件を設定することは非常に重要である．</li>
 </ul>
-<h3 id="例">例</h3>
+</section>
+<section class="slide level0">
+
+<h3 id="例1">例1</h3>
 <p>一様重力場中の質点の運動方程式 <span class="math display">\[
 \frac{d^2 x}{d t^2} = -g
 \quad
@@ -384,17 +389,29 @@ a x^2 + b xy + c y^2 = F(x, y)
 \]</span> の一般解は <span class="math display">\[
 x(t) = x_0 + v_0 t - \frac{1}{2} g t^2
 \]</span> である．この解を決定するには<span class="math inline">\(t = 0\)</span>における条件（初期条件）<span class="math inline">\(x(0) = x_0\)</span>および<span class="math inline">\(v(0) = v_0\)</span>が必要．</p>
-</section>
-<section class="slide level0">
-
 <p>この問題を境界値問題として見れば，<span class="math inline">\(t = 0\)</span>および<span class="math inline">\(t = T\)</span>の2点において一つずつ条件を与えることでも解を決定できる．</p>
 <ul>
 <li><p>Direchlet型境界条件 <span class="math inline">\(x(0) = x_0\)</span> や <span class="math inline">\(x(T) = x_1\)</span> を与える．</p></li>
 <li><p>Neumann型境界条件 <span class="math inline">\(x'(0) = v_0\)</span> や <span class="math inline">\(x'(T) = v_1\)</span> を与える．</p></li>
 </ul>
 <p>偏微分方程式においても基本的に事情は同じであり，微分の階数に等しい条件を指定しなければならない．（境界条件を適当に与えると場合によっては解が無いということもあり得る！）</p>
+</section>
+<section class="slide level0">
+
+<h3 id="例2">例2</h3>
+<p>波動方程式 <span class="math display">\[
+\frac{\partial^2 u}{\partial t^2} = \frac{\partial^2 u}{\partial x^2}
+\]</span> は時間・空間ともに2階の偏微分方程式である． したがって，この方程式の解を決定するには初期条件として<span class="math inline">\(t=0\)</span>における<span class="math inline">\(u\)</span>および<span class="math inline">\(\partial u /\partial t\)</span>の値，境界条件として両端での<span class="math inline">\(u\)</span>の値を与える必要がある．</p>
+<p>ここで，補助変数として<span class="math inline">\(\partial u/\partial t = \partial v/\partial x\)</span>なる<span class="math inline">\(v\)</span>を導入してみよう．このとき波動方程式は <span class="math display">\[
+\frac{\partial u}{\partial t} = \frac{\partial v}{\partial x},
+\quad
+\frac{\partial v}{\partial t} = \frac{\partial u}{\partial x}
+\]</span> のように，2変数<span class="math inline">\(u, v\)</span>についての時間・空間ともに1階の偏微分方程式に書き換えられる． したがって，初期条件として<span class="math inline">\(t = 0\)</span>における<span class="math inline">\(u, v\)</span>の値が必要となる．一方で，境界条件としては，例えば両方の境界で<span class="math inline">\(u\)</span>の値を与えてもよいし，一方の境界で<span class="math inline">\(u\)</span>を，もう一方の境界で<span class="math inline">\(v\)</span>を与えてもよい．<br>
+ただし，両端で<span class="math inline">\(u, v\)</span>の両方の値を同時に指定することはできない（自由度が足りない）ことに注意しよう．物理的には右方向に伝播する波動については左側の境界が，左方向に伝播する波動については右側の境界がそれぞれ影響を与えるためと考えることができる．</p>
+<div class="quarto-auto-generated-content">
 <div class="footer footer-default">
 <p><a href="index.html"> トップページに戻る </a></p>
+</div>
 </div>
 </section>
     </div>
@@ -423,7 +440,6 @@ x(t) = x_0 + v_0 t - \frac{1}{2} g t^2
       Reveal.initialize({
 'controlsAuto': true,
 'previewLinksAuto': false,
-'smaller': false,
 'pdfSeparateFragments': false,
 'autoAnimateEasing': "ease",
 'autoAnimateDuration': 1,
@@ -640,18 +656,7 @@ x(t) = x_0 + v_0 t - \frac{1}{2} g t^2
         }
         return false;
       }
-      const clipboard = new window.ClipboardJS('.code-copy-button', {
-        text: function(trigger) {
-          const codeEl = trigger.previousElementSibling.cloneNode(true);
-          for (const childEl of codeEl.children) {
-            if (isCodeAnnotation(childEl)) {
-              childEl.remove();
-            }
-          }
-          return codeEl.innerText;
-        }
-      });
-      clipboard.on('success', function(e) {
+      const onCopySuccess = function(e) {
         // button target
         const button = e.trigger;
         // don't keep focus
@@ -683,11 +688,50 @@ x(t) = x_0 + v_0 t - \frac{1}{2} g t^2
         }, 1000);
         // clear code selection
         e.clearSelection();
+      }
+      const getTextToCopy = function(trigger) {
+          const codeEl = trigger.previousElementSibling.cloneNode(true);
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
+            }
+          }
+          return codeEl.innerText;
+      }
+      const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+        text: getTextToCopy
       });
-      function tippyHover(el, contentFn) {
+      clipboard.on('success', onCopySuccess);
+      if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+        // For code content inside modals, clipBoardJS needs to be initialized with a container option
+        // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+        const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+          text: getTextToCopy,
+          container: window.document.getElementById('quarto-embedded-source-code-modal')
+        });
+        clipboardModal.on('success', onCopySuccess);
+      }
+        var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+        var mailtoRegex = new RegExp(/^mailto:/);
+          var filterRegex = new RegExp('/' + window.location.host + '/');
+        var isInternal = (href) => {
+            return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+        }
+        // Inspect non-navigation links and adorn them if external
+     	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+        for (var i=0; i<links.length; i++) {
+          const link = links[i];
+          if (!isInternal(link.href)) {
+            // undo the damage that might have been done by quarto-nav.js in the case of
+            // links that we want to consider external
+            if (link.dataset.originalHref !== undefined) {
+              link.href = link.dataset.originalHref;
+            }
+          }
+        }
+      function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
         const config = {
           allowHTML: true,
-          content: contentFn,
           maxWidth: 500,
           delay: 100,
           arrow: false,
@@ -697,8 +741,17 @@ x(t) = x_0 + v_0 t - \frac{1}{2} g t^2
           interactive: true,
           interactiveBorder: 10,
           theme: 'light-border',
-          placement: 'bottom-start'
+          placement: 'bottom-start',
         };
+        if (contentFn) {
+          config.content = contentFn;
+        }
+        if (onTriggerFn) {
+          config.onTrigger = onTriggerFn;
+        }
+        if (onUntriggerFn) {
+          config.onUntrigger = onUntriggerFn;
+        }
           config['offset'] = [0,0];
           config['maxWidth'] = 700;
         window.tippy(el, config); 
@@ -712,7 +765,11 @@ x(t) = x_0 + v_0 t - \frac{1}{2} g t^2
           try { href = new URL(href).hash; } catch {}
           const id = href.replace(/^#\/?/, "");
           const note = window.document.getElementById(id);
-          return note.innerHTML;
+          if (note) {
+            return note.innerHTML;
+          } else {
+            return "";
+          }
         });
       }
       const findCites = (el) => {

@@ -8,7 +8,7 @@
 <link href="chap03_files/libs/quarto-html/light-border.css" rel="stylesheet">
 <link href="chap03_files/libs/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
 <link href="chap03_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.3.450">
+  <meta name="generator" content="quarto-1.5.57">
 
   <title>chap03</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -156,7 +156,8 @@
   }
 
   .callout.callout-titled .callout-body > .callout-content > :last-child {
-    margin-bottom: 0.5rem;
+    padding-bottom: 0.5rem;
+    margin-bottom: 0;
   }
 
   .callout.callout-titled .callout-icon::before {
@@ -335,6 +336,13 @@
 <section class="slide level0">
 
 <h2><span class="header-section-number">3.1</span> 線形移流方程式</h2>
+<div class="column-body">
+<div class="column-page" width="800" height="600">
+<div class="absolute" style="top: -5px; right: 50px; height: 24px; ">
+<p><a href="https://github.com/amanotk/numerical-geophysics/blob/main/notebook/LinearAdvectionEquation.ipynb">Notebook on GitHub</a> <a href="https://colab.research.google.com/github/amanotk/numerical-geophysics/blob/main/notebook/LinearAdvectionEquation.ipynb" target="_blank"><img src="figure/colab-badge.svg" alt="Open in Colab" style="display:inline; vertical-align:-0.2em; height:1.2em;"></a></p>
+</div>
+</div>
+</div>
 <p>ここでは特に断りの無い限りは以下の線形移流方程式の初期値・境界値問題を考える．ただし<span class="math inline">\(c\)</span>は定数である． <span class="math display">\[
 \frac{\partial u}{\partial t} + c \frac{\partial u}{\partial x} = 0
 \]</span> 初期値<span class="math inline">\(u(x,t=0)\)</span>が与えられたときの解析解は以下で与えられ，初期に与えられたプロファイルが一定速度<span class="math inline">\(c\)</span>で<span class="math inline">\(x\)</span>の正方向に伝播する． <span class="math display">\[
@@ -365,17 +373,6 @@ u(x, t) = u(x - ct, 0)
 <section class="slide level0">
 
 <h3 id="例ftcsスキームによる数値解">例：FTCSスキームによる数値解</h3>
-<div class="column-body">
-<div class="column-page" width="800" height="600">
-<div class="absolute" style="top: 0px; right: 50px; height: 32px; ">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><a href="https://colab.research.google.com/github/amanotk/numerical-geophysics/blob/main/notebook/LinearAdvectionEquation.ipynb" target="_blank"><img data-src="figure/colab-badge.svg"></a></p>
-</figure>
-</div>
-</div>
-</div>
-</div>
 <p><img data-src="figure/ftcs_rect.png" class="absolute" style="top: 200px; left: 50px; height: 350px; "> <img data-src="figure/ftcs_sine.png" class="absolute" style="top: 200px; left: 700px; height: 350px; "></p>
 <ul>
 <li>矩形波（急勾配がある場合）の計算結果は明らかにおかしい．</li>
@@ -411,7 +408,7 @@ c\frac{\Delta x^2}{6} \left( \frac{\partial^3 u}{\partial x^3} \right)^{n}_{i}
 \]</span> これからFTCSスキームの打ち切り誤差は <span class="math inline">\(\mathcal{O}(\Delta t, \Delta x^2)\)</span> であることが分かる．</p>
 <p><span class="math inline">\(\Delta t\)</span>や<span class="math inline">\(\Delta x\)</span>を小さくしていくにつれて差分近似は明らかに元の微分方程式に近づくので，このスキームは適合する．一方で，収束性は実際に得られた数値解によって判断すべきものなので，これだけからは分からない．ただし，我々は実験的にこのスキームが不安定であることを知っているので，収束性も満たさないことは明らかである．</p>
 <div id="exr-ftcs-error-estimate" class="theorem exercise">
-<p><span class="theorem-title"><strong>演習問題 3. 1 </strong></span>Taylor展開によって実際に上記のFTCSスキームの打ち切り誤差評価が正しいことを示せ．</p>
+<p><span class="theorem-title"><strong>演習問題 3. 1</strong></span> Taylor展開によって実際に上記のFTCSスキームの打ち切り誤差評価が正しいことを示せ．</p>
 </div>
 </section>
 <section class="slide level0">
@@ -420,7 +417,7 @@ c\frac{\Delta x^2}{6} \left( \frac{\partial^3 u}{\partial x^3} \right)^{n}_{i}
 <div class="quarto-figure quarto-figure-center">
 <figure>
 <p><img data-src="figure/convergence.png" height="400"></p>
-<figcaption>数値解の収束性を調べた例 <span class="citation" data-cites="Matsumoto2019a">(<a href="" role="doc-biblioref" onclick="return false;">Matsumoto et al., 2019</a>)</span></figcaption>
+<figcaption>数値解の収束性を調べた例 <span class="citation" data-cites="Matsumoto2019a">(Matsumoto et al., 2019)</span></figcaption>
 </figure>
 </div>
 </section>
@@ -429,12 +426,8 @@ c\frac{\Delta x^2}{6} \left( \frac{\partial^3 u}{\partial x^3} \right)^{n}_{i}
 <h2><span class="header-section-number">3.3</span> von Neumannの安定性解析</h2>
 <div class="column-body">
 <div class="column-page" width="800" height="600">
-<div class="absolute" style="top: 0px; right: 50px; height: 32px; ">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><a href="https://colab.research.google.com/github/amanotk/numerical-geophysics/blob/main/notebook/vonNeumannStabilityAnalysis.ipynb" target="_blank"><img data-src="figure/colab-badge.svg"></a></p>
-</figure>
-</div>
+<div class="absolute" style="top: -5px; right: 50px; height: 24px; ">
+<p><a href="https://github.com/amanotk/numerical-geophysics/blob/main/notebook/vonNeumannStabilityAnalysis.ipynb">Notebook on GitHub</a> <a href="https://colab.research.google.com/github/amanotk/numerical-geophysics/blob/main/notebook/vonNeumannStabilityAnalysis.ipynb" target="_blank"><img src="figure/colab-badge.svg" alt="Open in Colab" style="display:inline; vertical-align:-0.2em; height:1.2em;"></a></p>
 </div>
 </div>
 </div>
@@ -454,7 +447,7 @@ u^{n}_{i} = \tilde{u}^n \exp[j (i k \Delta x)] = \tilde{u}^n \exp[j (i \theta)]
 <div class="quarto-figure quarto-figure-center">
 <figure>
 <p><img data-src="figure/kdx.png" height="600"></p>
-<figcaption><span class="citation" data-cites="LaneyTextbook">Laney (<a href="" role="doc-biblioref" onclick="return false;">1998</a>)</span></figcaption>
+<figcaption><span class="citation" data-cites="LaneyTextbook">Laney (1998)</span></figcaption>
 </figure>
 </div>
 </section>
@@ -472,7 +465,7 @@ g = 1 - \frac{1}{2} \nu
 \]</span></p>
 <p>つまり，厳密解は振幅が増大も減衰もせず一定なのにも関わらず，FTCSスキームによって得られる数値解の振幅は<span class="math inline">\(\nu\)</span>や<span class="math inline">\(\theta\)</span>の値に関わらず(すなわち<span class="math inline">\(\Delta t\)</span>や<span class="math inline">\(\Delta x\)</span>によらず)常に指数関数的に増大する． これはFTCSスキームが数値的に<strong>無条件不安定</strong>であることを意味する．</p>
 <div id="exr-linear-advection-solution" class="theorem exercise">
-<p><span class="theorem-title"><strong>演習問題 3. 2 </strong></span>線形移流方程式の厳密解では<span class="math inline">\(|g|^2 = 1\)</span>および<span class="math inline">\(\phi = - \nu\theta\)</span>となることを示せ．</p>
+<p><span class="theorem-title"><strong>演習問題 3. 2</strong></span> 線形移流方程式の厳密解では<span class="math inline">\(|g|^2 = 1\)</span>および<span class="math inline">\(\phi = - \nu\theta\)</span>となることを示せ．</p>
 </div>
 </section>
 <section class="slide level0">
@@ -487,11 +480,10 @@ g = 1 - \frac{1}{2} \nu
 <div class="quarto-figure quarto-figure-center">
 <figure>
 <p><img data-src="figure/dispersivewave.png" height="300"></p>
-<figcaption>物理的に分散性を持つ例 <span class="citation" data-cites="Mellott1984a">(<a href="" role="doc-biblioref" onclick="return false;">Mellott &amp; Greenstadt, 1984</a>)</span></figcaption>
+<figcaption>物理的に分散性を持つ例 <span class="citation" data-cites="Mellott1984a">(Mellott &amp; Greenstadt, 1984)</span></figcaption>
 </figure>
 </div>
-</div>
-</div>
+</div></div>
 </section>
 <section class="slide level0">
 
@@ -503,9 +495,10 @@ g = 1 - \frac{1}{2} \nu
 D \frac{u^{n}_{i+1} - 2 u^{n}_{i} + u^{n}_{i-1}}{\Delta x^2}
 \]</span> を考えてvon Neumannの安定性解析を適用すると <span class="math display">\[
 g = 1 - 2 \mu (1 - \cos \theta)
-\]</span> を得る．ただし <span class="math inline">\(\mu = D \Delta t /\Delta x^2\)</span> である．従って安定性の条件は<span class="math inline">\(\mu \leq 1/2\)</span>で与えられる．すなわち，<span class="math inline">\(\Delta x\)</span>を細かくするには<span class="math inline">\(\Delta t \propto \Delta x^2\)</span>となるように<span class="math inline">\(\Delta t\)</span>も小さくとらなければならないことが分かる．</p>
+\]</span> を得る．ただし <span class="math inline">\(\mu = D \Delta t /\Delta x^2\)</span> である．従って安定性の条件は<span class="math inline">\(\mu \leq 1/2\)</span>で与えられる． すなわち，移流方程式では無条件不安定であったFTCSスキームが，拡散方程式では適切な条件のもとでは安定になっている． これは方程式の性質に合わせたスキーム選択が重要なことを示す好例である．</p>
+<p>なお，<span class="math inline">\(\Delta x\)</span>を細かくするには<span class="math inline">\(\Delta t \propto \Delta x^2\)</span>となるように<span class="math inline">\(\Delta t\)</span>も小さくとらなければならないことに注意しよう．</p>
 <div id="exr-ftcs-amplification-factor" class="theorem exercise">
-<p><span class="theorem-title"><strong>演習問題 3. 3 </strong></span>上記の例で複素増幅率が実際に<span class="math inline">\(g = 1 - 2 \mu (1 - \cos \theta)\)</span>で与えられることを示せ．</p>
+<p><span class="theorem-title"><strong>演習問題 3. 3</strong></span> 上記の例で複素増幅率が実際に<span class="math inline">\(g = 1 - 2 \mu (1 - \cos \theta)\)</span>で与えられることを示せ．</p>
 </div>
 </section>
 <section class="slide level0">
@@ -528,7 +521,7 @@ g = 1 - \nu \left[ (1 - \cos \theta) + j \sin \theta \right]
 -1 \leq \nu \leq 0
 \]</span> が必要なことが直ちに分かる．（同様にFTBSでは<span class="math inline">\(0 \leq \nu \leq 1\)</span>が安定性の条件である．）</p>
 <div id="exr-ftcs-stability-condition" class="theorem exercise">
-<p><span class="theorem-title"><strong>演習問題 3. 4 </strong></span>FTFSの安定性条件が<span class="math inline">\(-1 \leq \nu \leq 0\)</span>で与えられることを示せ． （この結果よりFTBSの安定性条件も直ちに明らかである．）</p>
+<p><span class="theorem-title"><strong>演習問題 3. 4</strong></span> FTFSの安定性条件が<span class="math inline">\(-1 \leq \nu \leq 0\)</span>で与えられることを示せ． （この結果よりFTBSの安定性条件も直ちに明らかである．）</p>
 </div>
 </section>
 <section class="slide level0">
@@ -555,14 +548,10 @@ u^{n+1}_{i} = u^{n}_{i} - \nu \left( u^{n}_{i} - u^{n}_{i-1} \right)
 <div class="quarto-figure quarto-figure-center">
 <figure>
 <p><img data-src="figure/first-order-upwind.png" height="500"></p>
-<figcaption><span class="citation" data-cites="ToroTextbook">Toro (<a href="" role="doc-biblioref" onclick="return false;">2009</a>)</span></figcaption>
+<figcaption><span class="citation" data-cites="ToroTextbook">Toro (2009)</span></figcaption>
 </figure>
 </div>
 <p>物理的にはCFL条件は1ステップの間に情報が伝播する距離が1グリッド以下であることを意味する．もし1ステップの間に情報が1グリッド以上風上の点から伝播してくるのであれば，隣のグリッドの情報しか用いないスキームは物理的に妥当とは言えないであろう．</p>
-</section>
-<section class="slide level0">
-
-<p><img data-src="figure/linear_advection_ftbs.png" height="600"></p>
 </section>
 <section class="slide level0">
 
@@ -588,12 +577,12 @@ c \frac{u^{n}_{i+1} - u^{n}_{i-1}}{2 \Delta x}
 <section class="slide level0">
 
 <div id="exr-lf-amplification-factor" class="theorem exercise">
-<p><span class="theorem-title"><strong>演習問題 3. 5 </strong></span>Lax-Friedrichsスキームについてvon Neumannの安定性解析を行い，複素増幅率が <span class="math display">\[
+<p><span class="theorem-title"><strong>演習問題 3. 5</strong></span> Lax-Friedrichsスキームについてvon Neumannの安定性解析を行い，複素増幅率が <span class="math display">\[
 g = \cos \theta - j \nu \sin \theta
 \]</span> となることを示せ．これから直ちに<span class="math inline">\(|\nu| \leq 1\)</span>のときにはこのスキームが安定となることが分かる．</p>
 </div>
 <div id="exr-lf-error-estimate" class="theorem exercise">
-<p><span class="theorem-title"><strong>演習問題 3. 6 </strong></span>Lax-Friedrichsスキームについても同様にTaylor展開によって誤差評価を行うと <span class="math display">\[
+<p><span class="theorem-title"><strong>演習問題 3. 6</strong></span> Lax-Friedrichsスキームについても同様にTaylor展開によって誤差評価を行うと <span class="math display">\[
 \begin{aligned}
 \frac{u^{n+1}_{i} - (u^{n}_{i+1} + u^{n}_{i-1})/2}{\Delta t} +
 c \frac{u^{n}_{i+1} - u^{n}_{i-1}}{2 \Delta x}
@@ -606,10 +595,6 @@ c \left( \frac{\partial u}{\partial x} \right)^{n}_{i} -
 \end{aligned}
 \]</span> となることを示せ．これより<span class="math inline">\(|\nu| \leq 1\)</span>のときには最低次の項が通常の拡散項として作用し，スキームは安定となる．ただしCFL条件より<span class="math inline">\(c \Delta t \lesssim \Delta x\)</span>であることを考えれば，このスキームは空間1次精度でしかないことに注意せよ．</p>
 </div>
-</section>
-<section class="slide level0">
-
-<p><img data-src="figure/linear_advection_lf.png" height="600"></p>
 </section>
 <section class="slide level0">
 
@@ -638,12 +623,12 @@ u^{n+1}_{i} = u^{n}_{i} -
 <section class="slide level0">
 
 <div id="exr-lw-amplification-factor" class="theorem exercise">
-<p><span class="theorem-title"><strong>演習問題 3. 7 </strong></span>Lax-Wendroffスキームについてvon Neumannの安定性解析を行い，複素増幅率が <span class="math display">\[
+<p><span class="theorem-title"><strong>演習問題 3. 7</strong></span> Lax-Wendroffスキームについてvon Neumannの安定性解析を行い，複素増幅率が <span class="math display">\[
 g = 1 - \nu^2 (1 - \cos \theta) - j \nu \sin \theta
 \]</span> となることを示せ．このときも<span class="math inline">\(|\nu| \leq 1\)</span>が安定性の条件となる．</p>
 </div>
 <div id="exr-lw-error-estimate" class="theorem exercise">
-<p><span class="theorem-title"><strong>演習問題 3. 8 </strong></span>Lax-Wendroffスキームの誤差評価を行い，以下の式を示せ． <span class="math display">\[
+<p><span class="theorem-title"><strong>演習問題 3. 8</strong></span> Lax-Wendroffスキームの誤差評価を行い，以下の式を示せ． <span class="math display">\[
 \begin{aligned}
 &amp; \frac{u^{n+1}_{i} - u^{n}_{i}}{\Delta t} +
 c \frac{u^{n}_{i+1} - u^{n}_{i-1}}{2 \Delta x} -
@@ -670,6 +655,13 @@ c \left( \frac{\partial u}{\partial x} \right)^{n}_{i} +
 <section class="slide level0">
 
 <h2><span class="header-section-number">3.7</span> 線形波動方程式</h2>
+<div class="column-body">
+<div class="column-page" width="800" height="600">
+<div class="absolute" style="top: -5px; right: 50px; height: 24px; ">
+<p><a href="https://github.com/amanotk/numerical-geophysics/blob/main/notebook/LinearWaveEquation.ipynb">Notebook on GitHub</a> <a href="https://colab.research.google.com/github/amanotk/numerical-geophysics/blob/main/notebook/LinearWaveEquation.ipynb" target="_blank"><img src="figure/colab-badge.svg" alt="Open in Colab" style="display:inline; vertical-align:-0.2em; height:1.2em;"></a></p>
+</div>
+</div>
+</div>
 <p>等温の状態方程式<span class="math inline">\(p = \rho R T = \rho C_s^2\)</span>を採用した1次元のEuler方程式（圧縮性流体方程式）は以下のように書ける． <span class="math display">\[
 \begin{aligned}
 &amp; \frac{\partial}{\partial t} \rho +
@@ -703,26 +695,15 @@ C_s^2 \frac{\partial}{\partial x} \rho.
 \frac{\partial}{\partial x} (f \pm g) = 0
 \]</span> が得られる．すなわち波動方程式の解は<span class="math inline">\(u_{\pm} = f \pm g\)</span>に対する速度<span class="math inline">\(c = \pm C_s\)</span>の線形移流方程式の解の線形結合から得られる．</p>
 <div id="exr-linear-euler-wave" class="theorem exercise">
-<p><span class="theorem-title"><strong>演習問題 3. 9 </strong></span>等温の状態方程式を用いた1次元Euelr方程式を線形化し，実際に式(<span class="math inline">\(\ref{eq:wave}\)</span>)が得られることを示せ．</p>
+<p><span class="theorem-title"><strong>演習問題 3. 9</strong></span> 等温の状態方程式を用いた1次元Euelr方程式を線形化し，実際に式(<span class="math inline">\(\ref{eq:wave}\)</span>)が得られることを示せ．</p>
 </div>
 <div id="exr-linear-wave-solution" class="theorem exercise">
-<p><span class="theorem-title"><strong>演習問題 3. 10 </strong></span>周期境界条件のもとで任意の初期条件<span class="math inline">\(f(x, t=0) = f_0(x)\)</span>および<span class="math inline">\(g(x, t=0) = g_0(x)\)</span>が与えられたときの解析解<span class="math inline">\(f(x, t)\)</span>および<span class="math inline">\(g(x, t)\)</span>を求めよ．</p>
+<p><span class="theorem-title"><strong>演習問題 3. 10</strong></span> 周期境界条件のもとで任意の初期条件<span class="math inline">\(f(x, t=0) = f_0(x)\)</span>および<span class="math inline">\(g(x, t=0) = g_0(x)\)</span>が与えられたときの解析解<span class="math inline">\(f(x, t)\)</span>および<span class="math inline">\(g(x, t)\)</span>を求めよ．</p>
 </div>
 </section>
 <section class="slide level0">
 
 <h3 id="数値解">数値解</h3>
-<div class="column-body">
-<div class="column-page" width="800" height="600">
-<div class="absolute" style="top: 0px; right: 50px; height: 32px; ">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><a href="https://colab.research.google.com/github/amanotk/numerical-geophysics/blob/main/notebook/LinearWaveEquation.ipynb" target="_blank"><img data-src="figure/colab-badge.svg"></a></p>
-</figure>
-</div>
-</div>
-</div>
-</div>
 <p><img data-src="figure/wave-solution1.png" class="absolute" style="top: 250px; left: 50px; width: 600px; "> <img data-src="figure/wave-solution2.png" class="absolute" style="top: 250px; left: 700px; width: 600px; "></p>
 <ul>
 <li>初期条件の<span class="math inline">\(f_0\)</span>が同じであっても，<span class="math inline">\(g_0\)</span>の選び方によって波動が左右両方向に伝播する解（左図）や，右方向のみに伝播する解（右図）が得られる．</li>
@@ -739,10 +720,10 @@ C_s^2 \frac{\partial}{\partial x} \rho.
 \]</span> ここで<span class="math inline">\(\bm{u} = u_1, u_2, \ldots\)</span>は独立変数，<span class="math inline">\(\bm{f} (\bm{u}) = f_1(\bm{u}), f_2(\bm{u}), \ldots\)</span>は流束関数である．独立変数<span class="math inline">\(\bm{u}\)</span>が境界条件の影響を除いて保存量となることは簡単に示すことができる．</p>
 <p>これまで考えてきた線形移流方程式や流体力学のEuler方程式もこの形式で書き下せる．Euler方程式においては質量，運動量，エネルギーなどの保存量が<span class="math inline">\(\bm{u}\)</span>に対応する．</p>
 <div id="exr-conservation-form" class="theorem exercise">
-<p><span class="theorem-title"><strong>演習問題 3. 11 </strong></span>保存形で書かれた上式において<span class="math inline">\(\displaystyle \int \bm{u} dx\)</span> が境界条件の影響を除いて保存することを示せ．</p>
+<p><span class="theorem-title"><strong>演習問題 3. 11</strong></span> 保存形で書かれた上式において<span class="math inline">\(\displaystyle \int \bm{u} dx\)</span> が境界条件の影響を除いて保存することを示せ．</p>
 </div>
 <div id="exr-linear-advection-flux" class="theorem exercise">
-<p><span class="theorem-title"><strong>演習問題 3. 12 </strong></span>線形移流方程式を保存形で書き表し，流束関数<span class="math inline">\(f(u)\)</span>の表式を求めよ．</p>
+<p><span class="theorem-title"><strong>演習問題 3. 12</strong></span> 線形移流方程式を保存形で書き表し，流束関数<span class="math inline">\(f(u)\)</span>の表式を求めよ．</p>
 </div>
 </section>
 <section class="slide level0">
@@ -750,7 +731,7 @@ C_s^2 \frac{\partial}{\partial x} \rho.
 <div class="quarto-figure quarto-figure-center">
 <figure>
 <p><img data-src="figure/conservative-scheme.png" height="400"></p>
-<figcaption><span class="citation" data-cites="ToroTextbook">Toro (<a href="" role="doc-biblioref" onclick="return false;">2009</a>)</span></figcaption>
+<figcaption><span class="citation" data-cites="ToroTextbook">Toro (2009)</span></figcaption>
 </figure>
 </div>
 <p>保存すべき量を正しく保存させるような数値計算スキームを保存形スキームと呼ぶ．これは元の微分形ではなく，積分形で評価することによって得られる．具体的には図に示す領域 <span class="math inline">\([t^{n}, t^{n+1}] \times [x_{i-1/2}, x_{i+1/2}]\)</span> で積分する． <span class="math display">\[
@@ -776,7 +757,7 @@ C_s^2 \frac{\partial}{\partial x} \rho.
 \]</span> この形式で書いておけば数値流束としてどんな近似をとったとしても，厳密に（丸め誤差などの計算機の誤差の範囲内で）保存則を満たす．そのため，この形式を<strong>保存形式</strong>と呼ぶ．</p>
 <p>なお，厳密にはこれは<strong>有限体積法</strong>に分類される手法であり，特に圧縮性流体力学の数値解法としてよく用いられる．ただし，簡単に分かるように<span class="math inline">\(\bar{\bm{u}}_{i} = \bm{u}_{i} + \mathcal{O} (\Delta x^2)\)</span>であり，2次精度以下ではこれまで扱ってきた有限差分法と有限体積法の差はほとんどない．この講義では3次精度以上のスキームは扱わないので，以下では<span class="math inline">\(\bar{\bm{u}}_{i} \approx \bm{u}_{i}\)</span>として両者を区別せずに用いる．</p>
 <div id="exr-discrete-conservation-law" class="theorem exercise">
-<p><span class="theorem-title"><strong>演習問題 3. 13 </strong></span>保存形式のスキームであれば境界条件の影響を除いて保存則が厳密に満たされる．したがって，周期境界条件の場合には以下の式が満たされる．このことを示せ． <span class="math display">\[
+<p><span class="theorem-title"><strong>演習問題 3. 13</strong></span> 保存形式のスキームであれば境界条件の影響を除いて保存則が厳密に満たされる．したがって，周期境界条件の場合には以下の式が満たされる．このことを示せ． <span class="math display">\[
 \sum_{i} \bar{\bm{u}}_{i} = \text{const}
 \]</span></p>
 </div>
@@ -818,10 +799,10 @@ C_s^2 \frac{\partial}{\partial x} \rho.
 \]</span> の形で書けることが多い．ここで第1項は<span class="math inline">\(f_{i}\)</span>と<span class="math inline">\(f_{i+1}\)</span>の何らかの平均，第2項は<span class="math inline">\(\hat{f}_{i+1/2} - \hat{f}_{i-1/2}\)</span>の形にしたときに数値拡散項として働くことが分かる．</p>
 <p>数値流束の評価は第1項だけでできるのが理想であるが，FTCSスキーム(<span class="math inline">\(\gamma = 0\)</span>)が数値的に不安定であるように，この項だけでは不安定になりやすい．そこで第2項を加えてスキームを安定化させていると考えることができる．</p>
 <div id="exr-numerical-flux-dissipation" class="theorem exercise">
-<p><span class="theorem-title"><strong>演習問題 3. 14 </strong></span>式(<span class="math inline">\(\ref{eq:numerical-flux}\)</span>)を式(<span class="math inline">\(\ref{eq:discrete-form}\)</span>)に代入することにより，式(<span class="math inline">\(\ref{eq:numerical-flux}\)</span>)の第2項が<span class="math inline">\(\gamma\)</span>に比例する数値拡散を表す項になっていることを確かめよ．</p>
+<p><span class="theorem-title"><strong>演習問題 3. 14</strong></span> 式(<span class="math inline">\(\ref{eq:numerical-flux}\)</span>)を式(<span class="math inline">\(\ref{eq:discrete-form}\)</span>)に代入することにより，式(<span class="math inline">\(\ref{eq:numerical-flux}\)</span>)の第2項が<span class="math inline">\(\gamma\)</span>に比例する数値拡散を表す項になっていることを確かめよ．</p>
 </div>
 <div id="exr-compare-dissipation" class="theorem exercise">
-<p><span class="theorem-title"><strong>演習問題 3. 15 </strong></span>各スキームに含まれる数値拡散項の大きさを比較せよ．</p>
+<p><span class="theorem-title"><strong>演習問題 3. 15</strong></span> 各スキームに含まれる数値拡散項の大きさを比較せよ．</p>
 </div>
 </section>
 <section class="slide level0">
@@ -884,7 +865,7 @@ u^{n+1}_{i} = u^{n}_{i} -
 \end{aligned}
 \]</span> と近似しよう．これを2段階Lax-Wendroffスキームと呼ぶ．このスキームであれば方程式の具体的な形に依存せず適用することが可能である．</p>
 <div id="exr-lw2-consistency" class="theorem exercise">
-<p><span class="theorem-title"><strong>演習問題 3. 16 </strong></span>線形移流方程式については2段階Lax-WendroffスキームとオリジナルのLax-Wendroffスキームが一致することを示せ．</p>
+<p><span class="theorem-title"><strong>演習問題 3. 16</strong></span> 線形移流方程式については2段階Lax-WendroffスキームとオリジナルのLax-Wendroffスキームが一致することを示せ．</p>
 </div>
 </section>
 <section class="slide level0">
@@ -896,8 +877,10 @@ u^{n+1}_{i} = u^{n}_{i} -
 \]</span> のように修正すれば右辺第2項が拡散項として働くことが確かめられる．人工粘性は局所的な勾配が大きいところで強くなるようにしたいので，例えば定数<span class="math inline">\(\varepsilon\)</span>を用いて <span class="math display">\[
 \kappa = \varepsilon |u^{n}_{i+1} - u^{n}_{i}|
 \]</span> のように決めればよい．</p>
+<div class="quarto-auto-generated-content">
 <div class="footer footer-default">
 <p><a href="index.html"> トップページに戻る </a></p>
+</div>
 </div>
 </section>
     </div>
@@ -926,7 +909,6 @@ u^{n+1}_{i} = u^{n}_{i} -
       Reveal.initialize({
 'controlsAuto': true,
 'previewLinksAuto': false,
-'smaller': false,
 'pdfSeparateFragments': false,
 'autoAnimateEasing': "ease",
 'autoAnimateDuration': 1,
@@ -1143,18 +1125,7 @@ u^{n+1}_{i} = u^{n}_{i} -
         }
         return false;
       }
-      const clipboard = new window.ClipboardJS('.code-copy-button', {
-        text: function(trigger) {
-          const codeEl = trigger.previousElementSibling.cloneNode(true);
-          for (const childEl of codeEl.children) {
-            if (isCodeAnnotation(childEl)) {
-              childEl.remove();
-            }
-          }
-          return codeEl.innerText;
-        }
-      });
-      clipboard.on('success', function(e) {
+      const onCopySuccess = function(e) {
         // button target
         const button = e.trigger;
         // don't keep focus
@@ -1186,11 +1157,50 @@ u^{n+1}_{i} = u^{n}_{i} -
         }, 1000);
         // clear code selection
         e.clearSelection();
+      }
+      const getTextToCopy = function(trigger) {
+          const codeEl = trigger.previousElementSibling.cloneNode(true);
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
+            }
+          }
+          return codeEl.innerText;
+      }
+      const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+        text: getTextToCopy
       });
-      function tippyHover(el, contentFn) {
+      clipboard.on('success', onCopySuccess);
+      if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+        // For code content inside modals, clipBoardJS needs to be initialized with a container option
+        // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+        const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+          text: getTextToCopy,
+          container: window.document.getElementById('quarto-embedded-source-code-modal')
+        });
+        clipboardModal.on('success', onCopySuccess);
+      }
+        var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+        var mailtoRegex = new RegExp(/^mailto:/);
+          var filterRegex = new RegExp('/' + window.location.host + '/');
+        var isInternal = (href) => {
+            return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+        }
+        // Inspect non-navigation links and adorn them if external
+     	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+        for (var i=0; i<links.length; i++) {
+          const link = links[i];
+          if (!isInternal(link.href)) {
+            // undo the damage that might have been done by quarto-nav.js in the case of
+            // links that we want to consider external
+            if (link.dataset.originalHref !== undefined) {
+              link.href = link.dataset.originalHref;
+            }
+          }
+        }
+      function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
         const config = {
           allowHTML: true,
-          content: contentFn,
           maxWidth: 500,
           delay: 100,
           arrow: false,
@@ -1200,8 +1210,17 @@ u^{n+1}_{i} = u^{n}_{i} -
           interactive: true,
           interactiveBorder: 10,
           theme: 'light-border',
-          placement: 'bottom-start'
+          placement: 'bottom-start',
         };
+        if (contentFn) {
+          config.content = contentFn;
+        }
+        if (onTriggerFn) {
+          config.onTrigger = onTriggerFn;
+        }
+        if (onUntriggerFn) {
+          config.onUntrigger = onUntriggerFn;
+        }
           config['offset'] = [0,0];
           config['maxWidth'] = 700;
         window.tippy(el, config); 
@@ -1215,7 +1234,11 @@ u^{n+1}_{i} = u^{n}_{i} -
           try { href = new URL(href).hash; } catch {}
           const id = href.replace(/^#\/?/, "");
           const note = window.document.getElementById(id);
-          return note.innerHTML;
+          if (note) {
+            return note.innerHTML;
+          } else {
+            return "";
+          }
         });
       }
       const findCites = (el) => {
