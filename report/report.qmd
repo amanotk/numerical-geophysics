@@ -7,6 +7,11 @@ format:
 execute:
   freeze: auto
 lang: ja
+#
+# PDFファイルへの変換は以下のコマンドで．
+#
+# $ quarto render report.qmd --to typst
+#
 ---
 
 - 2025年6月1日の23:59 JST（日本標準時）までにUTOLにPDFファイルをアップロードすること．
