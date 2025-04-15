@@ -385,7 +385,7 @@ u^{n+1}_{i} &
 \left( \frac{\partial u}{\partial x} \right)^{n}_{i}
 \left( c \Delta t \right) +
 \left( \frac{\partial^2 u}{\partial x^2} \right)^{n}_{i}
-\frac{1}{2} \left( c \Delta t^2 \right)^2 +
+\frac{1}{2} \left( c \Delta t \right)^2 +
 \mathcal{O} (\Delta t^3)
 \end{aligned}
 $$
@@ -419,12 +419,11 @@ c \frac{u^{n}_{i+1} - u^{n}_{i-1}}{2 \Delta x} -
 & =
 \left( \frac{\partial u}{\partial t} \right)^{n}_{i} +
 c \left( \frac{\partial u}{\partial x} \right)^{n}_{i} +
-\mathcal{O(\Delta t \Delta x)} +
 \mathcal{O(\Delta t^2)} +
 \mathcal{O(\Delta x^2)}
 \end{aligned}
 $$
-CFL条件より$c \Delta t \lesssim \Delta x$であるから，このスキームの精度は時間・空間ともに2次精度となることが分かる．
+これよりこのスキームの精度は時間・空間ともに2次精度となることが分かる．
 :::
 
 ---
