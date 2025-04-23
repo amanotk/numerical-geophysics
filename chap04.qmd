@@ -71,11 +71,7 @@ $$
 
 ---
 
-### 衝撃波解
-
-![@ToroTextbook](figure/burgers-shock.png){height=600}
-
----
+### 弱解
 
 初期条件
 $$
@@ -106,15 +102,21 @@ $$
 
 ---
 
-### 膨張波解
+### 衝撃波解
 
-![@ToroTextbook](figure/burgers-rarefaction.png){height=600}
+![@ToroTextbook](figure/burgers-shock.png){height=600}
 
 ---
 
 ### 膨張衝撃波解
 
 ![@ToroTextbook](figure/burgers-expansion-shock.png){height=600}
+
+---
+
+### 膨張波解
+
+![@ToroTextbook](figure/burgers-rarefaction.png){height=600}
 
 ---
 
@@ -177,9 +179,30 @@ $$
 
 ---
 
-### 滑らかな初期条件の場合
+### 2段階Lax-Wendroffスキーム
 
-2段階Lax-Wendroffスキームは非線形問題にも適用できるようにオリジナルのLax-Wendroffスキームを改良したものである．実際にこれを用いて粘性あり（$\alpha \neq 0$）のBurgers方程式を解いてみよう．具体的には
+Lax-Wendroffスキームは基礎方程式を使ってTaylor展開の時間微分を空間微分に置き換えるスキームであったが，これは一般の方程式の扱いには不便なのでもう少し扱いやすくしたい．一般の保存形数値解法
+$$
+\begin{aligned}
+\frac{\bar{\bm{u}}^{n+1}_{i} - \bar{\bm{u}}^{n}_{i}}{\Delta t} +
+\frac{\hat{\bm{f}}_{i+1/2} - \hat{\bm{f}}_{i-1/2}}{\Delta x} = 0
+\end{aligned}
+$$
+において
+$$
+\begin{aligned}
+& \bm{u}^{n+1/2}_{i+1/2} =
+\frac{1}{2} \left( u^{n}_{i} + u^{n}_{i+1} \right) -
+\frac{\Delta t}{2 \Delta x}
+\left( f(\bm{u}^{n}_{i+1}) - f(\bm{u}^{n}_{i}) \right)
+\\
+& \hat{\bm{f}}_{i+1/2} = \frac{1}{\Delta t}
+\int_{t^{n}}^{t^{n+1}} \bm{f}(\bm{u}(x_{i+1/2}, t)) dt
+\approx
+\hat{\bm{f}}(\bm{u}^{n+1/2}_{i+1/2})
+\end{aligned}
+$$
+と近似しよう．これを2段階Lax-Wendroffスキームと呼ぶ．このスキームであれば方程式の具体的な形に依存せず適用することが可能である．粘性あり（$\alpha \neq 0$）のBurgers方程式に適用するには
 $$
 \begin{aligned}
 & u_{i+1/2} = \frac{u_{i} + u_{i+1}}{2} - \frac{\Delta t}{2 \Delta x}
@@ -190,19 +213,15 @@ $$
 \alpha \frac{u_{i+1} - u_{i}}{\Delta x}
 \end{aligned}
 $$
-のように求めた数値流速を用いて解を更新すればよい．
-ここで
-$$
-\kappa_{i+1/2} = \varepsilon |u_{i+1} - u_{i}|
-$$
-とし，定数$\varepsilon \sim 0.1$で人工粘性の強さをコントロールする．
-
+として求めた数値流速を用いればよい．ただし，$\kappa_{i+1/2} = \varepsilon |u_{i+1} - u_{i}|
+$とし，定数$\varepsilon \sim 0.1$で人工粘性の強さをコントロールする．
 
 ---
 
-### 数値解
+### 滑らかな初期条件の場合
 
 ![](figure/burgers-steepening.png){height=600}
+
 
 ---
 
@@ -303,19 +322,19 @@ $$
 
 ---
 
+### 音波の伝播と急峻化
+
+![](figure/soundwave1.png){.absolute left=040 top=80 width=600}
+![](figure/soundwave2.png){.absolute left=680 top=80 width=600}
+
+---
+
 ![@LaneyTextbook](figure/characteristics.png){height=500}
 
 - 変数の個数の分だけ特性曲線および対応する不変量が存在する．
 - 異なる不変量に関する特性曲線は互いに交わる．
 - 微分方程式の解の一意性のため，一つの不変量に関する特性曲線は交わることはない．交わる場合は衝撃波（不連続面）が存在しなければならない．
 
-
----
-
-### 音波の伝播と急峻化
-
-![](figure/soundwave1.png){.absolute left=040 top=80 width=600}
-![](figure/soundwave2.png){.absolute left=680 top=80 width=600}
 
 ---
 
