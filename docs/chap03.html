@@ -642,41 +642,6 @@ u^{n+1}_{i} = u^{n}_{i} -
 <p><img data-src="figure/linear_advection_lw_v0.png" class="absolute" style="top: 250px; left: 50px; width: 600px; "> <img data-src="figure/linear_advection_lw_v1.png" class="absolute" style="top: 250px; left: 650px; width: 600px; "></p>
 <p>オリジナルのLax-Wendroffスキーム（左）と，<span class="math inline">\(\epsilon = 0.2\)</span>とした人工粘性入りLax-Wendroffスキーム（右）の比較．数値振動が抑えられていることが分かる．ただし，一般に必要な人工粘性の強さは経験的に決められるもので，また必要な粘性の強さは問題に依存する．</p>
 <p>※ 近年はこのような職人芸的な人工粘性の選び方をせずとも，数値振動を抑えつつ急峻な勾配を捉えられる手法を使うのがトレンドである．人工粘性のファインチューニングにいそしむよりも，より現代的なスキームの勉強をしよう．</p>
-</section>
-<section class="slide level0">
-
-<h2><span class="header-section-number">3.11</span> 2段階Lax-Wendroffスキーム</h2>
-<p>Lax-Wendroffスキームは基礎方程式を使ってTaylor展開の時間微分を空間微分に置き換えるスキームであったが，これは一般の方程式の扱いには不便なのでもう少し扱いやすくしたい．一般の保存形数値解法 <span class="math display">\[
-\begin{aligned}
-\frac{\bar{\bm{u}}^{n+1}_{i} - \bar{\bm{u}}^{n}_{i}}{\Delta t} +
-\frac{\hat{\bm{f}}_{i+1/2} - \hat{\bm{f}}_{i-1/2}}{\Delta x} = 0
-\end{aligned}
-\]</span> において <span class="math display">\[
-\begin{aligned}
-&amp; \bm{u}^{n+1/2}_{i+1/2} =
-\frac{1}{2} \left( u^{n}_{i} + u^{n}_{i+1} \right) -
-\frac{\Delta t}{2 \Delta x}
-\left( f(\bm{u}^{n}_{i+1}) - f(\bm{u}^{n}_{i}) \right)
-\\
-&amp; \hat{\bm{f}}_{i+1/2} = \frac{1}{\Delta t}
-\int_{t^{n}}^{t^{n+1}} \bm{f}(\bm{u}(x_{i+1/2}, t)) dt
-\approx
-\hat{\bm{f}}(\bm{u}^{n+1/2}_{i+1/2})
-\end{aligned}
-\]</span> と近似しよう．これを2段階Lax-Wendroffスキームと呼ぶ．このスキームであれば方程式の具体的な形に依存せず適用することが可能である．</p>
-<div id="exr-lw2-consistency" class="theorem exercise">
-<p><span class="theorem-title"><strong>演習問題 3. 16</strong></span> 線形移流方程式については2段階Lax-WendroffスキームとオリジナルのLax-Wendroffスキームが一致することを示せ．</p>
-</div>
-</section>
-<section class="slide level0">
-
-<p>人工粘性を加えるには数値流束に拡散的になる項を付け加えればよい．例えば <span class="math display">\[
-\hat{\bm{f}}_{i+1/2} =
-\hat{\bm{f}}(\bm{u}^{n+1/2}_{i+1/2})
-- \kappa \frac{\Delta x}{\Delta t} (u^{n}_{i+1} - u^{n}_{i})
-\]</span> のように修正すれば右辺第2項が拡散項として働くことが確かめられる．人工粘性は局所的な勾配が大きいところで強くなるようにしたいので，例えば定数<span class="math inline">\(\varepsilon\)</span>を用いて <span class="math display">\[
-\kappa = \varepsilon |u^{n}_{i+1} - u^{n}_{i}|
-\]</span> のように決めればよい．</p>
 
 </section>
     </div>

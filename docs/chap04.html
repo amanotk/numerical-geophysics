@@ -500,37 +500,31 @@ u^{n}_{i-1} \frac{u^{n}_{i} - u^{n}_{i-1}}{\Delta x}
 <section class="slide level0">
 
 <div id="exr-liner-riemann-problem" class="theorem exercise">
-<p><span class="theorem-title"><strong>演習問題 4. 7</strong></span> 簡単な例として線形化されたEuler方程式 <span class="math display">\[
-\begin{aligned}
-&amp; \frac{\partial \rho}{\partial t} +
-\rho_0 \frac{\partial v}{\partial x} = 0,
-\\
-&amp; \frac{\partial v}{\partial t} +
-\frac{C_s^2}{\rho_0} \frac{\partial \rho}{\partial x} = 0
-\end{aligned}
-\]</span> を考えよう．このときのJacobianおよび固有値，固有ベクトルは以下の通りである． <span class="math display">\[
-\begin{aligned}
-A =
-\begin{pmatrix} 0 &amp; \rho \\ C_s^2/\rho &amp; 0 \end{pmatrix}
-\end{aligned}
-\quad
-\rightarrow
-\quad
+<p><span class="theorem-title"><strong>演習問題 4. 7</strong></span> 簡単な例として等温の状態方程式を採用した線形化されたEuler方程式を考えよう． 規格化された <span class="math inline">\(\bm{u} = \left(\delta \rho / \rho_0, \delta v / C_s \right)\)</span>を独立変数にとるとEuler方程式は以下のように書ける． <span class="math display">\[
+\frac{\partial}{\partial t} \bm{u} +
+\begin{pmatrix}
+0 &amp; C_s \\
+C_s &amp; 0
+\end{pmatrix}
+\frac{\partial}{\partial x} \bm{u} = 0
+\]</span> このときのJacobianに対応する固有値，固有ベクトルは以下の通りである． <span class="math display">\[
 \lambda_{\pm} = \pm C_s,
 \bm{r}_{\pm} =
 \begin{pmatrix}
-\rho \\ \mp C_s
+1 \\ \pm 1
 \end{pmatrix}
-\]</span> これらを用いると，初期の左状態を<span class="math inline">\((\rho_L, v_L)\)</span>，右状態を<span class="math inline">\((\rho_R, v_R)\)</span>とするRiemann問題の解が <span class="math display">\[
-(\rho, v) =
+\]</span> これらを用いると，初期の左状態を<span class="math inline">\((\delta \rho_L, \delta v_L)\)</span>，右状態を<span class="math inline">\((\delta \rho_R, \delta v_R)\)</span>とするRiemann問題の解が <span class="math display">\[
+(\delta \rho, \delta v) =
 \begin{cases}
-(\rho_L, v_L) \quad &amp; x &lt; -C_s t \\
+(\delta \rho_L, \delta v_L) \quad &amp; x &lt; -C_s t \\
 \displaystyle
 \left(
-\frac{\rho_L + \rho_R}{2} + \frac{\rho_0}{C_s} \frac{v_L - v_R}{2},
-\frac{v_L + v_R}{2} + \frac{C_s}{\rho_0} \frac{\rho_L - \rho_R}{2},
+\frac{\delta \rho_L + \delta \rho_R}{2} +
+\frac{\rho_0}{C_s} \frac{\delta v_L - \delta v_R}{2},
+\frac{\delta v_L + \delta v_R}{2} +
+\frac{C_s}{\rho_0} \frac{\delta \rho_L - \delta \rho_R}{2},
 \right)   &amp; -C_s t &lt; x &lt; +C_s t \\
-(\rho_R, v_R) \quad &amp; +C_s t &lt; x
+(\delta \rho_R, \delta v_R) \quad &amp; +C_s t &lt; x
 \end{cases}
 \]</span> で与えられることを示せ．</p>
 </div>
@@ -545,7 +539,7 @@ A =
 \]</span> のように評価することができる．ただし <span class="math display">\[
 |\bm{A}| = \bm{R} |\bm{\Lambda}| \bm{R}^{-1} \quad
 |\bm{\Lambda}| \equiv \text{diag} (|\lambda_1|, |\lambda_2|, \ldots, |\lambda_n|)
-\]</span> である．（証明は難しくはないが，長くなるのでここでは省略．） 数値流束の第1項は右状態と左状態のフラックスの単純な平均値，第2項は拡散項として働く．したがって，<span class="math inline">\(|\bm{A}|\)</span>はしばしば散逸行列（dissipation matrix）などと呼ばれる．</p>
+\]</span> である．（証明は難しくはないが，長くなるのでここでは省略．） 数値流束の第1項は右状態と左状態のフラックスの単純な平均値，第2項は拡散項として働くことが分かるだろう． したがって，<span class="math inline">\(|\bm{A}|\)</span>はしばしば散逸行列（dissipation matrix）などと呼ばれる．</p>
 <p>明らかに<span class="math inline">\(|\bm{A}|\)</span>は不連続面の右状態と左状態に依存する：<span class="math inline">\(|\bm{A}| = |\bm{A}(\bm{u}_L, \bm{u}_R)|\)</span>．ここでRoe平均と呼ばれる右状態と左状態のある種の平均を用いると良い結果が得られることが知られている．この手法は一般に<strong>Roe法</strong>と呼ばれている．宇宙流体業界では一斉を風靡した手法である（らしい）．</p>
 <p>※ Roe法では非物理的な膨張衝撃波が生じることがあり，回避するためにエントロピー補正を導入する必要がある．</p>
 </section>
@@ -576,25 +570,32 @@ A =
 <section class="slide level0">
 
 <h2><span class="header-section-number">4.5</span> HLL型Riemann解法</h2>
-<h3 id="hll法">HLL法</h3>
-<p>HLL（Harten-Lax-van Leer）法はRiemann fanの内部で物理量が一定だと仮定する．何らかの方法で最大固有値<span class="math inline">\(\lambda_{\rm max} = S_R\)</span>および最小固有値<span class="math inline">\(\lambda_{\rm min} = S_L\)</span>が求まれば，Riemann fanが定義される．</p>
+<h3 id="hll平均">HLL平均</h3>
+<p>まずはHLL（Harten-Lax-van Leer）型のRiemann解法において最も基本的な考え方であるHLL平均を導入しよう． 何らかの方法で最大固有値<span class="math inline">\(\lambda_{\rm max} = S_R\)</span>および最小固有値<span class="math inline">\(\lambda_{\rm min} = S_L\)</span>が 求まったとして，それによって定まる以下の図のようなRiemann fanを考える．</p>
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="figure/hll-riemann-solver.png" height="300"></p>
+<p><img data-src="figure/hll-riemann-solver.png" height="250"></p>
 <figcaption><span class="citation" data-cites="ToroTextbook">Toro (2009)</span></figcaption>
 </figure>
 </div>
-<p>基礎方程式を<span class="math inline">\([0, t] \times [S_L t, S_R t]\)</span>で積分すると，Riemann fan内部の物理量<span class="math inline">\(\bm{u}_{*}\)</span>は <span class="math display">\[
-\bm{u}_{*} = \frac{1}{S_R - S_L}
+<p>基礎方程式を<span class="math inline">\([0, T] \times [S_L T, S_R T]\)</span>で積分すると，Riemann fan内部での平均として <span class="math display">\[
+\bm{u}_{*} \equiv
+\frac{1}{(S_R - S_L)T} \int_{S_R T}^{S_L T} \bm{u}(x, T) dx = \frac{1}{S_R - S_L}
 \left[
   S_R \bm{u}_R - S_L \bm{u}_L + \bm{f}_L - \bm{f}_R
 \right]
-\]</span> と求まる．これはHLL平均などと呼ばれる．</p>
+\tag{4.5.1} \label{eq:hll-average}
+\]</span> が得られ，これをHLL平均と呼ぶ． ただし<span class="math inline">\(\bm{f}_L = f(\bm{u}_L)\)</span>，<span class="math inline">\(\bm{f}_R = f(\bm{u}_R)\)</span>である．</p>
+<div id="exr-hll-average" class="theorem exercise">
+<p><span class="theorem-title"><strong>演習問題 4. 8</strong></span> HLL平均の式<span class="math inline">\((\ref{eq:hll-average})\)</span>を示し，これが基礎方程式やRiemann fanの内部状態に依存しないことを確認せよ．</p>
+</div>
 </section>
 <section class="slide level0">
 
-<p>同様に基礎方程式を<span class="math inline">\([0, t] \times [0, S_R t]\)</span>で積分し，<span class="math inline">\(\bm{u}_{*}\)</span>を代入すると数値流束は <span class="math display">\[
-\hat{\bm{f}}^{\rm HLL} =
+<h3 id="hll法">HLL法</h3>
+<p>HLL型Riemann解法で最も基本的なものがHLL法である． HLL法ではRiemann fanの内部構造を無視し，物理量が常に一定と仮定する．この一定値は当然ながらHLL平均<span class="math inline">\(\bm{u}_{*}\)</span>と一致するはずである．<br>
+この条件のもとで基礎方程式を<span class="math inline">\([0, t] \times [0, S_R T]\)</span>で積分し，式<span class="math inline">\((\ref{eq:hll-average})\)</span>を用いると，数値流束は <span class="math display">\[
+\hat{\bm{f}} =
 \begin{cases}
 \bm{f}_L &amp; 0 \leq S_L
 \\
@@ -607,23 +608,23 @@ A =
 \\
 \bm{f}_R &amp; S_R \leq 0
 \end{cases}
-\]</span> から求まる．（<span class="math inline">\([0, t] \times [S_L t, 0]\)</span>で積分しても同じ結果が得られる．）</p>
+\]</span> で与えられる．（<span class="math inline">\([0, t] \times [S_L t, 0]\)</span>で積分しても同じ結果が得られる．）</p>
 <p><span class="math inline">\(S_L = \min(0, S_L)\)</span>, <span class="math inline">\(S_R = \max(0, S_R)\)</span>と読み替えれば数値流束は常に <span class="math display">\[
 \hat{\bm{f}}^{\rm HLL} =
 \frac{1}{S_R - S_L}
 \left[
   S_R \bm{f}_L - S_L \bm{f}_R + S_L S_R \left( \bm{u}_R - \bm{u}_L \right)
 \right]
-\tag{*}
+\tag{4.5.2} \label{eq:hll-flux}
 \]</span> で与えられる．これがHLL法の数値流束である．流束の重み付き平均に散逸項<span class="math inline">\(\bm{u}_R - \bm{u}_L\)</span>が付加されていることが分かる．</p>
 <div id="exr-hll-flux-formula" class="theorem exercise">
-<p><span class="theorem-title"><strong>演習問題 4. 8</strong></span> HLL法の数値流束が<span class="math inline">\((*)\)</span>で与えられることを示せ．</p>
+<p><span class="theorem-title"><strong>演習問題 4. 9</strong></span> HLL法の数値流束が式<span class="math inline">\((\ref{eq:hll-flux})\)</span>で与えられることを示せ．</p>
 </div>
 </section>
 <section class="slide level0">
 
 <ul>
-<li><p>HLL法は固有値の最大値および最小値さえ求まれば方程式系によらない．固有値分解が必要ないのは大きな利点である．最大・最小固有値だけであれば比較的簡単に求まるが，固有値分解は解析的にも面倒だし数値的にも計算コストがかかる．例えばEuler方程式であれば最大・最小固有値は<span class="math inline">\(\lambda_{\rm max/min} = v \pm C_s\)</span>である．</p></li>
+<li><p>HLL法の数値流速は固有値の最大値および最小値さえ求まれば方程式系に依存しない．固有値分解が必要ないのは大きな利点である．最大・最小固有値だけであれば比較的簡単に求まるが，固有値分解は解析的にも面倒だし数値的にも計算コストがかかる．例えばEuler方程式であれば最大・最小固有値は<span class="math inline">\(\lambda_{\rm max/min} = v \pm C_s\)</span>である．（ただし左状態・右状態で物理量は違うので任意性は残る．）</p></li>
 <li><p>Riemann fanが左右対称，すなわち<span class="math inline">\(c \equiv S_R = -S_L\)</span>と書けるとする．これを代入すると <span class="math display">\[
 \hat{\bm{f}}^{\rm LLF} =
 \frac{1}{2}
@@ -648,18 +649,31 @@ A =
 </section>
 <section class="slide level0">
 
-<p>まずRiemann fan全体で積分をし，HLL平均<span class="math inline">\(\bm{u}_{*}\)</span>の定義を用いると，以下の関係式を得る． <span class="math display">\[
+<p>HLL平均を求める手順と同様に，基礎方程式を<span class="math inline">\([0, T] \times [S_L T, S_R T]\)</span>で積分し，2状態近似を用いる（<span class="math inline">\(S_L t &lt; x &lt; S_* t\)</span>では<span class="math inline">\(\bm{u} = \bm{u}_{*L}\)</span>, <span class="math inline">\(S_* t &lt; x &lt; S_R t\)</span>では<span class="math inline">\(\bm{u} = \bm{u}_{*R}\)</span>と仮定する）ことで以下の関係式が得られる． <span class="math display">\[
 \frac{S_* - S_L}{S_R - S_L} \bm{u}_{*L} +
-\frac{S_R - S_*}{S_R - S_L} \bm{u}_{*R} = \bm{u}_{*} \tag{A}
+\frac{S_R - S_*}{S_R - S_L} \bm{u}_{*R} = \bm{u}_{*}
+\tag{4.5.3} \label{eq:hllc-average}
 \]</span></p>
-<p>さらにRiemann fanの一部で同じように積分すると <span class="math display">\[
+<p>また，一般にRiemann fanの左，右境界を挟んで以下の関係式が成り立つ． <span class="math display">\[
 \begin{align}
-&amp; \bm{f}_{*L} = \bm{f}_L + S_L (\bm{u}_{*L} - \bm{u}_L) \tag{B}
+&amp; \bm{f}_{*L} = \bm{f}_L + S_L (\bm{u}_{*L} - \bm{u}_L)
 \\
-&amp; \bm{f}_{*R} = \bm{f}_R + S_R (\bm{u}_{*R} - \bm{u}_R) \tag{C}
+&amp; \bm{f}_{*R} = \bm{f}_R + S_R (\bm{u}_{*R} - \bm{u}_R)
 \end{align}
+\tag{4.5.4} \label{eq:conservation-law}
 \]</span></p>
-<p>したがって，<span class="math inline">\(S_{*}, \bm{u}_{*L}, \bm{u}_{*R}\)</span>が与えられれば，数値流速は以下のように求まる．</p>
+<div id="exr-hllc-average" class="theorem exercise">
+<p><span class="theorem-title"><strong>演習問題 4. 10</strong></span> 式<span class="math inline">\((\ref{eq:hllc-average})\)</span>を示せ．</p>
+</div>
+<div id="exr-conservation-law" class="theorem exercise">
+<p><span class="theorem-title"><strong>演習問題 4. 11</strong></span> 基礎方程式を積分する際の検査体積<span class="math inline">\([T_1, T_2] \times [X_1, X_2]\)</span>が1つの構造のみを含むように領域を選ぶ．このとき，構造の伝播速度<span class="math inline">\(S\)</span>と<span class="math inline">\(\bm{u}\)</span>および<span class="math inline">\(\bm{f}(\bm{u})\)</span>の間に以下の関係式が成り立つことを示せ． <span class="math display">\[
+\bm{f}(\bm{u}) - S \bm{u} = \mathrm{const.}
+\]</span> 式<span class="math inline">\((\ref{eq:conservation-law})\)</span>はこの関係式から導かれる．</p>
+</div>
+</section>
+<section class="slide level0">
+
+<p>以上より，<span class="math inline">\(S_{*}, \bm{u}_{*L}, \bm{u}_{*R}\)</span>が与えられれば，数値流速は以下のように求まる．</p>
 <p><span class="math display">\[
 \hat{\bm{f}}^{\rm HLLC} =
 \begin{cases}
@@ -672,26 +686,21 @@ A =
 \bm{f}_R &amp; S_R \leq 0
 \end{cases}
 \]</span></p>
-<div id="exr-hllc-flux-formula" class="theorem exercise">
-<p><span class="theorem-title"><strong>演習問題 4. 9</strong></span> 上記の式(A)，(B)，(C)を示せ．</p>
-</div>
-</section>
-<section class="slide level0">
-
-<p>Riemann fanの内部状態（<span class="math inline">\(S_{*}, \bm{u}_{*L}, \bm{u}_{*R}\)</span>）を求めるにはいくつか仮定が必要になる．これにはいくつかの流儀があるが，ここでは最も簡単な例を考えよう． まずは(B)および(C)式の質量および運動量保存の成分について具体的に考えると <span class="math display">\[
-p_{*L} = p_L + \rho_L (S_L - v_L)(v_{*L} - v_L), \quad
-p_{*R} = p_R + \rho_R (S_R - v_R)(v_{*R} - v_R)
-\]</span> を得る．ここで中間固有値がエントロピーモードであることを考えると，接触不連続面の性質から<span class="math inline">\(v_{*L} = v_{*R} = S_*\)</span>, <span class="math inline">\(p_{*L} = p_{*R}\)</span>としてよいだろう．</p>
+<p>ここまでは一般的に成り立つ議論であったが，Riemann fanの内部状態（<span class="math inline">\(S_{*}, \bm{u}_{*L}, \bm{u}_{*R}\)</span>）を求めるには仮定が必要になる．</p>
+<p>Euler方程式では中間固有値がエントロピーモードに対応することを考えると，接触不連続面の性質から<span class="math inline">\(v_{*L} = v_{*R} = S_*\)</span>, <span class="math inline">\(p_{*L} = p_{*R}\)</span>と仮定してもよいだろう．このとき，式<span class="math inline">\((\ref{eq:conservation-law})\)</span>を用いて以下を得る． <span class="math display">\[
+p_{*L} = p_L + \rho_L (S_L - v_L)(S_{*} - v_L), \quad
+p_{*R} = p_R + \rho_R (S_R - v_R)(S_{*} - v_R)
+\]</span></p>
 <p>ここでEuler方程式の具体的な形を使って少し計算すると，中間状態<span class="math inline">\(K = L, R\)</span>について <span class="math display">\[
 \bm{u}_{*K} = \frac{S_K \bm{u}_K - \bm{f}_K + p_{*K} \bm{D}_*}{S_K - S_*}
-\]</span> とコンパクトに書けることが分かる．ただしここで<span class="math inline">\(\bm{D}_{*} = (0, 1, S_*)\)</span>である．これを使って数値流速を書き直すと <span class="math display">\[
+\]</span> とコンパクトに書けることが分かる．ただしここで<span class="math inline">\(\bm{D}_{*} = (0, 1, S_*)\)</span>である． これを使えば数値流速は以下のように求まる． <span class="math display">\[
 \bm{f}_{*K} =
 \frac{
   S_* \left( S_K \bm{u}_K - \bm{f}_K \right) - S_K p_{*K} \bm{D}_{*}
 }{
   S_K - S_*
 }
-\]</span> となる．</p>
+\]</span></p>
 </section>
 <section class="slide level0">
 
@@ -703,9 +712,9 @@ p_{*R} = p_R + \rho_R (S_R - v_R)(v_{*R} - v_R)
 </figure>
 </div>
 <ul>
-<li>内部構造の近似の仕方によって様々な種類が存在する．</li>
+<li>内部構造の近似の仕方によって様々な変種が存在する．</li>
 <li>最も簡単なHLL法以外は一般に方程式系に陽に依存する．</li>
-<li>より正確に内部構造を考慮するRiemann解法は解像度は高いが，数値的に不安定になりやすい．</li>
+<li>より正確に内部構造を考慮するRiemann解法は解像度は高いが，数値的には不安定になりやすい．</li>
 </ul>
 
 </section>
