@@ -687,20 +687,36 @@ C_s &amp; 0
 \end{cases}
 \]</span></p>
 <p>ここまでは一般的に成り立つ議論であったが，Riemann fanの内部状態（<span class="math inline">\(S_{*}, \bm{u}_{*L}, \bm{u}_{*R}\)</span>）を求めるには仮定が必要になる．</p>
-<p>Euler方程式では中間固有値がエントロピーモードに対応することを考えると，接触不連続面の性質から<span class="math inline">\(v_{*L} = v_{*R} = S_*\)</span>, <span class="math inline">\(p_{*L} = p_{*R}\)</span>と仮定してもよいだろう．このとき，式<span class="math inline">\((\ref{eq:conservation-law})\)</span>を用いて以下を得る． <span class="math display">\[
+<p>Euler方程式では中間固有値がエントロピーモードに対応することを考えると，接触不連続面の性質から<span class="math inline">\(v_{*L} = v_{*R} = S_*\)</span>, <span class="math inline">\(p_{*L} = p_{*R}\)</span>と仮定してもよいだろう． このとき，式<span class="math inline">\((\ref{eq:conservation-law})\)</span>の運動量保存則を用いて以下を得る． <span class="math display">\[
 p_{*L} = p_L + \rho_L (S_L - v_L)(S_{*} - v_L), \quad
-p_{*R} = p_R + \rho_R (S_R - v_R)(S_{*} - v_R)
+p_{*R} = p_R + \rho_R (S_R - v_R)(S_{*} - v_R).
+\]</span> これより<span class="math inline">\(S_{*}\)</span>は以下のように求まる． <span class="math display">\[
+S_{*} =
+\frac{
+  p_R - p_L + \rho_L v_L (S_L - v_L) - \rho_R v_R (S_R - v_R)
+}{
+  \rho_L (S_L - v_L) - \rho_R (S_R - v_R)
+}
+\]</span> 同様に式<span class="math inline">\((\ref{eq:conservation-law})\)</span>の質量保存則からは以下を得る． <span class="math display">\[
+\rho_{*L} = \rho_K \frac{S_L - v_L}{S_L - S_*}, \quad
+\rho_{*R} = \rho_K \frac{S_R - v_R}{S_R - S_*}
 \]</span></p>
-<p>ここでEuler方程式の具体的な形を使って少し計算すると，中間状態<span class="math inline">\(K = L, R\)</span>について <span class="math display">\[
-\bm{u}_{*K} = \frac{S_K \bm{u}_K - \bm{f}_K + p_{*K} \bm{D}_*}{S_K - S_*}
-\]</span> とコンパクトに書けることが分かる．ただしここで<span class="math inline">\(\bm{D}_{*} = (0, 1, S_*)\)</span>である． これを使えば数値流速は以下のように求まる． <span class="math display">\[
-\bm{f}_{*K} =
+</section>
+<section class="slide level0">
+
+<p>以上でHLLC法に必要な情報は全て得られたので数値流束は求まることになる．</p>
+<p>実用上は，Euler方程式の具体的な形を使って少し計算することで得られる以下の形式が便利である． <span class="math display">\[
+\begin{aligned}
+&amp; \bm{u}_{*K} = \frac{S_K \bm{u}_K - \bm{f}_K + p_{*K} \bm{D}_*}{S_K - S_*}
+\\
+&amp; \bm{f}_{*K} =
 \frac{
   S_* \left( S_K \bm{u}_K - \bm{f}_K \right) - S_K p_{*K} \bm{D}_{*}
 }{
   S_K - S_*
 }
-\]</span></p>
+\end{aligned}
+\]</span> ただし，<span class="math inline">\(K = L, R\)</span>および<span class="math inline">\(\bm{D}_{*} = (0, 1, S_*)\)</span>である．</p>
 </section>
 <section class="slide level0">
 
