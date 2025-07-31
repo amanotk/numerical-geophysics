@@ -260,7 +260,7 @@ g = 1 - \frac{1}{2} \nu
 \left( e^{j\theta} - e^{-j\theta} \right) = 1 - j \nu \sin \theta
 \]</span> を得る．ここで<span class="math inline">\(g = \tilde{u}^{n+1}/\tilde{u}^{n}\)</span>は複素増幅率などと呼ばれる．</p>
 <p>もう少し分かり易くするために，<span class="math inline">\(g = |g| e^{j\phi}\)</span>と書いておこう．ここで<span class="math inline">\(|g|\)</span>は<span class="math inline">\(u^{n}_{i}\)</span>から<span class="math inline">\(u^{n+1}_{i}\)</span>へ数値解を時間発展させた際の振幅の絶対値の増幅率，<span class="math inline">\(\phi\)</span>は位相差を現す．具体的に評価すると <span class="math display">\[
-|g|^2 = 1 + \nu^2 \sin \theta, \quad \tan \phi =- \nu \sin\theta
+|g|^2 = 1 + \nu^2 \sin^2 \theta, \quad \tan \phi =- \nu \sin\theta
 \]</span> である．一方で厳密解については以下で与えられることが簡単に示せる． <span class="math display">\[
 |g|^2 = 1, \quad \phi = -\nu \theta
 \]</span></p>
@@ -495,7 +495,7 @@ C_s^2 \frac{\partial}{\partial x} \rho.
 \frac{\partial}{\partial x} (f \pm g) = 0
 \]</span> が得られる．すなわち波動方程式の解は<span class="math inline">\(u_{\pm} = f \pm g\)</span>に対する速度<span class="math inline">\(c = \pm C_s\)</span>の線形移流方程式の解の線形結合から得られる．</p>
 <div id="exr-linear-euler-wave" class="theorem exercise">
-<p><span class="theorem-title"><strong>演習問題 3. 9</strong></span> 等温の状態方程式を用いた1次元Euelr方程式を線形化し，実際に式(<span class="math inline">\(\ref{eq:wave}\)</span>)が得られることを示せ．</p>
+<p><span class="theorem-title"><strong>演習問題 3. 9</strong></span> 等温の状態方程式を用いた1次元Euler方程式を線形化し，実際に式(<span class="math inline">\(\ref{eq:wave}\)</span>)が得られることを示せ．</p>
 </div>
 <div id="exr-linear-wave-solution" class="theorem exercise">
 <p><span class="theorem-title"><strong>演習問題 3. 10</strong></span> 周期境界条件のもとで任意の初期条件<span class="math inline">\(f(x, t=0) = f_0(x)\)</span>および<span class="math inline">\(g(x, t=0) = g_0(x)\)</span>が与えられたときの解析解<span class="math inline">\(f(x, t)\)</span>および<span class="math inline">\(g(x, t)\)</span>を求めよ．</p>
@@ -514,7 +514,7 @@ C_s^2 \frac{\partial}{\partial x} \rho.
 <section class="slide level0">
 
 <h2><span class="header-section-number">3.8</span> 保存形式</h2>
-<p>多くの物理的に興味ある双曲型偏微分方程式は以下のような保存形（双極型保存則）で書かれる． <span class="math display">\[
+<p>多くの物理的に興味ある双曲型偏微分方程式は以下のような保存形（双曲型保存則）で書かれる． <span class="math display">\[
 \frac{\partial}{\partial t} \bm{u} +
 \frac{\partial}{\partial x} \bm{f}(\bm{u}) = 0.
 \]</span> ここで<span class="math inline">\(\bm{u} = u_1, u_2, \ldots\)</span>は独立変数，<span class="math inline">\(\bm{f} (\bm{u}) = f_1(\bm{u}), f_2(\bm{u}), \ldots\)</span>は流束関数である．独立変数<span class="math inline">\(\bm{u}\)</span>が境界条件の影響を除いて保存量となることは簡単に示すことができる．</p>
