@@ -26,6 +26,7 @@ render:
 	@if [ -d docs/src ]; then \
 		mv docs/src/* docs/; \
 		rmdir docs/src; \
+		sed -i 's|src/||g' docs/*.html docs/search.json; \
 	fi
 
 preview:
