@@ -95,10 +95,11 @@ Managed by [uv](https://docs.astral.sh/uv/):
    make setup
    ```
 
-3. Update `_quarto.yaml` if needed:
+3. Update GitHub Actions workflow if needed:
    ```yaml
-   project:
-     quarto-required: ">=1.4.0"
+   # .github/workflows/publish.yml
+   with:
+     version: 1.4.0
    ```
 
 ### Update Python Packages
