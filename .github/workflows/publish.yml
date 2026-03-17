@@ -33,7 +33,7 @@ jobs:
         run: uv sync
 
       - name: Render Quarto Project
-        run: quarto render
+        run: make render
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
