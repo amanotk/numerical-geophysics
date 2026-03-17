@@ -2,12 +2,12 @@ project:
   type: website
   output-dir: docs
   render:
-    - index.qmd
-    - introduction.qmd
-    - chap01.qmd
-    - chap02.qmd
-    - chap03.qmd
-    - chap04.qmd
+    - src/index.qmd
+    - src/introduction.qmd
+    - src/chap01.qmd
+    - src/chap02.qmd
+    - src/chap03.qmd
+    - src/chap04.qmd
   preview:
     port: 4200
     watch-inputs: true

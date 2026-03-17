@@ -22,6 +22,11 @@ setup:
 render:
 	@echo "Building documentation..."
 	@quarto render
+	@echo "Flattening output directory..."
+	@if [ -d docs/src ]; then \
+		mv docs/src/* docs/; \
+		rmdir docs/src; \
+	fi
 
 preview:
 	@echo "Starting preview server..."
@@ -29,7 +34,7 @@ preview:
 
 clean:
 	@echo "Cleaning generated files..."
-	@rm -rf docs/*.html
+	@rm -rf docs/*.html docs/site_libs docs/search.json docs/*_files
 	@echo "✓ Clean complete"
 
 check:
