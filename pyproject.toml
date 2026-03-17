@@ -1,0 +1,13 @@
+[project]
+name = "numerical-geophysics"
+version = "0.1.0"
+description = "Numerical Analysis in Geophysics - Lecture slides and sample code"
+requires-python = ">=3.11"
+dependencies = [
+    "numpy>=1.24.0",
+    "matplotlib>=3.7.0",
+    "jupyter>=1.0.0",
+]
+
+[dependency-groups]
+dev = []
