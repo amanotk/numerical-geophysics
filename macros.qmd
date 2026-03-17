@@ -1,3 +1,0 @@
-$$
-\newcommand{\bm}[1]{\symbfit{#1}}
-$$
