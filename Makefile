@@ -27,6 +27,7 @@ render:
 		mv docs/src/* docs/; \
 		rmdir docs/src; \
 		sed -i 's|src/||g' docs/*.html docs/search.json; \
+		sed -i 's|\.\./site_libs/|site_libs/|g' docs/*.html; \
 	fi
 
 preview:
