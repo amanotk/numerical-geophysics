@@ -1,13 +1,14 @@
 project:
   type: website
   output-dir: docs
+  resources:
+    - figure
   render:
     - src/index.qmd
     - src/introduction.qmd
     - src/chap01.qmd
     - src/chap02.qmd
     - src/chap03.qmd
-    - src/chap04.qmd
   preview:
     port: 4200
     watch-inputs: true
