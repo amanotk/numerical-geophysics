@@ -11,7 +11,7 @@
     "href": "index.html#目次",
     "title": "地球物理数値解析／Numerical Analysis in Geophysics",
     "section": "目次",
-    "text": "目次\n\nこの講義について\n序論：様々な偏微分方程式\n差分法の基礎\n双曲型偏微分方程式の解法 (1)：線形問題\n双曲型偏微分方程式の解法 (2)：非線形問題"
+    "text": "目次\n\nこの講義について\n様々な微分方程式と差分法の基礎\n双曲型偏微分方程式の解法 (1)：線形問題\n双曲型偏微分方程式の解法 (2)：非線形問題"
   },
   {
     "objectID": "index.html#jupyter-notebook",

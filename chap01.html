@@ -327,7 +327,7 @@
 
 <section class="slide level0">
 
-<h1><span class="header-section-number">1</span> 序論：様々な偏微分方程式</h1>
+<h1><span class="header-section-number">1</span> 様々な微分方程式と差分法の基礎</h1>
 <p><span class="math display">\[
 \newcommand{\bm}[1]{\symbfit{#1}}
 \]</span></p>
@@ -407,6 +407,65 @@ x(t) = x_0 + v_0 t - \frac{1}{2} g t^2
 \frac{\partial v}{\partial t} = \frac{\partial u}{\partial x}
 \]</span> のように，2変数<span class="math inline">\(u, v\)</span>についての時間・空間ともに1階の偏微分方程式に書き換えられる． したがって，初期条件として<span class="math inline">\(t = 0\)</span>における<span class="math inline">\(u, v\)</span>の値が必要となる．一方で，境界条件としては，例えば両方の境界で<span class="math inline">\(u\)</span>の値を与えてもよいし，一方の境界で<span class="math inline">\(u\)</span>を，もう一方の境界で<span class="math inline">\(v\)</span>を与えてもよい．<br>
 ただし，両端で<span class="math inline">\(u, v\)</span>の両方の値を同時に指定することはできない（自由度が足りない）ことに注意しよう．物理的には右方向に伝播する波動については左側の境界が，左方向に伝播する波動については右側の境界がそれぞれ影響を与えるためと考えることができる．</p>
+</section>
+<section class="slide level0">
+
+<h2><span class="header-section-number">1.3</span> 有限差分法による離散化</h2>
+<p>計算機は連続的な関数を厳密に表現することができないため，基礎方程式を数値的に解く際には何らかの離散化が必要となる．典型的には離散的な格子点 <span class="math inline">\(x_{i} (i = 1, 2, \ldots, N)\)</span> において定義される <span class="math inline">\(u_{i} = u(x_{i})\)</span> を用いる．</p>
+<p>この離散化によって格子点上の関数値は定義されたが，偏微分方程式に現れる微分値は未知である．（微分値も独立変数にとる手法も存在する．）安直には微分を差分に置き換えてやればよい． 例えば最も簡単な場合として等間隔格子 <span class="math inline">\(x_{i} = i \Delta x\)</span> を使う場合を考えると，一階微分は直感的に <span class="math display">\[
+\left( \frac{\partial u}{\partial x} \right)_{i} \approx \frac{u_{i+1} - u_{i-1}}{2 \Delta x}
+\]</span> のように近似することができるだろう．しかし，同様に <span class="math display">\[
+\left( \frac{\partial u}{\partial x} \right)_{i} \approx \frac{u_{i+1} - u_{i}}{\Delta x}
+\]</span> や <span class="math display">\[
+\left( \frac{\partial u}{\partial x} \right)_{i} \approx \frac{u_{i} - u_{i-1}}{\Delta x}
+\]</span> でも良さそうである． どのような差分近似を採用したら良いのだろうか？</p>
+</section>
+<section class="slide level0">
+
+<h2><span class="header-section-number">1.4</span> 差分近似の誤差と精度</h2>
+<p>微分の差分近似は一意には決まらないが，その誤差は理論的に評価することができる．そのために<span class="math inline">\(x = x_i\)</span>近傍でのTaylor展開を考えよう． <span class="math display">\[
+u_{i\pm1} = u(x_{i} \pm \Delta x) = u_{i} \pm
+\left( \frac{\partial u}{\partial x} \right)_{i} \Delta x^1 +
+\frac{1}{2} \left( \frac{\partial^2 u}{\partial x^2} \right)_{i} \Delta x^2
+\pm \frac{1}{6} \left( \frac{\partial^3 u}{\partial x^3} \right)_{i} \Delta x^3 +
+\mathcal{O} (\Delta x^4)
+\]</span> これから直ちに <span class="math display">\[
+\left( \frac{\partial u}{\partial x} \right)_{i} \approx \frac{u_{i+1} - u_{i-1}}{2 \Delta x} +
+\mathcal{O} (\Delta x^2)
+\]</span> を得る．すなわち，格子幅<span class="math inline">\(\Delta x\)</span>を小さくするとこの差分近似の誤差は<span class="math inline">\(\Delta x^2\)</span>に比例して小さくなることが分かる．このように展開を途中で打ち切ることから生じる誤差を打ち切り誤差と呼ぶ．</p>
+<p>一般に差分近似の誤差が<span class="math inline">\(\Delta x\)</span>の<span class="math inline">\(n\)</span>乗に比例して小さくなるとき，その差分近似は<span class="math inline">\(n\)</span>次精度と呼ばれる．</p>
+<div id="exr-finite-difference-order" class="theorem exercise">
+<p><span class="theorem-title"><strong>演習問題 1. 1 </strong></span>差分近似 <span class="math inline">\(\displaystyle \left( \frac{\partial u}{\partial x} \right)_{i} \approx \frac{u_{i+1} - u_{i}}{\Delta x}\)</span> および <span class="math inline">\(\displaystyle \left( \frac{\partial u}{\partial x} \right)_{i} \approx \frac{u_{i} - u_{i-1}}{\Delta x}\)</span> の精度（次数）を求めよ．</p>
+</div>
+</section>
+<section class="slide level0">
+
+<h2><span class="header-section-number">1.5</span> 前進差分・後退差分・中心差分</h2>
+<p>差分近似の次数が同じであっても，その表現は必ずしも一つに定まるわけではない．それは評価点<span class="math inline">\(x=x_i\)</span>における差分近似を構成するために近傍のどの点を採用するかに自由度があるためである．</p>
+<p>評価点<span class="math inline">\(x=x_i\)</span>の</p>
+<ul>
+<li>前の点を使う <span class="math inline">\(\displaystyle \left( \frac{\partial u}{\partial x} \right)_{i} \approx \frac{u_{i+1} - u_{i}}{\Delta x}\)</span> のような差分を<strong>前進差分</strong> (forward difference)</li>
+<li>後の点を使う <span class="math inline">\(\displaystyle \left( \frac{\partial u}{\partial x} \right)_{i} \approx \frac{u_{i} - u_{i-1}}{\Delta x}\)</span> のような差分を<strong>後退差分</strong> (backward difference)</li>
+<li>前後を等しく用いる <span class="math inline">\(\displaystyle \left( \frac{\partial u}{\partial x} \right)_{i} \approx \frac{u_{i+1} - u_{i-1}}{2 \Delta x}\)</span> のような差分を<strong>中心差分</strong>（central difference）</li>
+</ul>
+<p>と呼ぶ．これらは単なる呼び名であって，与えられた方程式を解くにあたってどの差分近似を採用すべきかは全く明らかでない．多くの場合において，近似すべき項の<strong>物理的性質に適した差分近似</strong>を用いなければ実用的な数値計算はできないことがほとんどである． （そもそも時間微分の近似以外の場合においては前進・後退という名前自体が物理的に全くナンセンスである．）</p>
+</section>
+<section class="slide level0">
+
+<h2><span class="header-section-number">1.6</span> 高階微分の差分近似</h2>
+<p>基本的には1階微分の場合と同様にTaylor展開を用いて必要な微分係数以外の項を消去すればよい． 例えば2階微分であれば <span class="math display">\[
+\left( \frac{\partial^2 u}{\partial x^2} \right)_i \approx
+\frac{u_{i+1} - 2 u_{i} + u_{i-1}}{\Delta x^2} +
+\mathcal{O} (\Delta x^2)
+\]</span></p>
+<p>より高階の微分や前進差分・後退差分なども構成することができる． よく使われる差分公式については例えば <a href="https://en.wikipedia.org/wiki/Finite_difference_coefficient">Wikipedia</a> を参照せよ．</p>
+<p>ある点の微分値を差分近似する際に必要となる周辺の範囲のことを<strong>ステンシル</strong>と呼ぶ．一般に，高階微分の差分近似や，同じ次数でも高次精度の差分を構成する際にはより広いステンシルが必要となる．</p>
+<div id="exr-second-order-finite-difference" class="theorem exercise">
+<p><span class="theorem-title"><strong>演習問題 1. 2 </strong></span>上記の差分近似が2次精度であることを示せ．Taylor展開を3次まで行う必要があることに注意せよ．</p>
+</div>
+<div id="exr-finite-difference-stencil" class="theorem exercise">
+<p><span class="theorem-title"><strong>演習問題 1. 3 </strong></span>高階微分の差分近似に広いステンシルが必要になるのは何故か．例えば，4階微分<span class="math inline">\(\partial^4 u/\partial x^4\)</span>を表すには最低何点のステンシルが必要になるか考えよ．</p>
+</div>
 
 <div class="footer footer-default">
 <p><a href="index.html"> トップページに戻る </a></p>

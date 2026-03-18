@@ -327,520 +327,617 @@
 
 <section class="slide level0">
 
-<h1><span class="header-section-number">3</span> 双曲型偏微分方程式の解法 (1)：線形問題</h1>
+<h1><span class="header-section-number">3</span> 双曲型偏微分方程式の解法 (2)：非線形問題</h1>
 <p><span class="math display">\[
 \newcommand{\bm}[1]{\symbfit{#1}}
 \]</span></p>
 </section>
 <section class="slide level0">
 
-<h2><span class="header-section-number">3.1</span> 線形移流方程式</h2>
+<h2><span class="header-section-number">3.1</span> Burgers方程式</h2>
 <div class="column-body">
 <div class="column-page" width="800" height="600">
-<div class="absolute" style="top: -5px; right: 50px; height: 24px; ">
-<p><a href="https://github.com/amanotk/numerical-geophysics/blob/main/notebook/LinearAdvectionEquation.ipynb">Notebook on GitHub</a> <a href="https://colab.research.google.com/github/amanotk/numerical-geophysics/blob/main/notebook/LinearAdvectionEquation.ipynb" target="_blank"><img src="figure/colab-badge.svg" alt="Open in Colab" style="display:inline; vertical-align:-0.2em; height:1.2em;"></a></p>
-</div>
-</div>
-</div>
-<p>ここでは特に断りの無い限りは以下の線形移流方程式の初期値・境界値問題を考える．ただし<span class="math inline">\(c\)</span>は定数である． <span class="math display">\[
-\frac{\partial u}{\partial t} + c \frac{\partial u}{\partial x} = 0
-\]</span> 初期値<span class="math inline">\(u(x,t=0)\)</span>が与えられたときの解析解は以下で与えられ，初期に与えられたプロファイルが一定速度<span class="math inline">\(c\)</span>で<span class="math inline">\(x\)</span>の正方向に伝播する． <span class="math display">\[
-u(x, t) = u(x - ct, 0)
-\]</span></p>
-<p>一見この方程式は簡単に解けそうにも思えるが，精度良く数値解を得るのは意外と難しい．またこの問題の数値解法は流体方程式などの非線形の双曲型偏微分方程式の解法の基礎となっている．（線形問題が解けないのであれば非線形問題が解けるわけがない！）</p>
-<p><img data-src="figure/linear_advection1.png" class="absolute" style="left: 150px; bottom: 20px; height: 250px; "> <img data-src="figure/linear_advection2.png" class="absolute" style="left: 700px; bottom: 20px; height: 250px; "></p>
-</section>
-<section class="slide level0">
-
-<p>ここでは安直な差分近似を用いた線形移流方程式の数値解法を考えてみよう．解を時間・空間方向に離散化し，<span class="math inline">\(u^{n}_{i}\)</span> と書こう．ここで時間方向の格子点（時間ステップ）を上付き添字 <span class="math inline">\(^n\)</span> ，空間方向の格子点を下付き添字 <span class="math inline">\(_i\)</span> で現す．<br>
-時間方向の差分には過去の情報だけを用いて前進差分，空間方向は前後のバイアスがない中心差分を用いると，解くべき方程式は <span class="math display">\[
-\frac{u^{n+1}_{i} - u^{n}_{i}}{\Delta t} + c \frac{u^{n}_{i+1} - u^{n}_{i-1}}{2 \Delta x} = 0
-\]</span> と書ける．これを書き換えて <span class="math display">\[
-\text{FTCS: } u^{n+1}_{i} = u^{n}_{i} - \left( \frac{c \Delta t}{2 \Delta x} \right)
-\left( u^{n}_{i+1} - u^{n}_{i-1} \right)
-\]</span> を得る．右辺は<span class="math inline">\(u^{n}_{i-1}, u^{n}_{i}, u^{n}_{i+1}\)</span>の情報のみで評価でき，これらから次のステップの解<span class="math inline">\(u^{n+1}_{i}\)</span>が求まる．</p>
-<p>数値解を求めるためのアルゴリズムは一般に数値計算<strong>スキーム</strong>と呼ばれる．この場合は時間方向に前進差分，空間方向に中心差分を用いているのでFTCSスキーム（Forward in Time and Centered in Space)と呼ばれる．</p>
-<p>同様に空間方向に前進差分を使ったFTFS（Forawrd in Space）や後退差分を使ったFTBS（Backward in Space）も以下のように定義できるだろう． <span class="math display">\[
-\text{FTFS: } u^{n+1}_{i} = u^{n}_{i} - \left( \frac{c \Delta t}{\Delta x} \right)
-\left( u^{n}_{i+1} - u^{n}_{i} \right)
-\quad
-\quad
-\text{FTBS: } u^{n+1}_{i} = u^{n}_{i} - \left( \frac{c \Delta t}{\Delta x} \right)
-\left( u^{n}_{i} - u^{n}_{i-1} \right)
-\]</span></p>
-</section>
-<section class="slide level0">
-
-<h3 id="例ftcsスキームによる数値解">例：FTCSスキームによる数値解</h3>
-<p><img data-src="figure/ftcs_rect.png" class="absolute" style="top: 200px; left: 50px; height: 350px; "> <img data-src="figure/ftcs_sine.png" class="absolute" style="top: 200px; left: 700px; height: 350px; "></p>
-<ul>
-<li>矩形波（急勾配がある場合）の計算結果は明らかにおかしい．</li>
-<li>一見すると初期条件が滑らかな関数であれば良さそうに見えるが・・・？</li>
-<li>FTFSやFTBSはどうだろうか？</li>
-</ul>
-</section>
-<section class="slide level0">
-
-<h2><span class="header-section-number">3.2</span> 数値計算スキームの性質</h2>
-<h3 id="適合性">適合性</h3>
-<p>離散化の刻み幅を小さくしていくにつれて離散近似が元の微分方程式に近づくとき，そのスキームは「適合」すると呼ぶ．適合性は自然に満たされることが多い．</p>
-<h3 id="収束性">収束性</h3>
-<p>離散化の刻み幅を小さくしていくにつれて，数値解が元の微分方程式の解に近づくことを「収束」すると呼ぶ．収束するスキームであれば十分な離散点をとれば（原理的には）誤差をいくらでも小さくすることができる．</p>
-<h3 id="安定性">安定性</h3>
-<p>時間発展型の方程式の数値計算スキームについて適用される概念．スキームの数値的な誤差が時間的に増大しないとき，そのスキームは「安定」であると呼ぶ．数値的に安定でないスキームは実用的には使えない．詳細は次節で述べる．</p>
-</section>
-<section class="slide level0">
-
-<h3 id="例ftcsスキーム移流方程式">例：FTCSスキーム（移流方程式）</h3>
-<p>時間・空間の両方向についてTaylor展開すると <span class="math display">\[
-\begin{aligned}
-\frac{u^{n+1}_{i} - u^{n}_{i}}{\Delta t} + c \frac{u^{n}_{i+1} - u^{n}_{i-1}}{2 \Delta x}
-&amp;=
-\left( \frac{\partial u}{\partial t} \right)^{n}_{i} +
-c \left( \frac{\partial u}{\partial x} \right)^{n}_{i}
-\\
-&amp;+
-\frac{\Delta t}{2} \left( \frac{\partial^2 u}{\partial t^2} \right)^{n}_{i} +
-c\frac{\Delta x^2}{6} \left( \frac{\partial^3 u}{\partial x^3} \right)^{n}_{i}
-+ \text{(higher orders)}
-\end{aligned}
-\]</span> これからFTCSスキームの打ち切り誤差は <span class="math inline">\(\mathcal{O}(\Delta t, \Delta x^2)\)</span> であることが分かる．</p>
-<p><span class="math inline">\(\Delta t\)</span>や<span class="math inline">\(\Delta x\)</span>を小さくしていくにつれて差分近似は明らかに元の微分方程式に近づくので，このスキームは適合する．一方で，収束性は実際に得られた数値解によって判断すべきものなので，これだけからは分からない．ただし，我々は実験的にこのスキームが不安定であることを知っているので，収束性も満たさないことは明らかである．</p>
-<div id="exr-ftcs-error-estimate" class="theorem exercise">
-<p><span class="theorem-title"><strong>演習問題 3. 1 </strong></span>Taylor展開によって実際に上記のFTCSスキームの打ち切り誤差評価が正しいことを示せ．</p>
-</div>
-</section>
-<section class="slide level0">
-
-<h3 id="例数値解の収束性">例：数値解の収束性</h3>
+<div class="absolute" style="top: 0px; right: 50px; height: 32px; ">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="figure/convergence.png" height="400"></p>
-<figcaption>数値解の収束性を調べた例 <span class="citation" data-cites="Matsumoto2019a">(<a href="" role="doc-biblioref" onclick="return false;">Matsumoto et al., 2019</a>)</span></figcaption>
+<p><a href="https://colab.research.google.com/github/amanotk/numerical-geophysics/blob/main/notebook/BurgersEquation.ipynb" target="_blank"><img data-src="figure/colab-badge.svg"></a></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<p>非線形の偏微分方程式として以下のBurgers方程式を考えよう． <span class="math display">\[
+\frac{\partial u}{\partial t} + u \frac{\partial u}{\partial x} =
+\alpha \frac{\partial^2 u}{\partial x^2}
+\]</span> ここで<span class="math inline">\(\alpha\)</span>は粘性項（拡散項）であり，<span class="math inline">\(\alpha = 0\)</span>であればこの方程式は双曲型偏微分方程式に分類される．線形移流方程式と異なり移流速度が<span class="math inline">\(u\)</span>に依存する形になっている．例えば流体力学における音波の位相速度は振幅に依存し，有限振幅の音波は有限時間で衝撃波に発展する．Burgers方程式はこれを簡単化したものと考えることができる．</p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figure/steepening.png" height="380"></p>
+<figcaption><span class="citation" data-cites="BurgessTextbook">Burgess &amp; Scholer (<a href="" role="doc-biblioref" onclick="return false;">2015</a>)</span></figcaption>
 </figure>
 </div>
 </section>
 <section class="slide level0">
 
-<h2><span class="header-section-number">3.3</span> von Neumannの安定性解析</h2>
-<div class="column-body">
-<div class="column-page" width="800" height="600">
-<div class="absolute" style="top: -5px; right: 50px; height: 24px; ">
-<p><a href="https://github.com/amanotk/numerical-geophysics/blob/main/notebook/vonNeumannStabilityAnalysis.ipynb">Notebook on GitHub</a> <a href="https://colab.research.google.com/github/amanotk/numerical-geophysics/blob/main/notebook/vonNeumannStabilityAnalysis.ipynb" target="_blank"><img src="figure/colab-badge.svg" alt="Open in Colab" style="display:inline; vertical-align:-0.2em; height:1.2em;"></a></p>
+<h3 id="特性曲線">特性曲線</h3>
+<p>一般に <span class="math display">\[
+\frac{\partial u}{\partial t} + \lambda (u) \frac{\partial u}{\partial x} = 0
+\]</span> と書けるとき，<span class="math inline">\(\lambda(u)\)</span>を特性速度と呼ぶ．特性速度によって定義される <span class="math display">\[
+\frac{d x}{d t} = \lambda(u)
+\]</span> を特性曲線と呼ぶ．特性曲線に沿って物理量<span class="math inline">\(u\)</span>が保存することは簡単に示すことができる．特性曲線に沿って一定となる量は特性量やRiemann不変量などと呼ばれる． 線形移流方程式では<span class="math inline">\(\lambda(u) = c\)</span>で一定であるため，異なる特性曲線が交わることはない．一方でBurgers方程式では<span class="math inline">\(\lambda(u) = u\)</span>であるため，一般には有限時間で異なる特性曲線が交わることになる．このとき数学的に一意な解が存在しない．数学的には有限の粘性<span class="math inline">\(\alpha \neq 0\)</span>があれば，それが局所的に散逸として働き不連続な<strong>衝撃波</strong>が形成する．</p>
+<div id="exr-characteristic-variable" class="theorem exercise">
+<p><span class="theorem-title"><strong>演習問題 3. 1 </strong></span>特性曲線に沿った物理量<span class="math inline">\(u\)</span>の微分をとることによって，特性曲線に沿って<span class="math inline">\(u\)</span>が保存することを示せ． <span class="math display">\[
+\frac{d}{d t} = \frac{\partial}{\partial t} +
+\frac{d x}{d t} \frac{\partial}{\partial x}
+\]</span> を用いればよい．</p>
 </div>
-</div>
-</div>
-<p>差分法の数値的安定性を調べるために最も一般的に使われている手法がvon Neumannの安定性解析である．これは「等間隔格子(<span class="math inline">\(\Delta t\)</span>および<span class="math inline">\(\Delta x\)</span>が一定)で構成した線形差分近似式による初期値問題の解法」に適用可能な手法である．適用可能範囲が狭いようにも思われるが，実用的にはこれによって十分に有用な結果が得られる．</p>
-<p>上記の定義により線形の問題を考えよう．周期境界の問題では，空間方向の任意の関数はFourier級数で現すことができるが，各波数のモードは互いに独立であるから，一つの波数<span class="math inline">\(k\)</span>について考えれば十分である．既に空間方向の格子点の添字に<span class="math inline">\(i\)</span>を使っているので，以降では<span class="math inline">\(j\)</span>を虚数単位として用いることとする．（すなわち <span class="math inline">\(j^2 = -1\)</span>．）</p>
-<p><span class="math inline">\(x_{i} = i \Delta x\)</span>とすれば，波数<span class="math inline">\(k\)</span>のモードの解は以下のように書ける． <span class="math display">\[
-u^{n}_{i} = \tilde{u}^n \exp[j (i k \Delta x)] = \tilde{u}^n \exp[j (i \theta)]
-\quad (\theta = k \Delta x)
-\]</span> ここで <span class="math inline">\(\tilde{u}^n\)</span> は複素振幅である．これを差分式に代入して解の時間発展の性質を調べてみよう．</p>
-<p>なお，以降では <span class="math display">\[
-\nu \equiv \frac{c \Delta t}{\Delta x}
-\]</span> と置き，これを<strong>Courant数</strong>と呼ぶ．すぐに明らかになるように，Courant数は特に双曲型偏微分方程式の数値解の性質を決定する非常に重要な量である．</p>
 </section>
 <section class="slide level0">
 
-<h3 id="波長と解像度の関係">波長と解像度の関係</h3>
+<h3 id="弱解">弱解</h3>
+<p>初期条件 <span class="math display">\[
+u(x, t=0) =
+\begin{cases}
+u_{L} \quad x &lt; 0 \\
+u_{R} \quad x &gt; 0
+\end{cases}
+\]</span> が与えられたとき，積分形式 <span class="math display">\[
+\int_{x_1}^{x_2} dx
+\left(
+  \frac{\partial u}{\partial t} + \frac{\partial f(u)}{\partial x}
+\right) = 0
+\]</span> を考えると衝撃波の伝播速度<span class="math inline">\(S\)</span>は以下の式で与えられる． <span class="math display">\[
+S = \frac{f(u_{R}) - f(u_{L})}{u_{R} - u_{L}}
+\]</span> 非粘性のBurgers方程式(<span class="math inline">\(\alpha = 0\)</span>, <span class="math inline">\(f(u) = u^2/2\)</span>)について考えると，<span class="math inline">\(S = (u_{\rm R} + u_{\rm L})/2\)</span>となることがすぐに分かる．</p>
+<p>このように微分方程式の解のうち，滑らかな領域で微分形を満足し，不連続な領域も含めて至るところで積分形を満足する解を弱解（weak solution）と呼ぶ．</p>
+<div id="exr-shock-speed" class="theorem exercise">
+<p><span class="theorem-title"><strong>演習問題 3. 2 </strong></span>上記の積分形式において<span class="math inline">\(x_1 &lt; x &lt; St\)</span>では<span class="math inline">\(u = u_{L}\)</span>, <span class="math inline">\(St &lt; x &lt; x_2\)</span>では<span class="math inline">\(u = u_{R}\)</span>であることを用いて，衝撃波の伝播速度<span class="math inline">\(S\)</span>を求めよ．ただし積分区間<span class="math inline">\([x_1, x_2]\)</span>は（この区間に衝撃波を含むよう十分大きくとれば）任意である．</p>
+</div>
+</section>
+<section class="slide level0">
+
+<h3 id="衝撃波解">衝撃波解</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="figure/kdx.png" height="600"></p>
+<p><img data-src="figure/burgers-shock.png" height="600"></p>
+<figcaption><span class="citation" data-cites="ToroTextbook">Toro (<a href="" role="doc-biblioref" onclick="return false;">2009</a>)</span></figcaption>
+</figure>
+</div>
+</section>
+<section class="slide level0">
+
+<h3 id="膨張衝撃波解">膨張衝撃波解</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figure/burgers-expansion-shock.png" height="600"></p>
+<figcaption><span class="citation" data-cites="ToroTextbook">Toro (<a href="" role="doc-biblioref" onclick="return false;">2009</a>)</span></figcaption>
+</figure>
+</div>
+</section>
+<section class="slide level0">
+
+<h3 id="膨張波解">膨張波解</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figure/burgers-rarefaction.png" height="600"></p>
+<figcaption><span class="citation" data-cites="ToroTextbook">Toro (<a href="" role="doc-biblioref" onclick="return false;">2009</a>)</span></figcaption>
+</figure>
+</div>
+</section>
+<section class="slide level0">
+
+<h3 id="エントロピー条件">エントロピー条件</h3>
+<ul>
+<li><p>一般に非線形双曲型偏微分方程式の弱解は一意には定まらないため，可能な複数の数値解から物理的に妥当な解を選択しなければならない．例えば流体力学の場合には熱力学第2法則からエントロピーが増大することが要請され，これから膨張衝撃波解は物理的に棄却される．</p></li>
+<li><p>数学的な意味でのBurgers方程式には「エントロピー」は存在しないが，便宜的に「エントロピー」を導入することで膨張衝撃波解を棄却し，解の一意性を担保することができる．</p></li>
+<li><p>詳細な議論は適当な教科書に譲るとして，直感的には不連続な弱解があるとき， <strong>特性線が不連続に収束する</strong> （不連続から特性線が湧き出さない）ことをエントロピー条件として考えればよい．Burgers方程式やEuler方程式を始めとするconvexな流束関数(<span class="math inline">\(f'(u) &gt; 0\)</span>)について考えると，これは以下のように表すことができる． <span class="math display">\[
+  f'(u_{R}) \leq S \leq f'(u_{L})
+\]</span> 具体的にBurgers方程式の場合には <span class="math display">\[
+  u_{R} \leq S \leq u_{L}
+\]</span> がエントロピー条件となる．膨張衝撃波はこれを満たさないことは明らかである．</p></li>
+<li><p><strong>Lax-Wendroffの定理</strong>：保存形の数値計算スキームを考えるとき，数値解が収束するならば，元の微分方程式の弱解に収束する． ただし（膨張衝撃波も弱解の1つなので）収束する解が物理的な解とは限らず，エントロピー条件を満たす物理的な解に収束するようなスキームを選択する必要がある． いずれにしても，非保存形のスキームは一般に衝撃波速度を正しく与えないので，衝撃波（やそれに類する不連続面）が重要になる問題では保存形スキームがほぼ必須となっている．</p></li>
+</ul>
+</section>
+<section class="slide level0">
+
+<h3 id="次精度風上差分法">1次精度風上差分法</h3>
+<p>簡単のため<span class="math inline">\(u &gt; 0\)</span>および<span class="math inline">\(\alpha = 0\)</span>を仮定しよう．このとき風上差分でも以下の3通りが考えられる． <span class="math display">\[
+\begin{align}
+\frac{u^{n+1}_{i} - u^{n}_{i}}{\Delta t} &amp;+
+\frac{u^{n}_{i} + u^{n}_{i-1}}{2} \frac{u^{n}_{i} - u^{n}_{i-1}}{\Delta x}
+= 0 \tag{A} \\
+\frac{u^{n+1}_{i} - u^{n}_{i}}{\Delta t} &amp;+
+u^{n}_{i} \frac{u^{n}_{i} - u^{n}_{i-1}}{\Delta x}
+= 0 \tag{B} \\
+\frac{u^{n+1}_{i} - u^{n}_{i}}{\Delta t} &amp;+
+u^{n}_{i-1} \frac{u^{n}_{i} - u^{n}_{i-1}}{\Delta x}
+= 0 \tag{C} \\
+\end{align}
+\]</span></p>
+<p>スキーム(A)は <span class="math display">\[
+\frac{u^{n+1}_{i} - u^{n}_{i}}{\Delta t} +
+\frac{\hat{f}_{i+1/2} - \hat{f}_{i-1/2}}{\Delta x} = 0
+\]</span> のように保存形に書き直すことができる．ここで <span class="math display">\[
+\hat{f}_{i+1/2} = \frac{(u^{n}_{i})^2}{2}
+\]</span> が数値流速である．一方でスキーム(B)(C)は保存形で書くことはできない．</p>
+</section>
+<section class="slide level0">
+
+<p><img data-src="figure/burgers-upwind.png" height="500"></p>
+<ul>
+<li>(A): 衝撃波も膨張波も正しく捉えられている．</li>
+<li>(B): 衝撃波が動いていない</li>
+<li>(C): 衝撃波速度が正しくない．膨張波もできていない．</li>
+</ul>
+</section>
+<section class="slide level0">
+
+<h3 id="段階lax-wendroffスキーム">2段階Lax-Wendroffスキーム</h3>
+<p>Lax-Wendroffスキームは基礎方程式を使ってTaylor展開の時間微分を空間微分に置き換えるスキームであったが，これは一般の方程式の扱いには不便なのでもう少し扱いやすくしたい．一般の保存形数値解法 <span class="math display">\[
+\begin{aligned}
+\frac{\bar{\bm{u}}^{n+1}_{i} - \bar{\bm{u}}^{n}_{i}}{\Delta t} +
+\frac{\hat{\bm{f}}_{i+1/2} - \hat{\bm{f}}_{i-1/2}}{\Delta x} = 0
+\end{aligned}
+\]</span> において <span class="math display">\[
+\begin{aligned}
+&amp; \bm{u}^{n+1/2}_{i+1/2} =
+\frac{1}{2} \left( u^{n}_{i} + u^{n}_{i+1} \right) -
+\frac{\Delta t}{2 \Delta x}
+\left( f(\bm{u}^{n}_{i+1}) - f(\bm{u}^{n}_{i}) \right)
+\\
+&amp; \hat{\bm{f}}_{i+1/2} = \frac{1}{\Delta t}
+\int_{t^{n}}^{t^{n+1}} \bm{f}(\bm{u}(x_{i+1/2}, t)) dt
+\approx
+\hat{\bm{f}}(\bm{u}^{n+1/2}_{i+1/2})
+\end{aligned}
+\]</span> と近似しよう．これを2段階Lax-Wendroffスキームと呼ぶ．このスキームであれば方程式の具体的な形に依存せず適用することが可能である．粘性あり（<span class="math inline">\(\alpha \neq 0\)</span>）のBurgers方程式に適用するには <span class="math display">\[
+\begin{aligned}
+&amp; u_{i+1/2} = \frac{u_{i} + u_{i+1}}{2} - \frac{\Delta t}{2 \Delta x}
+\left( f_{i+1} - f_{i} \right)
+\\
+&amp; \hat{f}_{i+1/2} = \frac{(u_{i+1/2})^2}{2} -
+\kappa_{i+1/2} \frac{\Delta x}{\Delta t} (u_{i+1} - u_{i}) -
+\alpha \frac{u_{i+1} - u_{i}}{\Delta x}
+\end{aligned}
+\]</span> として求めた数値流速を用いればよい．ただし，$<em>{i+1/2} = |u</em>{i+1} - u_{i}| <span class="math inline">\(とし，定数\)</span>0.1$で人工粘性の強さをコントロールする．</p>
+</section>
+<section class="slide level0">
+
+<h3 id="滑らかな初期条件の場合">滑らかな初期条件の場合</h3>
+<p><img data-src="figure/burgers-steepening.png" height="600"></p>
+</section>
+<section class="slide level0">
+
+<h2><span class="header-section-number">3.2</span> Euler方程式</h2>
+<div class="column-body">
+<div class="column-page" width="800" height="600">
+<div class="absolute" style="top: 0px; right: 50px; height: 32px; ">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><a href="https://colab.research.google.com/github/amanotk/numerical-geophysics/blob/main/notebook/EulerEquation.ipynb" target="_blank"><img data-src="figure/colab-badge.svg"></a></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<p>Euler方程式（圧縮性流体力学の支配方程式）は質量・運動量・エネルギー保存則から次のように書き表される． <span class="math display">\[
+\frac{\partial}{\partial t}
+\begin{pmatrix}
+\rho \\
+\rho v \\
+\varepsilon
+\end{pmatrix} +
+\frac{\partial}{\partial x}
+\begin{pmatrix}
+\rho v \\
+\rho v^2 + p \\
+(\varepsilon + p) v
+\end{pmatrix} = 0
+\tag{4.2.1} \label{eq:euler}
+\]</span> ここで <span class="math display">\[
+\varepsilon = \frac{1}{2} \rho v^2 + \frac{p}{\gamma-1}
+\]</span> は流体の全エネルギー密度，<span class="math inline">\(\gamma\)</span>は比熱比である．</p>
+<p>式(<span class="math inline">\(\ref{eq:euler}\)</span>)は非線形連立双曲型保存則(System of Nonlinear Hyperbolic Conservation Laws)の実用的に重要な例の一つである．ここで<span class="math inline">\(\bm{u} = (\rho, \rho v, \varepsilon)\)</span>の方程式はそれぞれ質量保存則，運動量保存則，エネルギー保存則を表す．</p>
+</section>
+<section class="slide level0">
+
+<div id="exr-linear-sound-wave" class="theorem exercise">
+<p><span class="theorem-title"><strong>演習問題 3. 3 </strong></span>一様で静止した流体を平衡状態とし，これに対する微小摂動を考えることにより音波の分散関係<span class="math inline">\(\omega^2 = k^2 C_s^2\)</span>が得られることを示せ．ただし，<span class="math inline">\(C_s = \sqrt{\gamma p_0/\rho_0}\)</span>は音速である．</p>
+</div>
+<div id="exr-euler-adiabatic-condition" class="theorem exercise">
+<p><span class="theorem-title"><strong>演習問題 3. 4 </strong></span>Euler方程式のエネルギー保存則を書き換えると断熱の条件（流体素片の運動に沿ってエントロピーが一定） <span class="math display">\[
+\frac{d}{dt} \left( \frac{p}{\rho^{\gamma}} \right) = 0
+\]</span> が得られる．このことを示せ．</p>
+</div>
+<div id="exr-euler-entropy-mode" class="theorem exercise">
+<p><span class="theorem-title"><strong>演習問題 3. 5 </strong></span>Euler方程式の固有モードには，音波以外にエントロピー波と呼ばれるモードが存在する．これは密度は非一様で圧力が一定（すなわちエントロピーが非一様）の構造が流体に流されているものと考えることができる．具体的に<span class="math inline">\(v = v_0 = const\)</span>, <span class="math inline">\(p = p_0 = const\)</span>の条件のとき， <span class="math display">\[
+\frac{d}{dt} \rho = 0
+\]</span> であればEuler方程式が満たされることを示せ．</p>
+</div>
+</section>
+<section class="slide level0">
+
+<h3 id="有限振幅の音波">有限振幅の音波</h3>
+<p>簡単のためエントロピー<span class="math inline">\(S = p/\rho^\gamma\)</span>が一定と仮定しよう．Euler方程式を書き直すと以下の2式が得られる． <span class="math display">\[
+\begin{aligned}
+&amp; \frac{\partial \rho}{\partial t}
++ \rho \frac{\partial v}{\partial x}
++ v \frac{\partial \rho}{\partial x} = 0,
+\\
+&amp; \frac{\partial v}{\partial t}
++ v \frac{\partial v}{\partial x}
++ \frac{C_s^2}{\rho} \frac{\partial \rho}{\partial x} = 0.
+\end{aligned}
+\]</span> ここで<span class="math inline">\(C_s^2 = \gamma p/\rho \propto \rho^{\gamma-1}\)</span>は定数でないことに注意．さらに<span class="math inline">\(\rho\)</span>を<span class="math inline">\(C_s\)</span>で書き換えると <span class="math display">\[
+%\begin{aligned}
+\frac{\partial}{\partial t}
+\left(
+    v \pm \frac{2 C_s}{\gamma-1}
+\right) +
+\left( v \pm C_s \right)
+\frac{\partial}{\partial x}
+\left(
+    v \pm \frac{2 C_s}{\gamma-1}
+\right)
+= 0, \tag{4.2.2} \label{eq:riemann-invariant}
+%\end{aligned}
+\]</span> となり，<span class="math inline">\(J_{\pm} = v \pm 2 C_s/(\gamma-1)\)</span>が以下で定義される特性曲線に沿って一定となる（すなわちRiemann不変量である）ことが分かる． <span class="math display">\[
+\frac{dx}{dt} = \lambda_{\pm} = v \pm C_s.
+\]</span></p>
+<div id="exr-riemann-invariant" class="theorem exercise">
+<p><span class="theorem-title"><strong>演習問題 3. 6 </strong></span>式(<span class="math inline">\(\ref{eq:riemann-invariant}\)</span>)を示せ．</p>
+</div>
+</section>
+<section class="slide level0">
+
+<h3 id="音波の伝播と急峻化">音波の伝播と急峻化</h3>
+<p><img data-src="figure/soundwave1.png" class="absolute" style="top: 80px; left: 40px; width: 600px; "> <img data-src="figure/soundwave2.png" class="absolute" style="top: 80px; left: 680px; width: 600px; "></p>
+</section>
+<section class="slide level0">
+
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figure/characteristics.png" height="500"></p>
+<figcaption><span class="citation" data-cites="LaneyTextbook">Laney (<a href="" role="doc-biblioref" onclick="return false;">1998</a>)</span></figcaption>
+</figure>
+</div>
+<ul>
+<li>変数の個数の分だけ特性曲線および対応する不変量が存在する．</li>
+<li>異なる不変量に関する特性曲線は互いに交わる．</li>
+<li>微分方程式の解の一意性のため，一つの不変量に関する特性曲線は交わることはない．交わる場合は衝撃波（不連続面）が存在しなければならない．</li>
+</ul>
+</section>
+<section class="slide level0">
+
+<h2><span class="header-section-number">3.3</span> Riemann問題</h2>
+<h4 id="sodの衝撃波管問題">Sodの衝撃波管問題</h4>
+<p><img data-src="figure/sodproblem.png" height="500"></p>
+</section>
+<section class="slide level0">
+
+<p>一般に保存則 <span class="math display">\[
+\frac{\partial \bm{u}}{\partial t} +
+\frac{\partial \bm{f}(\bm{u})}{\partial x} = 0
+\]</span> において初期条件 <span class="math display">\[
+\bm{u}(x, t=0) =
+\begin{cases}
+\bm{u}_{L} \quad x &lt; 0 \\
+\bm{u}_{R} \quad x &gt; 0
+\end{cases}
+\]</span> が与えられたときの時間発展を求める問題をRiemann問題と呼ぶ．このとき固有値の数（すなわち変数の数）の分だけ<span class="math inline">\(x = 0\)</span>から「波」が発生する．この「波」の影響がおよぶ領域をRiemann fanと呼ぶ．</p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figure/riemann.png" height="300"></p>
+<figcaption><span class="citation" data-cites="ToroTextbook">Toro (<a href="" role="doc-biblioref" onclick="return false;">2009</a>)</span></figcaption>
+</figure>
+</div>
+</section>
+<section class="slide level0">
+
+<p>保存則を変形して <span class="math display">\[
+\begin{aligned}
+\frac{\partial \bm{u}}{\partial t} +
+\frac{\partial \bm{f}(\bm{u})}{\partial x} = 0
+\rightarrow
+\frac{\partial \bm{u}}{\partial t} +
+\frac{\partial \bm{f}}{\partial \bm{u}} \cdot \frac{\partial \bm{u}}{\partial x} =
+\frac{\partial \bm{u}}{\partial t} +
+\bm{A} \cdot \frac{\partial \bm{u}}{\partial x} =
+0
+\end{aligned}
+\]</span> と書いておこう．ここで<span class="math inline">\(A_{ij} = \partial f_{i}/\partial u_{j}\)</span>はこの系のJacobianである．このJacobianの固有値<span class="math inline">\(\lambda_{i}\)</span>および固有ベクトル<span class="math inline">\(\bm{r}_{i}\)</span>を <span class="math display">\[
+\bm{A} \bm{r}_{i} = \lambda_{i} \bm{r}_{i}
+\quad (i=1, 2, \ldots, n)
+\]</span> によって定義する．固有ベクトルを並べた行列<span class="math inline">\(\bm{R} = (\bm{r}_1, \bm{r}_2, \ldots, \bm{r}_{n})\)</span>を用いると，Jacobianを対角化できる． <span class="math display">\[
+\bm{\Lambda} = \bm{R}^{-1} \bm{A} \bm{R} =
+\text{diag} (\lambda_1, \lambda_2, \ldots, \lambda_n)
+\]</span> さらに変数変換<span class="math inline">\(d \bm{v} \equiv \bm{R}^{-1} d \bm{u}\)</span>を用いると，元の方程式は<span class="math inline">\(n\)</span>個の独立な線形移流方程式 <span class="math display">\[
+\frac{\partial v_{i}}{\partial t} +
+\lambda_{i}
+\frac{\partial v_{i}}{\partial x} = 0
+\]</span> に書き直すことができる．ここで固有値<span class="math inline">\(\lambda_i\)</span>は<span class="math inline">\(v_i\)</span>の伝播速度（特性速度）を表しており，明らかに<span class="math inline">\(v_i\)</span>は特性量（Riemann不変量）である．</p>
+<h4 id="section"></h4>
+<ul>
+<li>実際にはEuler方程式は非線形なので<span class="math inline">\(\lambda_i\)</span>も<span class="math inline">\(\bm{u}\)</span>の関数であるが，定性的な性質は変わらない．</li>
+<li>一般に独立変数が<span class="math inline">\(n\)</span>個ある方程式系では固有値・固有ベクトル（すなわち波動モードの数）も<span class="math inline">\(n\)</span>個ある．全ての固有値（<span class="math inline">\(\lambda_i\)</span>）が実数の方程式系は双曲型保存則と呼ばれる．</li>
+</ul>
+</section>
+<section class="slide level0">
+
+<h3 id="応用例1">応用例1</h3>
+<p><img src="figure/cir.png" width="400px" style="position: absolute; left: 150px; top: 20px"></p>
+<p><img src="figure/cas-a-chandra.jpg" width="400px" style="position: absolute; left: 150px; top: 380px"></p>
+<p><img src="figure/heliosphere.gif" width="400px" style="position: absolute; left: 650px; top: 20px"></p>
+<p><img src="figure/pwn_xray.png" width="300px" style="position: absolute; left: 700px; top: 380px"></p>
+</section>
+<section class="slide level0">
+
+<h3 id="応用例2">応用例2</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figure/piecewise-linear.png" height="300"></p>
+<figcaption><span class="citation" data-cites="LaneyTextbook">Laney (<a href="" role="doc-biblioref" onclick="return false;">1998</a>)</span></figcaption>
+</figure>
+</div>
+<p>圧縮性流体力学では一般に不連続な解が発生するため，セル境界における解の連続性を要請しないスキームが好まれる．セル境界での数値流束<span class="math inline">\(\hat{\bm{f}}_{i+1/2}\)</span>が決められれば <span class="math display">\[
+\frac{\bm{u}^{n+1}_{i} - \bm{u}^{n}_{i}}{\Delta t} +
+\frac{\hat{\bm{f}}_{i+1/2} - \hat{\bm{f}}_{i-1/2}}{\Delta x} = 0
+\]</span> から解を更新することができる．ここで各セル境界においてRiemann問題の近似解を使って数値流束を決定するのが一般的な手法である．（Riemann問題の完全な解が必要なわけではなく，あくまでセル境界における数値流束だけが必要なことに注意．）</p>
+</section>
+<section class="slide level0">
+
+<h2><span class="header-section-number">3.4</span> 線形化されたRiemann解法</h2>
+<h3 id="線形riemann問題">線形Riemann問題</h3>
+<p>線形Riemann問題ではJacobian<span class="math inline">\(\bm{A}\)</span>が<span class="math inline">\(\bm{u}\)</span>に依存しない．したがって，対角化の結果は時間・空間によらず常に同じ結果となる．特性量に書き換えたRiemann問題は <span class="math display">\[
+\bm{v}(x, t=0) =
+\begin{cases}
+\bm{v}_{L} = \bm{R}^{-1} \bm{u}_{L} \quad x &lt; 0
+\\
+\bm{v}_{R} = \bm{R}^{-1} \bm{u}_{R} \quad x &gt; 0
+\end{cases}
+\]</span> となる．各特性量に関する線形移流方程式は互いに独立なので，線形Riemann問題の解はトリビアルに決まる．例えば独立変数の数が<span class="math inline">\(n = 3\)</span>のときの解は下図の通り．</p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figure/linear-riemann-problem.png" height="300"></p>
 <figcaption><span class="citation" data-cites="LaneyTextbook">Laney (<a href="" role="doc-biblioref" onclick="return false;">1998</a>)</span></figcaption>
 </figure>
 </div>
 </section>
 <section class="slide level0">
 
-<h3 id="例ftcsスキーム">例：FTCSスキーム</h3>
-<p>FTCSスキームの差分式に<span class="math inline">\(u^{n}_{i}\)</span>を代入して整理すると <span class="math display">\[
-g = 1 - \frac{1}{2} \nu
-\left( e^{j\theta} - e^{-j\theta} \right) = 1 - j \nu \sin \theta
-\]</span> を得る．ここで<span class="math inline">\(g = \tilde{u}^{n+1}/\tilde{u}^{n}\)</span>は複素増幅率などと呼ばれる．</p>
-<p>もう少し分かり易くするために，<span class="math inline">\(g = |g| e^{j\phi}\)</span>と書いておこう．ここで<span class="math inline">\(|g|\)</span>は<span class="math inline">\(u^{n}_{i}\)</span>から<span class="math inline">\(u^{n+1}_{i}\)</span>へ数値解を時間発展させた際の振幅の絶対値の増幅率，<span class="math inline">\(\phi\)</span>は位相差を現す．具体的に評価すると <span class="math display">\[
-|g|^2 = 1 + \nu^2 \sin^2 \theta, \quad \tan \phi =- \nu \sin\theta
-\]</span> である．一方で厳密解については以下で与えられることが簡単に示せる． <span class="math display">\[
-|g|^2 = 1, \quad \phi = -\nu \theta
-\]</span></p>
-<p>つまり，厳密解は振幅が増大も減衰もせず一定なのにも関わらず，FTCSスキームによって得られる数値解の振幅は<span class="math inline">\(\nu\)</span>や<span class="math inline">\(\theta\)</span>の値に関わらず(すなわち<span class="math inline">\(\Delta t\)</span>や<span class="math inline">\(\Delta x\)</span>によらず)常に指数関数的に増大する． これはFTCSスキームが数値的に<strong>無条件不安定</strong>であることを意味する．</p>
-<div id="exr-linear-advection-solution" class="theorem exercise">
-<p><span class="theorem-title"><strong>演習問題 3. 2 </strong></span>線形移流方程式の厳密解では<span class="math inline">\(|g|^2 = 1\)</span>および<span class="math inline">\(\phi = - \nu\theta\)</span>となることを示せ．</p>
-</div>
-</section>
-<section class="slide level0">
-
-<h3 id="位相誤差">位相誤差</h3>
-<p>絶対値<span class="math inline">\(|g|\)</span>は数値的な成長率（減衰率）を表すのに対して偏角<span class="math inline">\(\phi\)</span>は数値的な位相速度を表す．一般に数値誤差は<span class="math inline">\(\theta (= k \Delta x)\)</span>依存性（波長依存性）を持つので，数値解は波長に依存して異なる位相速度を与えることになる．</p>
-<p>数値誤差によって短波長で位相速度が速くなる場合には，物理的な波の伝播方向よりも前に，また位相速度が遅くなる場合には後ろに数値的な分散性のwave trainが伝播することになる．</p>
-<div class="columns">
-<div class="column" style="width:50%;">
-<p><img data-src="figure/vonneumann_ftcs.png" height="300"></p>
-</div><div class="column" style="width:50%;">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="figure/dispersivewave.png" height="300"></p>
-<figcaption>物理的に分散性を持つ例 <span class="citation" data-cites="Mellott1984a">(<a href="" role="doc-biblioref" onclick="return false;">Mellott &amp; Greenstadt, 1984</a>)</span></figcaption>
-</figure>
-</div>
-</div>
-</div>
-</section>
-<section class="slide level0">
-
-<h3 id="例拡散方程式へのftcsスキームの適用">例：拡散方程式へのFTCSスキームの適用</h3>
-<p>放物型の偏微分方程式である拡散方程式 <span class="math display">\[
-\frac{\partial u}{\partial t} = D \frac{\partial^2 u}{\partial x^2}
-\]</span> にも時間方向には前進差分，空間方向には中心差分をとったFTCSスキーム <span class="math display">\[
-\frac{u^{n+1}_{i} - u^{n}_{i}}{\Delta t} =
-D \frac{u^{n}_{i+1} - 2 u^{n}_{i} + u^{n}_{i-1}}{\Delta x^2}
-\]</span> を考えてvon Neumannの安定性解析を適用すると <span class="math display">\[
-g = 1 - 2 \mu (1 - \cos \theta)
-\]</span> を得る．ただし <span class="math inline">\(\mu = D \Delta t /\Delta x^2\)</span> である．従って安定性の条件は<span class="math inline">\(\mu \leq 1/2\)</span>で与えられる． すなわち，移流方程式では無条件不安定であったFTCSスキームが，拡散方程式では適切な条件のもとでは安定になっている． これは方程式の性質に合わせたスキーム選択が重要なことを示す好例である．</p>
-<p>なお，<span class="math inline">\(\Delta x\)</span>を細かくするには<span class="math inline">\(\Delta t \propto \Delta x^2\)</span>となるように<span class="math inline">\(\Delta t\)</span>も小さくとらなければならないことに注意しよう．</p>
-<div id="exr-ftcs-amplification-factor" class="theorem exercise">
-<p><span class="theorem-title"><strong>演習問題 3. 3 </strong></span>上記の例で複素増幅率が実際に<span class="math inline">\(g = 1 - 2 \mu (1 - \cos \theta)\)</span>で与えられることを示せ．</p>
-</div>
-</section>
-<section class="slide level0">
-
-<h3 id="例ftfsスキームおよびftbsスキーム">例：FTFSスキームおよびFTBSスキーム</h3>
-<p>移流方程式において，FTFS（空間方向に前進差分; Forward in Space）やFTBS（空間方向に後退差分; Backward in Space）を採用した場合はどうなるだろうか． <span class="math display">\[
-\text{FTFS:} \,
-u^{n+1}_{i} = u^{n}_{i} - \nu \left( u^{n}_{i+1} - u^{n}_{i} \right)
-\quad
-\text{FTBS:} \,
-u^{n+1}_{i} = u^{n}_{i} - \nu \left( u^{n}_{i} - u^{n}_{i-1} \right)
-\]</span> と書けるので， <span class="math display">\[
-\text{FTFS:} \,
-g = 1 + \nu \left[ (1 - \cos \theta) + j \sin \theta \right]
-\quad
-\text{FTBS:} \,
-g = 1 - \nu \left[ (1 - \cos \theta) + j \sin \theta \right]
-\]</span> となる．すなわち<span class="math inline">\(c \rightarrow -c\)</span>（<span class="math inline">\(\nu \rightarrow -\nu\)</span>）として流れの符号を反転させれば同じ結果が得られるので，どちらか一方だけを考えればよい．</p>
-<p>ここではFTFSを考えると，安定性<span class="math inline">\(|g| \leq 1\)</span>を満たすためには <span class="math display">\[
--1 \leq \nu \leq 0
-\]</span> が必要なことが直ちに分かる．（同様にFTBSでは<span class="math inline">\(0 \leq \nu \leq 1\)</span>が安定性の条件である．）</p>
-<div id="exr-ftcs-stability-condition" class="theorem exercise">
-<p><span class="theorem-title"><strong>演習問題 3. 4 </strong></span>FTFSの安定性条件が<span class="math inline">\(-1 \leq \nu \leq 0\)</span>で与えられることを示せ． （この結果よりFTBSの安定性条件も直ちに明らかである．）</p>
-</div>
-</section>
-<section class="slide level0">
-
-<h2><span class="header-section-number">3.4</span> 風上差分法</h2>
-<p>移流方程式におけるFTFSおよびFTBSの安定性条件についてもう少し考えてみよう．例えばFTBSスキーム <span class="math display">\[
-u^{n+1}_{i} = u^{n}_{i} - \nu \left( u^{n}_{i} - u^{n}_{i-1} \right)
-\]</span> の安定性条件<span class="math inline">\(0 \leq \nu \leq 1\)</span>の下限および上限は以下のように解釈することができる．</p>
-<ul>
-<li><span class="math inline">\(0 \leq \nu\)</span> であれば<span class="math inline">\(u_{i}\)</span>を更新する際に用いる点<span class="math inline">\(x_{i}, x_{i-1}\)</span>が物理的な情報伝播の「風上」に対応する．</li>
-<li><span class="math inline">\(\nu \leq 1\)</span> であれば<span class="math inline">\(u_{i}\)</span>に情報を運ぶ「風上」の点が<span class="math inline">\(x_{i}, x_{i-1}\)</span>の間に位置する．</li>
-</ul>
-<p>一般に（特別に設計されたスキームを除き），系の最大情報伝播速度<span class="math inline">\(c_{\rm max}\)</span>に対応したCourant数に対して <span class="math display">\[
-\frac{c_{\rm max} \Delta t}{\Delta x} \leq 1
-\]</span> が数値的安定性の必要条件（十分条件とは限らない！）となることが多い． これを<strong>CFL(Courant-Friedrichs-Lewy)条件</strong>と呼ぶ．</p>
-<ul>
-<li>非線形や多次元問題についての厳密な安定性解析が難しいが，経験上はこれよりも少し厳しい条件が安定性として課されることが多いようである．従って，これよりも小さなCourant数を採用することが常である．</li>
-<li>上記の風上差分スキームは空間精度が1次精度であり実用的ではない．しかし，現代の高精度数値流体計算スキームの多くはこのような風上差分の考え方を基に設計されており，この考え方は極めて重要である．</li>
-<li>このような背景を考えればFTFSスキームの安定性が<span class="math inline">\(-1 \leq \nu \leq 0\)</span>となることは直感的にも自然である．</li>
-</ul>
-</section>
-<section class="slide level0">
-
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="figure/first-order-upwind.png" height="500"></p>
-<figcaption><span class="citation" data-cites="ToroTextbook">Toro (<a href="" role="doc-biblioref" onclick="return false;">2009</a>)</span></figcaption>
-</figure>
-</div>
-<p>物理的にはCFL条件は1ステップの間に情報が伝播する距離が1グリッド以下であることを意味する．もし1ステップの間に情報が1グリッド以上風上の点から伝播してくるのであれば，隣のグリッドの情報しか用いないスキームは物理的に妥当とは言えないであろう．</p>
-</section>
-<section class="slide level0">
-
-<h2><span class="header-section-number">3.5</span> Lax-Friedrichsスキーム</h2>
-<p>移流方程式においては空間1次精度の風上差分は安定であり，FTCSスキームは空間2次精度であるにも関わらず不安定となる．実用的には2次精度以上のスキームが欲しくなるので，空間精度を向上させるためにもFTCSスキームについてもう少し考察してみよう． 打切り誤差の評価において，最低次の<span class="math inline">\(\mathcal{O}(\Delta t)\)</span>の項の時間微分を<span class="math inline">\(\partial u/\partial t = - c \partial u/\partial x\)</span>を使って書き換えると <span class="math display">\[
-\begin{aligned}
-\frac{u^{n+1}_{i} - u^{n}_{i}}{\Delta t} + c \frac{u^{n}_{i+1} - u^{n}_{i-1}}{2 \Delta x}
-&amp;=
-\left( \frac{\partial u}{\partial t} \right)^{n}_{i} +
-c \left( \frac{\partial u}{\partial x} \right)^{n}_{i} +
-c^2 \frac{\Delta t}{2} \left( \frac{\partial^2 u}{\partial x^2} \right)^{n}_{i}
-+ \text{(higher orders)}
-\end{aligned}
-\]</span> となる．この誤差の最低次の項は拡散項の形をしているが，通常の拡散とは符号が逆になっている．すなわち，この項が実質的な逆拡散として作用するため，FTCSスキームが無条件不安定になると解釈できる．逆に考えれば，FTCSスキームに逆拡散を打ち消すような拡散効果を加えればスキームは安定化すると予想される．</p>
-<p>ここでは<span class="math inline">\(u^{n}_{i} \rightarrow (u^{n}_{i+1} + u^{n}_{i-1})/2\)</span>のような平均化操作を加えて，以下のように修正したスキームを考えよう． <span class="math display">\[
-\begin{aligned}
-\frac{u^{n+1}_{i} - (u^{n}_{i+1} + u^{n}_{i-1})/2}{\Delta t} +
-c \frac{u^{n}_{i+1} - u^{n}_{i-1}}{2 \Delta x}
-= 0
-\end{aligned}
-\]</span> これをLax-Friedrichsスキームと呼ぶ．</p>
-</section>
-<section class="slide level0">
-
-<div id="exr-lf-amplification-factor" class="theorem exercise">
-<p><span class="theorem-title"><strong>演習問題 3. 5 </strong></span>Lax-Friedrichsスキームについてvon Neumannの安定性解析を行い，複素増幅率が <span class="math display">\[
-g = \cos \theta - j \nu \sin \theta
-\]</span> となることを示せ．これから直ちに<span class="math inline">\(|\nu| \leq 1\)</span>のときにはこのスキームが安定となることが分かる．</p>
-</div>
-<div id="exr-lf-error-estimate" class="theorem exercise">
-<p><span class="theorem-title"><strong>演習問題 3. 6 </strong></span>Lax-Friedrichsスキームについても同様にTaylor展開によって誤差評価を行うと <span class="math display">\[
-\begin{aligned}
-\frac{u^{n+1}_{i} - (u^{n}_{i+1} + u^{n}_{i-1})/2}{\Delta t} +
-c \frac{u^{n}_{i+1} - u^{n}_{i-1}}{2 \Delta x}
-&amp;=
-\left( \frac{\partial u}{\partial t} \right)^{n}_{i} +
-c \left( \frac{\partial u}{\partial x} \right)^{n}_{i} -
-\frac{\Delta x^2}{2 \Delta t} \left( 1- \nu^2 \right)
-\left( \frac{\partial^2 u}{\partial x^2} \right)^{n}_{i} +
-\text{(higher orders)}
-\end{aligned}
-\]</span> となることを示せ．これより<span class="math inline">\(|\nu| \leq 1\)</span>のときには最低次の項が通常の拡散項として作用し，スキームは安定となる．ただしCFL条件より<span class="math inline">\(c \Delta t \lesssim \Delta x\)</span>であることを考えれば，このスキームは空間1次精度でしかないことに注意せよ．</p>
-</div>
-</section>
-<section class="slide level0">
-
-<h2><span class="header-section-number">3.6</span> Lax-Wendroffスキーム</h2>
-<p>時間方向のTaylor展開に解析的な関係式<span class="math inline">\(\partial u/\partial t = - c \partial u/\partial x\)</span>を代入すると <span class="math display">\[
-\begin{aligned}
-u^{n+1}_{i} &amp;
-= u^{n}_{i} +
-\left( \frac{\partial u}{\partial t} \right)^{n}_{i} \Delta t +
-\left( \frac{\partial^2 u}{\partial t^2} \right)^{n}_{i} \frac{1}{2} \Delta t^2 +
-\mathcal{O} (\Delta t^3)
-\\
-&amp;= u^{n}_{i} -
-\left( \frac{\partial u}{\partial x} \right)^{n}_{i}
-\left( c \Delta t \right) +
-\left( \frac{\partial^2 u}{\partial x^2} \right)^{n}_{i}
-\frac{1}{2} \left( c \Delta t \right)^2 +
-\mathcal{O} (\Delta t^3)
-\end{aligned}
-\]</span> ここで空間微分を2次精度中心差分で置き換えると <span class="math display">\[
-u^{n+1}_{i} = u^{n}_{i} -
-\frac{1}{2} \nu \left( u^{n}_{i+1} - u^{n}_{i-1} \right) +
-\frac{1}{2} \nu^2 \left( u^{n}_{i+1} - 2 u^{n}_{i} + u^{n}_{i-1} \right)
-\]</span> を得る．これをLax-Wendroffスキームと呼ぶ．</p>
-</section>
-<section class="slide level0">
-
-<div id="exr-lw-amplification-factor" class="theorem exercise">
-<p><span class="theorem-title"><strong>演習問題 3. 7 </strong></span>Lax-Wendroffスキームについてvon Neumannの安定性解析を行い，複素増幅率が <span class="math display">\[
-g = 1 - \nu^2 (1 - \cos \theta) - j \nu \sin \theta
-\]</span> となることを示せ．このときも<span class="math inline">\(|\nu| \leq 1\)</span>が安定性の条件となる．</p>
-</div>
-<div id="exr-lw-error-estimate" class="theorem exercise">
-<p><span class="theorem-title"><strong>演習問題 3. 8 </strong></span>Lax-Wendroffスキームの誤差評価を行い，以下の式を示せ． <span class="math display">\[
-\begin{aligned}
-&amp; \frac{u^{n+1}_{i} - u^{n}_{i}}{\Delta t} +
-c \frac{u^{n}_{i+1} - u^{n}_{i-1}}{2 \Delta x} -
-\frac{c^2 \Delta t}{2}
-\frac{u^{n}_{i+1} - 2 u^{n}_{i} + u^{n}_{i-1}}{\Delta x^2}
-\\
-&amp; =
-\left( \frac{\partial u}{\partial t} \right)^{n}_{i} +
-c \left( \frac{\partial u}{\partial x} \right)^{n}_{i} +
-\mathcal{O(\Delta t^2)} +
-\mathcal{O(\Delta x^2)}
-\end{aligned}
-\]</span> これよりこのスキームの精度は時間・空間ともに2次精度となることが分かる．</p>
-</div>
-</section>
-<section class="slide level0">
-
-<p><img data-src="figure/linear_advection_lw.png" class="absolute" style="top: 100px; left: 25px; width: 600px; "> <img data-src="figure/lax-wendroff-stability.png" class="absolute" style="top: 100px; left: 650px; width: 600px; "></p>
-<ul>
-<li>Lax-Wendroffスキームで得られる数値解と安定性解析から得られる位相誤差の関係について確認しよう．</li>
-</ul>
-</section>
-<section class="slide level0">
-
-<h2><span class="header-section-number">3.7</span> 線形波動方程式</h2>
-<div class="column-body">
-<div class="column-page" width="800" height="600">
-<div class="absolute" style="top: -5px; right: 50px; height: 24px; ">
-<p><a href="https://github.com/amanotk/numerical-geophysics/blob/main/notebook/LinearWaveEquation.ipynb">Notebook on GitHub</a> <a href="https://colab.research.google.com/github/amanotk/numerical-geophysics/blob/main/notebook/LinearWaveEquation.ipynb" target="_blank"><img src="figure/colab-badge.svg" alt="Open in Colab" style="display:inline; vertical-align:-0.2em; height:1.2em;"></a></p>
-</div>
-</div>
-</div>
-<p>等温の状態方程式<span class="math inline">\(p = \rho R T = \rho C_s^2\)</span>を採用した1次元のEuler方程式（圧縮性流体方程式）は以下のように書ける． <span class="math display">\[
-\begin{aligned}
-&amp; \frac{\partial}{\partial t} \rho +
-\frac{\partial}{\partial x} \left( \rho v \right) = 0,
-\\
-&amp; \rho \left(
-  \frac{\partial}{\partial t} v +
-  v \frac{\partial}{\partial x} v
-\right) = -
-\frac{\partial}{\partial x} p = -
-C_s^2 \frac{\partial}{\partial x} \rho.
-\end{aligned}
-\]</span> ここで<span class="math inline">\(C_s = \sqrt{p/\rho}\)</span>は音速である．平衡状態<span class="math inline">\(\rho = \rho_0, v = 0\)</span>に対する摂動<span class="math inline">\(\delta \rho, \delta v\)</span>を考えて線形化（摂動の2次以上の項を無視）すると</p>
-<p><span class="math display">\[
-\begin{cases}
-\displaystyle
-\frac{\partial f}{\partial t} + C_s \frac{\partial g}{\partial x} = 0
-\\
-\displaystyle
-\frac{\partial g}{\partial t} + C_s \frac{\partial f}{\partial x} = 0
-\end{cases}
-\tag{3.6.1} \label{eq:wave}
-\]</span> となる．ただし，ここで<span class="math inline">\(f = \delta \rho/\rho_0, g = \delta v/C_s\)</span>と置いた．</p>
-</section>
-<section class="slide level0">
-
-<p>ここで，式(<span class="math inline">\(\ref{eq:wave}\)</span>)より<span class="math inline">\(g\)</span>を消去すれば線形波動方程式 <span class="math display">\[
-\frac{\partial^2 f}{\partial t^2} + C_s^2 \frac{\partial^2 f}{\partial x^2} = 0
-\]</span> を得る．または，式(<span class="math inline">\(\ref{eq:wave}\)</span>)の和および差から <span class="math display">\[
-\frac{\partial}{\partial t} (f \pm g) \pm C_s
-\frac{\partial}{\partial x} (f \pm g) = 0
-\]</span> が得られる．すなわち波動方程式の解は<span class="math inline">\(u_{\pm} = f \pm g\)</span>に対する速度<span class="math inline">\(c = \pm C_s\)</span>の線形移流方程式の解の線形結合から得られる．</p>
-<div id="exr-linear-euler-wave" class="theorem exercise">
-<p><span class="theorem-title"><strong>演習問題 3. 9 </strong></span>等温の状態方程式を用いた1次元Euler方程式を線形化し，実際に式(<span class="math inline">\(\ref{eq:wave}\)</span>)が得られることを示せ．</p>
-</div>
-<div id="exr-linear-wave-solution" class="theorem exercise">
-<p><span class="theorem-title"><strong>演習問題 3. 10 </strong></span>周期境界条件のもとで任意の初期条件<span class="math inline">\(f(x, t=0) = f_0(x)\)</span>および<span class="math inline">\(g(x, t=0) = g_0(x)\)</span>が与えられたときの解析解<span class="math inline">\(f(x, t)\)</span>および<span class="math inline">\(g(x, t)\)</span>を求めよ．</p>
-</div>
-</section>
-<section class="slide level0">
-
-<h3 id="数値解">数値解</h3>
-<p><img data-src="figure/wave-solution1.png" class="absolute" style="top: 250px; left: 50px; width: 600px; "> <img data-src="figure/wave-solution2.png" class="absolute" style="top: 250px; left: 700px; width: 600px; "></p>
-<ul>
-<li>初期条件の<span class="math inline">\(f_0\)</span>が同じであっても，<span class="math inline">\(g_0\)</span>の選び方によって波動が左右両方向に伝播する解（左図）や，右方向のみに伝播する解（右図）が得られる．</li>
-<li>波動が左側のみに伝播する解を得るには初期条件をどのように選べば良いか？</li>
-<li>数値解と解析解を比較してみよう．</li>
-</ul>
-</section>
-<section class="slide level0">
-
-<h2><span class="header-section-number">3.8</span> 保存形式</h2>
-<p>多くの物理的に興味ある双曲型偏微分方程式は以下のような保存形（双曲型保存則）で書かれる． <span class="math display">\[
+<div id="exr-liner-riemann-problem" class="theorem exercise">
+<p><span class="theorem-title"><strong>演習問題 3. 7 </strong></span>簡単な例として等温の状態方程式を採用した線形化されたEuler方程式を考えよう． 規格化された <span class="math inline">\(\bm{u} = \left(\delta \rho / \rho_0, \delta v / C_s \right)\)</span>を独立変数にとるとEuler方程式は以下のように書ける． <span class="math display">\[
 \frac{\partial}{\partial t} \bm{u} +
-\frac{\partial}{\partial x} \bm{f}(\bm{u}) = 0.
-\]</span> ここで<span class="math inline">\(\bm{u} = u_1, u_2, \ldots\)</span>は独立変数，<span class="math inline">\(\bm{f} (\bm{u}) = f_1(\bm{u}), f_2(\bm{u}), \ldots\)</span>は流束関数である．独立変数<span class="math inline">\(\bm{u}\)</span>が境界条件の影響を除いて保存量となることは簡単に示すことができる．</p>
-<p>これまで考えてきた線形移流方程式や流体力学のEuler方程式もこの形式で書き下せる．Euler方程式においては質量，運動量，エネルギーなどの保存量が<span class="math inline">\(\bm{u}\)</span>に対応する．</p>
-<div id="exr-conservation-form" class="theorem exercise">
-<p><span class="theorem-title"><strong>演習問題 3. 11 </strong></span>保存形で書かれた上式において<span class="math inline">\(\displaystyle \int \bm{u} dx\)</span> が境界条件の影響を除いて保存することを示せ．</p>
-</div>
-<div id="exr-linear-advection-flux" class="theorem exercise">
-<p><span class="theorem-title"><strong>演習問題 3. 12 </strong></span>線形移流方程式を保存形で書き表し，流束関数<span class="math inline">\(f(u)\)</span>の表式を求めよ．</p>
+\begin{pmatrix}
+0 &amp; C_s \\
+C_s &amp; 0
+\end{pmatrix}
+\frac{\partial}{\partial x} \bm{u} = 0
+\]</span> このときのJacobianに対応する固有値，固有ベクトルは以下の通りである． <span class="math display">\[
+\lambda_{\pm} = \pm C_s,
+\bm{r}_{\pm} =
+\begin{pmatrix}
+1 \\ \pm 1
+\end{pmatrix}
+\]</span> これらを用いると，初期の左状態を<span class="math inline">\((\delta \rho_L, \delta v_L)\)</span>，右状態を<span class="math inline">\((\delta \rho_R, \delta v_R)\)</span>とするRiemann問題の解が <span class="math display">\[
+(\delta \rho, \delta v) =
+\begin{cases}
+(\delta \rho_L, \delta v_L) \quad &amp; x &lt; -C_s t \\
+\displaystyle
+\left(
+\frac{\delta \rho_L + \delta \rho_R}{2} +
+\frac{\rho_0}{C_s} \frac{\delta v_L - \delta v_R}{2},
+\frac{\delta v_L + \delta v_R}{2} +
+\frac{C_s}{\rho_0} \frac{\delta \rho_L - \delta \rho_R}{2},
+\right)   &amp; -C_s t &lt; x &lt; +C_s t \\
+(\delta \rho_R, \delta v_R) \quad &amp; +C_s t &lt; x
+\end{cases}
+\]</span> で与えられることを示せ．</p>
 </div>
 </section>
 <section class="slide level0">
 
+<h3 id="非線形問題への適用roe法">非線形問題への適用（Roe法）</h3>
+<p>一般に非線形問題ではJacobianが<span class="math inline">\(\bm{u}\)</span>に依存するが，セル境界で局所的にJacobianを一定だと仮定すると，問題は局所的には線形になる．したがって，線形Riemann問題の解を使って数値流束を <span class="math display">\[
+\hat{\bm{f}} =
+\frac{1}{2} \left( \bm{f}(\bm{u}_R) + \bm{f}(\bm{u}_L) \right) -
+\frac{1}{2} |\bm{A}| \left( \bm{u}_{R} - \bm{u}_L \right)
+\]</span> のように評価することができる．ただし <span class="math display">\[
+|\bm{A}| = \bm{R} |\bm{\Lambda}| \bm{R}^{-1} \quad
+|\bm{\Lambda}| \equiv \text{diag} (|\lambda_1|, |\lambda_2|, \ldots, |\lambda_n|)
+\]</span> である．（証明は難しくはないが，長くなるのでここでは省略．） 数値流束の第1項は右状態と左状態のフラックスの単純な平均値，第2項は拡散項として働くことが分かるだろう． したがって，<span class="math inline">\(|\bm{A}|\)</span>はしばしば散逸行列（dissipation matrix）などと呼ばれる．</p>
+<p>明らかに<span class="math inline">\(|\bm{A}|\)</span>は不連続面の右状態と左状態に依存する：<span class="math inline">\(|\bm{A}| = |\bm{A}(\bm{u}_L, \bm{u}_R)|\)</span>．ここでRoe平均と呼ばれる右状態と左状態のある種の平均を用いると良い結果が得られることが知られている．この手法は一般に<strong>Roe法</strong>と呼ばれている．宇宙流体業界では一斉を風靡した手法である（らしい）．</p>
+<p>※ Roe法では非物理的な膨張衝撃波が生じることがあり，回避するためにエントロピー補正を導入する必要がある．</p>
+</section>
+<section class="slide level0">
+
+<h3 id="burgers方程式への適用">Burgers方程式への適用</h3>
+<p>Burgers方程式において，右状態と左状態の単純な算術平均で <span class="math display">\[
+\lvert \bm{A}(\bm{u}_L, \bm{u}_R) \rvert \rightarrow
+\left| \frac{\partial f}{\partial u} \right| =
+\left| \frac{u_{R} + u_{L}}{2} \right|
+\]</span> のようにJacobianを評価すれば，数値流束は以下のように評価できる． <span class="math display">\[
+\hat{f} = \frac{1}{2}
+\left[
+  \left( f_{R} + f_{L} \right) -
+  \frac{ \left| u_{R} + u_{L} \right| }{2}
+  \left( u_{R} - u_{L} \right)
+\right]
+\]</span> ここで，各セル内で<span class="math inline">\(u\)</span>が一定と仮定すると <span class="math display">\[
+\hat{f}_{i+1/2} =
+\begin{cases}
+  \dfrac{\left( u_{i} \right)^2}{2}
+  &amp; \left( \dfrac{\partial f}{\partial u} &gt; 0 \right) \\
+  \dfrac{\left( u_{i+1} \right)^2}{2}
+  &amp; \left( \dfrac{\partial f}{\partial u} &lt; 0 \right) \\
+\end{cases}
+\]</span> となり，このスキームが保存形の一次精度風上差分法「スキーム（A）」に一致することが分かる．</p>
+</section>
+<section class="slide level0">
+
+<h2><span class="header-section-number">3.5</span> HLL型Riemann解法</h2>
+<h3 id="hll平均">HLL平均</h3>
+<p>まずはHLL（Harten-Lax-van Leer）型のRiemann解法において最も基本的な考え方であるHLL平均を導入しよう． 何らかの方法で最大固有値<span class="math inline">\(\lambda_{\rm max} = S_R\)</span>および最小固有値<span class="math inline">\(\lambda_{\rm min} = S_L\)</span>が 求まったとして，それによって定まる以下の図のようなRiemann fanを考える．</p>
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="figure/conservative-scheme.png" height="400"></p>
+<p><img data-src="figure/hll-riemann-solver.png" height="250"></p>
 <figcaption><span class="citation" data-cites="ToroTextbook">Toro (<a href="" role="doc-biblioref" onclick="return false;">2009</a>)</span></figcaption>
 </figure>
 </div>
-<p>保存すべき量を正しく保存させるような数値計算スキームを保存形スキームと呼ぶ．これは元の微分形ではなく，積分形で評価することによって得られる．具体的には図に示す領域 <span class="math inline">\([t^{n}, t^{n+1}] \times [x_{i-1/2}, x_{i+1/2}]\)</span> で積分する． <span class="math display">\[
-\frac{1}{\Delta t \Delta x}
-\int_{t^{n}}^{t^{n+1}} dt \int_{x_{i-1/2}}^{x_{i+1/2}} dx
+<p>基礎方程式を<span class="math inline">\([0, T] \times [S_L T, S_R T]\)</span>で積分すると，Riemann fan内部での平均として <span class="math display">\[
+\bm{u}_{*} \equiv
+\frac{1}{(S_R - S_L)T} \int_{S_R T}^{S_L T} \bm{u}(x, T) dx = \frac{1}{S_R - S_L}
 \left[
-  \frac{\partial}{\partial t} \bm{u} + \frac{\partial}{\partial x} \bm{f}
-\right] = 0
-\]</span></p>
-</section>
-<section class="slide level0">
-
-<p>積分形を離散化表現に直すと <span class="math display">\[
-\frac{\bar{\bm{u}}^{n+1}_{i} - \bar{\bm{u}}^{n}_{i}}{\Delta t} +
-\frac{\hat{\bm{f}}_{i+1/2} - \hat{\bm{f}}_{i-1/2}}{\Delta x} = 0
-\tag{3.7.1} \label{eq:discrete-form}
-\]</span> を得る．ここでセル平均値<span class="math inline">\(\bar{\bm{u}}_{i}\)</span>および数値流束<span class="math inline">\(\hat{\bm{f}}^{i+1/2}\)</span>は以下で定義される． <span class="math display">\[
-\bar{\bm{u}}^{n}_{i} = \frac{1}{\Delta x}
-\int_{x_{i-1/2}}^{x+1/2} \bm{u}(x,t^n) dx
-\quad \quad
-\hat{\bm{f}}_{i+1/2} = \frac{1}{\Delta t}
-\int_{t^{n}}^{t^{n+1}} \bm{f}(\bm{u}(x_{i+1/2}, t)) dt
-\]</span> この形式で書いておけば数値流束としてどんな近似をとったとしても，厳密に（丸め誤差などの計算機の誤差の範囲内で）保存則を満たす．そのため，この形式を<strong>保存形式</strong>と呼ぶ．</p>
-<p>なお，厳密にはこれは<strong>有限体積法</strong>に分類される手法であり，特に圧縮性流体力学の数値解法としてよく用いられる．ただし，簡単に分かるように<span class="math inline">\(\bar{\bm{u}}_{i} = \bm{u}_{i} + \mathcal{O} (\Delta x^2)\)</span>であり，2次精度以下ではこれまで扱ってきた有限差分法と有限体積法の差はほとんどない．この講義では3次精度以上のスキームは扱わないので，以下では<span class="math inline">\(\bar{\bm{u}}_{i} \approx \bm{u}_{i}\)</span>として両者を区別せずに用いる．</p>
-<div id="exr-discrete-conservation-law" class="theorem exercise">
-<p><span class="theorem-title"><strong>演習問題 3. 13 </strong></span>保存形式のスキームであれば境界条件の影響を除いて保存則が厳密に満たされる．したがって，周期境界条件の場合には以下の式が満たされる．このことを示せ． <span class="math display">\[
-\sum_{i} \bar{\bm{u}}_{i} = \text{const}
-\]</span></p>
+  S_R \bm{u}_R - S_L \bm{u}_L + \bm{f}_L - \bm{f}_R
+\right]
+\tag{4.5.1} \label{eq:hll-average}
+\]</span> が得られ，これをHLL平均と呼ぶ． ただし<span class="math inline">\(\bm{f}_L = f(\bm{u}_L)\)</span>，<span class="math inline">\(\bm{f}_R = f(\bm{u}_R)\)</span>である．</p>
+<div id="exr-hll-average" class="theorem exercise">
+<p><span class="theorem-title"><strong>演習問題 3. 8 </strong></span>HLL平均の式<span class="math inline">\((\ref{eq:hll-average})\)</span>を示し，これが基礎方程式やRiemann fanの内部状態に依存しないことを確認せよ．</p>
 </div>
 </section>
 <section class="slide level0">
 
-<p>これまで線形移流方程式(<span class="math inline">\(f(u) = cu\)</span>)について考えてきたスキームは以下のように保存形式で書くことができる．</p>
-<h3 id="ftcsスキーム">FTCSスキーム</h3>
-<p><span class="math display">\[
-\hat{f}_{i+1/2} =
-\frac{1}{2} \left( f_{i} + f_{i+1} \right)
-\]</span></p>
-<h3 id="次精度風上差分スキーム">1次精度風上差分スキーム</h3>
-<p><span class="math display">\[
-\hat{f}_{i+1/2} =
-\frac{1}{2} \left( f_{i} + f_{i+1} \right) -
-\frac{|c|}{2} \left( u_{i+1} - u_{i} \right)
-\]</span></p>
-<h3 id="lax-friedrichsスキーム-1">Lax-Friedrichsスキーム</h3>
-<p><span class="math display">\[
-\hat{f}_{i+1/2} =
-\frac{1}{2} \left( f_{i} + f_{i+1} \right) -
-\frac{\Delta x}{2 \Delta t} \left( u_{i+1} - u_{i} \right)
-\]</span></p>
-<h3 id="lax-wendroffスキーム-1">Lax-Wendroffスキーム</h3>
-<p><span class="math display">\[
-\hat{f}_{i+1/2} =
-\frac{1}{2} \left( f_{i} + f_{i+1} \right) -
-\frac{c^2 \Delta t}{2 \Delta x}  \left( u_{i+1} - u_{i} \right)
-\]</span></p>
-</section>
-<section class="slide level0">
-
-<p>よく用いられる保存形スキームは <span class="math display">\[
-\hat{f}_{i+1/2} =
-\frac{\alpha f_{i} + \beta f_{i+1}}{\alpha + \beta} -
-\gamma (u_{i+1} -u_{i})
-\tag{3.7.2} \label{eq:numerical-flux}
-\]</span> の形で書けることが多い．ここで第1項は<span class="math inline">\(f_{i}\)</span>と<span class="math inline">\(f_{i+1}\)</span>の何らかの平均，第2項は<span class="math inline">\(\hat{f}_{i+1/2} - \hat{f}_{i-1/2}\)</span>の形にしたときに数値拡散項として働くことが分かる．</p>
-<p>数値流束の評価は第1項だけでできるのが理想であるが，FTCSスキーム(<span class="math inline">\(\gamma = 0\)</span>)が数値的に不安定であるように，この項だけでは不安定になりやすい．そこで第2項を加えてスキームを安定化させていると考えることができる．</p>
-<div id="exr-numerical-flux-dissipation" class="theorem exercise">
-<p><span class="theorem-title"><strong>演習問題 3. 14 </strong></span>式(<span class="math inline">\(\ref{eq:numerical-flux}\)</span>)を式(<span class="math inline">\(\ref{eq:discrete-form}\)</span>)に代入することにより，式(<span class="math inline">\(\ref{eq:numerical-flux}\)</span>)の第2項が<span class="math inline">\(\gamma\)</span>に比例する数値拡散を表す項になっていることを確かめよ．</p>
-</div>
-<div id="exr-compare-dissipation" class="theorem exercise">
-<p><span class="theorem-title"><strong>演習問題 3. 15 </strong></span>各スキームに含まれる数値拡散項の大きさを比較せよ．</p>
+<h3 id="hll法">HLL法</h3>
+<p>HLL型Riemann解法で最も基本的なものがHLL法である． HLL法ではRiemann fanの内部構造を無視し，物理量が常に一定と仮定する．この一定値は当然ながらHLL平均<span class="math inline">\(\bm{u}_{*}\)</span>と一致するはずである．<br>
+この条件のもとで基礎方程式を<span class="math inline">\([0, t] \times [0, S_R T]\)</span>で積分し，式<span class="math inline">\((\ref{eq:hll-average})\)</span>を用いると，数値流束は <span class="math display">\[
+\hat{\bm{f}} =
+\begin{cases}
+\bm{f}_L &amp; 0 \leq S_L
+\\
+\displaystyle
+\frac{1}{S_R - S_L}
+\left[
+  S_R \bm{f}_L - S_L \bm{f}_R + S_L S_R \left( \bm{u}_R - \bm{u}_L \right)
+\right]
+&amp; S_L \leq 0 \leq S_R
+\\
+\bm{f}_R &amp; S_R \leq 0
+\end{cases}
+\]</span> で与えられる．（<span class="math inline">\([0, t] \times [S_L t, 0]\)</span>で積分しても同じ結果が得られる．）</p>
+<p><span class="math inline">\(S_L = \min(0, S_L)\)</span>, <span class="math inline">\(S_R = \max(0, S_R)\)</span>と読み替えれば数値流束は常に <span class="math display">\[
+\hat{\bm{f}}^{\rm HLL} =
+\frac{1}{S_R - S_L}
+\left[
+  S_R \bm{f}_L - S_L \bm{f}_R + S_L S_R \left( \bm{u}_R - \bm{u}_L \right)
+\right]
+\tag{4.5.2} \label{eq:hll-flux}
+\]</span> で与えられる．これがHLL法の数値流束である．流束の重み付き平均に散逸項<span class="math inline">\(\bm{u}_R - \bm{u}_L\)</span>が付加されていることが分かる．</p>
+<div id="exr-hll-flux-formula" class="theorem exercise">
+<p><span class="theorem-title"><strong>演習問題 3. 9 </strong></span>HLL法の数値流束が式<span class="math inline">\((\ref{eq:hll-flux})\)</span>で与えられることを示せ．</p>
 </div>
 </section>
 <section class="slide level0">
 
-<h2><span class="header-section-number">3.9</span> Godunovの定理</h2>
-<p>線形移流方程式に対して，以下の形の線形スキームを考えよう． <span class="math display">\[
-u^{n+1}_{i} = \sum_{k} c_k u^{n}_{i+k}
-\]</span> このとき，2次以上の精度を持ついかなるスキームも単調性を維持することができない．これを<strong>Godunovの定理</strong>と呼ぶ．</p>
-<p>単調正を維持できないということは数値振動が避けられないことを意味する．実用上は2次精度以上はほぼ必須であることを考えると，スキームに何らかの非線形性を導入することが必要になってくる．単調性が崩れるのは不連続面など急峻な勾配が存在する場合であることを考えると，例えば</p>
-<ol type="1">
-<li>滑らかな領域では高次精度を用い，急勾配が存在する領域では数値拡散を強くする</li>
-<li>急勾配が存在する領域を上手く避けるステンシルを選ぶ</li>
-</ol>
-<p>などによってできるだけ単調正を維持するようなスキームを設計することが多い．いずれにせよ数値拡散項（<span class="math inline">\(\gamma\)</span>）の選び方が鍵になる．</p>
-</section>
-<section class="slide level0">
-
-<h2><span class="header-section-number">3.10</span> 人工粘性</h2>
-<p>数値振動を抑えながら安定に急峻な解を扱うための古典的な手法として，人工粘性が挙げられる．例えば，時間・空間2次精度のLax-Wendroffスキームをベースとし，急勾配がある領域にだけ人工的に大きな数値拡散項を加えて精度を局所的に1次精度に落とし，数値振動を防ぐ．この数値拡散項をうまく解の勾配等によって決定すればスキームは非線形となり，Godunovの定理の前提条件である線形性を回避することができる．</p>
-<p>ここでは最も簡単なモデルとして， <span class="math display">\[
-\kappa = \varepsilon
-\lvert u^{n}_{i+1} - 2 u^{n}_{i} + u^{n}_{i-1} \rvert
-\]</span> によって決定する拡散項をLax-Wendroff法に付加したスキームを考えよう． <span class="math display">\[
-u^{n+1}_{i} = u^{n}_{i} -
-\frac{1}{2} \nu \left( u^{n}_{i+1} - u^{n}_{i-1} \right) +
-\left( \frac{1}{2} \nu^2 + \kappa \right)
-\left( u^{n}_{i+1} - 2 u^{n}_{i} + u^{n}_{i-1} \right)
-\]</span> ここで，<span class="math inline">\(\varepsilon\)</span>は経験的に決められる定数である．このとき，数値拡散項<span class="math inline">\(\kappa\)</span>は<span class="math inline">\(|\partial^2 u/\partial x^2|\)</span>に比例して大きくなるように選ばれていることが分かる．</p>
 <ul>
-<li>スカラー方程式以外の場合についても，何らかの基準で決めた拡散項を追加することで局所的に拡散を強くし，数値振動を抑えた滑らかな解を実現することを狙う．</li>
-<li>流体力学における粘性は速度の空間2階微分であるが，数値拡散は物理的な粘性項ではないので，これにはこだわらない．</li>
-<li>通常の拡散項（2階微分）では拡散が強く効きすぎるので，4階微分や6階微分などの高階微分項を数値的に導入し，より短い波長の振動のみを効果的に減衰させることも多い．これはhyper viscosityと呼ばれる．</li>
+<li><p>HLL法の数値流速は固有値の最大値および最小値さえ求まれば方程式系に依存しない．固有値分解が必要ないのは大きな利点である．最大・最小固有値だけであれば比較的簡単に求まるが，固有値分解は解析的にも面倒だし数値的にも計算コストがかかる．例えばEuler方程式であれば最大・最小固有値は<span class="math inline">\(\lambda_{\rm max/min} = v \pm C_s\)</span>である．（ただし左状態・右状態で物理量は違うので任意性は残る．）</p></li>
+<li><p>Riemann fanが左右対称，すなわち<span class="math inline">\(c \equiv S_R = -S_L\)</span>と書けるとする．これを代入すると <span class="math display">\[
+\hat{\bm{f}}^{\rm LLF} =
+\frac{1}{2}
+\left[
+\bm{f}_L + \bm{f}_R - c \left( \bm{u}_R - \bm{u}_L \right)
+\right]
+\tag{*}
+\]</span> これはRusanov法(local Lax-Friedrichs法）などとも呼ばれる．HLL法よりも散逸を強く取り入れている（すなわちより安定になっている）ことに注意しよう．</p></li>
+<li><p>Riemann fanの内部構造を無視しているため，中間固有値に対応するモード（Euler方程式で言えばエントロピーモード）を解像できない．散逸項が最大・最小固有値によって決まることを考えると，特に中間固有値と最大・最小固有値の差が大きいときには数値的な散逸を過度に取り入れてしまう．</p></li>
 </ul>
 </section>
 <section class="slide level0">
 
-<p><img data-src="figure/linear_advection_lw_v0.png" class="absolute" style="top: 250px; left: 50px; width: 600px; "> <img data-src="figure/linear_advection_lw_v1.png" class="absolute" style="top: 250px; left: 650px; width: 600px; "></p>
-<p>オリジナルのLax-Wendroffスキーム（左）と，<span class="math inline">\(\epsilon = 0.2\)</span>とした人工粘性入りLax-Wendroffスキーム（右）の比較．数値振動が抑えられていることが分かる．ただし，一般に必要な人工粘性の強さは経験的に決められるもので，また必要な粘性の強さは問題に依存する．</p>
-<p>※ 近年はこのような職人芸的な人工粘性の選び方をせずとも，数値振動を抑えつつ急峻な勾配を捉えられる手法を使うのがトレンドである．人工粘性のファインチューニングにいそしむよりも，より現代的なスキームの勉強をしよう．</p>
+<h3 id="hllc法-euler方程式">HLLC法 (Euler方程式)</h3>
+<p>HLL法のRiemann fan内部で物理量が一定という仮定をやめて，内部構造を考えてみよう．一般にはRiemann fanの内部構造は方程式系に依存するので，どんな保存則にも使えるというHLL法の利点は失われてしまうが，それによって解像度が向上するのであれば一考の価値はあるだろう．ここでは下図のようにEuler方程式について中間固有値（エントロピーモード）を1つ考え，Riemann fan内部を2状態で近似してみよう．エントロピーモードに対応する不連続は接触不連続面(Contact Discontinuity)なので，この2状態近似のRimeann解法は名前に”C”をつけてHLLC法と呼ばれる．</p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figure/hllc-riemann-solver.png" height="300"></p>
+<figcaption><span class="citation" data-cites="ToroTextbook">Toro (<a href="" role="doc-biblioref" onclick="return false;">2009</a>)</span></figcaption>
+</figure>
+</div>
+</section>
+<section class="slide level0">
+
+<p>HLL平均を求める手順と同様に，基礎方程式を<span class="math inline">\([0, T] \times [S_L T, S_R T]\)</span>で積分し，2状態近似を用いる（<span class="math inline">\(S_L t &lt; x &lt; S_* t\)</span>では<span class="math inline">\(\bm{u} = \bm{u}_{*L}\)</span>, <span class="math inline">\(S_* t &lt; x &lt; S_R t\)</span>では<span class="math inline">\(\bm{u} = \bm{u}_{*R}\)</span>と仮定する）ことで以下の関係式が得られる． <span class="math display">\[
+\frac{S_* - S_L}{S_R - S_L} \bm{u}_{*L} +
+\frac{S_R - S_*}{S_R - S_L} \bm{u}_{*R} = \bm{u}_{*}
+\tag{4.5.3} \label{eq:hllc-average}
+\]</span></p>
+<p>また，一般にRiemann fanの左，右境界を挟んで以下の関係式が成り立つ． <span class="math display">\[
+\begin{align}
+&amp; \bm{f}_{*L} = \bm{f}_L + S_L (\bm{u}_{*L} - \bm{u}_L)
+\\
+&amp; \bm{f}_{*R} = \bm{f}_R + S_R (\bm{u}_{*R} - \bm{u}_R)
+\end{align}
+\tag{4.5.4} \label{eq:conservation-law}
+\]</span></p>
+<div id="exr-hllc-average" class="theorem exercise">
+<p><span class="theorem-title"><strong>演習問題 3. 10 </strong></span>式<span class="math inline">\((\ref{eq:hllc-average})\)</span>を示せ．</p>
+</div>
+<div id="exr-conservation-law" class="theorem exercise">
+<p><span class="theorem-title"><strong>演習問題 3. 11 </strong></span>基礎方程式を積分する際の検査体積<span class="math inline">\([T_1, T_2] \times [X_1, X_2]\)</span>が1つの構造のみを含むように領域を選ぶ．このとき，構造の伝播速度<span class="math inline">\(S\)</span>と<span class="math inline">\(\bm{u}\)</span>および<span class="math inline">\(\bm{f}(\bm{u})\)</span>の間に以下の関係式が成り立つことを示せ． <span class="math display">\[
+\bm{f}(\bm{u}) - S \bm{u} = \mathrm{const.}
+\]</span> 式<span class="math inline">\((\ref{eq:conservation-law})\)</span>はこの関係式から導かれる．</p>
+</div>
+</section>
+<section class="slide level0">
+
+<p>以上より，<span class="math inline">\(S_{*}, \bm{u}_{*L}, \bm{u}_{*R}\)</span>が与えられれば，数値流速は以下のように求まる．</p>
+<p><span class="math display">\[
+\hat{\bm{f}}^{\rm HLLC} =
+\begin{cases}
+\bm{f}_{L} &amp; 0 \leq S_L
+\\
+\bm{f}_{*L} &amp; S_L \leq 0 \leq S_*
+\\
+\bm{f}_{*R} &amp; S_* \leq 0 \leq S_R
+\\
+\bm{f}_R &amp; S_R \leq 0
+\end{cases}
+\]</span></p>
+<p>ここまでは一般的に成り立つ議論であったが，Riemann fanの内部状態（<span class="math inline">\(S_{*}, \bm{u}_{*L}, \bm{u}_{*R}\)</span>）を求めるには仮定が必要になる．</p>
+<p>Euler方程式では中間固有値がエントロピーモードに対応することを考えると，接触不連続面の性質から<span class="math inline">\(v_{*L} = v_{*R} = S_*\)</span>, <span class="math inline">\(p_{*L} = p_{*R}\)</span>と仮定してもよいだろう． このとき，式<span class="math inline">\((\ref{eq:conservation-law})\)</span>の運動量保存則を用いて以下を得る． <span class="math display">\[
+p_{*L} = p_L + \rho_L (S_L - v_L)(S_{*} - v_L), \quad
+p_{*R} = p_R + \rho_R (S_R - v_R)(S_{*} - v_R).
+\]</span> これより<span class="math inline">\(S_{*}\)</span>は以下のように求まる． <span class="math display">\[
+S_{*} =
+\frac{
+  p_R - p_L + \rho_L v_L (S_L - v_L) - \rho_R v_R (S_R - v_R)
+}{
+  \rho_L (S_L - v_L) - \rho_R (S_R - v_R)
+}
+\]</span> 同様に式<span class="math inline">\((\ref{eq:conservation-law})\)</span>の質量保存則からは以下を得る． <span class="math display">\[
+\rho_{*L} = \rho_K \frac{S_L - v_L}{S_L - S_*}, \quad
+\rho_{*R} = \rho_K \frac{S_R - v_R}{S_R - S_*}
+\]</span></p>
+</section>
+<section class="slide level0">
+
+<p>以上でHLLC法に必要な情報は全て得られたので数値流束は求まることになる．</p>
+<p>実用上は，Euler方程式の具体的な形を使って少し計算することで得られる以下の形式が便利である． <span class="math display">\[
+\begin{aligned}
+&amp; \bm{u}_{*K} = \frac{S_K \bm{u}_K - \bm{f}_K + p_{*K} \bm{D}_*}{S_K - S_*}
+\\
+&amp; \bm{f}_{*K} =
+\frac{
+  S_* \left( S_K \bm{u}_K - \bm{f}_K \right) - S_K p_{*K} \bm{D}_{*}
+}{
+  S_K - S_*
+}
+\end{aligned}
+\]</span> ただし，<span class="math inline">\(K = L, R\)</span>および<span class="math inline">\(\bm{D}_{*} = (0, 1, S_*)\)</span>である．</p>
+</section>
+<section class="slide level0">
+
+<h3 id="様々なhll型riemann解法mhd方程式の場合">様々なHLL型Riemann解法（MHD方程式の場合）</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figure/hll-family.png" height="500"></p>
+<figcaption><span class="citation" data-cites="Miyoshi2005a">Miyoshi &amp; Kusano (<a href="" role="doc-biblioref" onclick="return false;">2005</a>)</span></figcaption>
+</figure>
+</div>
+<ul>
+<li>内部構造の近似の仕方によって様々な変種が存在する．</li>
+<li>最も簡単なHLL法以外は一般に方程式系に陽に依存する．</li>
+<li>より正確に内部構造を考慮するRiemann解法は解像度は高いが，数値的には不安定になりやすい．</li>
+</ul>
 
 <div class="footer footer-default">
 <p><a href="index.html"> トップページに戻る </a></p>

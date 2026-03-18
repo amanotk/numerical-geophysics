@@ -327,69 +327,520 @@
 
 <section class="slide level0">
 
-<h1><span class="header-section-number">2</span> 差分法の基礎</h1>
+<h1><span class="header-section-number">2</span> 双曲型偏微分方程式の解法 (1)：線形問題</h1>
 <p><span class="math display">\[
 \newcommand{\bm}[1]{\symbfit{#1}}
 \]</span></p>
 </section>
 <section class="slide level0">
 
-<h2><span class="header-section-number">2.1</span> 有限差分法による離散化</h2>
-<p>計算機は連続的な関数を厳密に表現することができないため，基礎方程式を数値的に解く際には何らかの離散化が必要となる．典型的には離散的な格子点 <span class="math inline">\(x_{i} (i = 1, 2, \ldots, N)\)</span> において定義される <span class="math inline">\(u_{i} = u(x_{i})\)</span> を用いる．</p>
-<p>この離散化によって格子点上の関数値は定義されたが，偏微分方程式に現れる微分値は未知である．（微分値も独立変数にとる手法も存在する．）安直には微分を差分に置き換えてやればよい． 例えば最も簡単な場合として等間隔格子 <span class="math inline">\(x_{i} = i \Delta x\)</span> を使う場合を考えると，一階微分は直感的に <span class="math display">\[
-\left( \frac{\partial u}{\partial x} \right)_{i} \approx \frac{u_{i+1} - u_{i-1}}{2 \Delta x}
-\]</span> のように近似することができるだろう．しかし，同様に <span class="math display">\[
-\left( \frac{\partial u}{\partial x} \right)_{i} \approx \frac{u_{i+1} - u_{i}}{\Delta x}
-\]</span> や <span class="math display">\[
-\left( \frac{\partial u}{\partial x} \right)_{i} \approx \frac{u_{i} - u_{i-1}}{\Delta x}
-\]</span> でも良さそうである． どのような差分近似を採用したら良いのだろうか？</p>
-</section>
-<section class="slide level0">
-
-<h2><span class="header-section-number">2.2</span> 差分近似の誤差と精度</h2>
-<p>微分の差分近似は一意には決まらないが，その誤差は理論的に評価することができる．そのために<span class="math inline">\(x = x_i\)</span>近傍でのTaylor展開を考えよう． <span class="math display">\[
-u_{i\pm1} = u(x_{i} \pm \Delta x) = u_{i} \pm
-\left( \frac{\partial u}{\partial x} \right)_{i} \Delta x^1 +
-\frac{1}{2} \left( \frac{\partial^2 u}{\partial x^2} \right)_{i} \Delta x^2
-\pm \frac{1}{6} \left( \frac{\partial^3 u}{\partial x^3} \right)_{i} \Delta x^3 +
-\mathcal{O} (\Delta x^4)
-\]</span> これから直ちに <span class="math display">\[
-\left( \frac{\partial u}{\partial x} \right)_{i} \approx \frac{u_{i+1} - u_{i-1}}{2 \Delta x} +
-\mathcal{O} (\Delta x^2)
-\]</span> を得る．すなわち，格子幅<span class="math inline">\(\Delta x\)</span>を小さくするとこの差分近似の誤差は<span class="math inline">\(\Delta x^2\)</span>に比例して小さくなることが分かる．このように展開を途中で打ち切ることから生じる誤差を打ち切り誤差と呼ぶ．</p>
-<p>一般に差分近似の誤差が<span class="math inline">\(\Delta x\)</span>の<span class="math inline">\(n\)</span>乗に比例して小さくなるとき，その差分近似は<span class="math inline">\(n\)</span>次精度と呼ばれる．</p>
-<div id="exr-finite-difference-order" class="theorem exercise">
-<p><span class="theorem-title"><strong>演習問題 2. 1 </strong></span>差分近似 <span class="math inline">\(\displaystyle \left( \frac{\partial u}{\partial x} \right)_{i} \approx \frac{u_{i+1} - u_{i}}{\Delta x}\)</span> および <span class="math inline">\(\displaystyle \left( \frac{\partial u}{\partial x} \right)_{i} \approx \frac{u_{i} - u_{i-1}}{\Delta x}\)</span> の精度（次数）を求めよ．</p>
+<h2><span class="header-section-number">2.1</span> 線形移流方程式</h2>
+<div class="column-body">
+<div class="column-page" width="800" height="600">
+<div class="absolute" style="top: -5px; right: 50px; height: 24px; ">
+<p><a href="https://github.com/amanotk/numerical-geophysics/blob/main/notebook/LinearAdvectionEquation.ipynb">Notebook on GitHub</a> <a href="https://colab.research.google.com/github/amanotk/numerical-geophysics/blob/main/notebook/LinearAdvectionEquation.ipynb" target="_blank"><img src="figure/colab-badge.svg" alt="Open in Colab" style="display:inline; vertical-align:-0.2em; height:1.2em;"></a></p>
 </div>
-</section>
-<section class="slide level0">
-
-<h2><span class="header-section-number">2.3</span> 前進差分・後退差分・中心差分</h2>
-<p>差分近似の次数が同じであっても，その表現は必ずしも一つに定まるわけではない．それは評価点<span class="math inline">\(x=x_i\)</span>における差分近似を構成するために近傍のどの点を採用するかに自由度があるためである．</p>
-<p>評価点<span class="math inline">\(x=x_i\)</span>の</p>
-<ul>
-<li>前の点を使う <span class="math inline">\(\displaystyle \left( \frac{\partial u}{\partial x} \right)_{i} \approx \frac{u_{i+1} - u_{i}}{\Delta x}\)</span> のような差分を<strong>前進差分</strong> (forward difference)</li>
-<li>後の点を使う <span class="math inline">\(\displaystyle \left( \frac{\partial u}{\partial x} \right)_{i} \approx \frac{u_{i} - u_{i-1}}{\Delta x}\)</span> のような差分を<strong>後退差分</strong> (backward difference)</li>
-<li>前後を等しく用いる <span class="math inline">\(\displaystyle \left( \frac{\partial u}{\partial x} \right)_{i} \approx \frac{u_{i+1} - u_{i-1}}{2 \Delta x}\)</span> のような差分を<strong>中心差分</strong>（central difference）</li>
-</ul>
-<p>と呼ぶ．これらは単なる呼び名であって，与えられた方程式を解くにあたってどの差分近似を採用すべきかは全く明らかでない．多くの場合において，近似すべき項の<strong>物理的性質に適した差分近似</strong>を用いなければ実用的な数値計算はできないことがほとんどである． （そもそも時間微分の近似以外の場合においては前進・後退という名前自体が物理的に全くナンセンスである．）</p>
-</section>
-<section class="slide level0">
-
-<h2><span class="header-section-number">2.4</span> 高階微分の差分近似</h2>
-<p>基本的には1階微分の場合と同様にTaylor展開を用いて必要な微分係数以外の項を消去すればよい． 例えば2階微分であれば <span class="math display">\[
-\left( \frac{\partial^2 u}{\partial x^2} \right)_i \approx
-\frac{u_{i+1} - 2 u_{i} + u_{i-1}}{\Delta x^2} +
-\mathcal{O} (\Delta x^2)
+</div>
+</div>
+<p>ここでは特に断りの無い限りは以下の線形移流方程式の初期値・境界値問題を考える．ただし<span class="math inline">\(c\)</span>は定数である． <span class="math display">\[
+\frac{\partial u}{\partial t} + c \frac{\partial u}{\partial x} = 0
+\]</span> 初期値<span class="math inline">\(u(x,t=0)\)</span>が与えられたときの解析解は以下で与えられ，初期に与えられたプロファイルが一定速度<span class="math inline">\(c\)</span>で<span class="math inline">\(x\)</span>の正方向に伝播する． <span class="math display">\[
+u(x, t) = u(x - ct, 0)
 \]</span></p>
-<p>より高階の微分や前進差分・後退差分なども構成することができる． よく使われる差分公式については例えば <a href="https://en.wikipedia.org/wiki/Finite_difference_coefficient">Wikipedia</a> を参照せよ．</p>
-<p>ある点の微分値を差分近似する際に必要となる周辺の範囲のことを<strong>ステンシル</strong>と呼ぶ．一般に，高階微分の差分近似や，同じ次数でも高次精度の差分を構成する際にはより広いステンシルが必要となる．</p>
-<div id="exr-second-order-finite-difference" class="theorem exercise">
-<p><span class="theorem-title"><strong>演習問題 2. 2 </strong></span>上記の差分近似が2次精度であることを示せ．Taylor展開を3次まで行う必要があることに注意せよ．</p>
+<p>一見この方程式は簡単に解けそうにも思えるが，精度良く数値解を得るのは意外と難しい．またこの問題の数値解法は流体方程式などの非線形の双曲型偏微分方程式の解法の基礎となっている．（線形問題が解けないのであれば非線形問題が解けるわけがない！）</p>
+<p><img data-src="figure/linear_advection1.png" class="absolute" style="left: 150px; bottom: 20px; height: 250px; "> <img data-src="figure/linear_advection2.png" class="absolute" style="left: 700px; bottom: 20px; height: 250px; "></p>
+</section>
+<section class="slide level0">
+
+<p>ここでは安直な差分近似を用いた線形移流方程式の数値解法を考えてみよう．解を時間・空間方向に離散化し，<span class="math inline">\(u^{n}_{i}\)</span> と書こう．ここで時間方向の格子点（時間ステップ）を上付き添字 <span class="math inline">\(^n\)</span> ，空間方向の格子点を下付き添字 <span class="math inline">\(_i\)</span> で現す．<br>
+時間方向の差分には過去の情報だけを用いて前進差分，空間方向は前後のバイアスがない中心差分を用いると，解くべき方程式は <span class="math display">\[
+\frac{u^{n+1}_{i} - u^{n}_{i}}{\Delta t} + c \frac{u^{n}_{i+1} - u^{n}_{i-1}}{2 \Delta x} = 0
+\]</span> と書ける．これを書き換えて <span class="math display">\[
+\text{FTCS: } u^{n+1}_{i} = u^{n}_{i} - \left( \frac{c \Delta t}{2 \Delta x} \right)
+\left( u^{n}_{i+1} - u^{n}_{i-1} \right)
+\]</span> を得る．右辺は<span class="math inline">\(u^{n}_{i-1}, u^{n}_{i}, u^{n}_{i+1}\)</span>の情報のみで評価でき，これらから次のステップの解<span class="math inline">\(u^{n+1}_{i}\)</span>が求まる．</p>
+<p>数値解を求めるためのアルゴリズムは一般に数値計算<strong>スキーム</strong>と呼ばれる．この場合は時間方向に前進差分，空間方向に中心差分を用いているのでFTCSスキーム（Forward in Time and Centered in Space)と呼ばれる．</p>
+<p>同様に空間方向に前進差分を使ったFTFS（Forawrd in Space）や後退差分を使ったFTBS（Backward in Space）も以下のように定義できるだろう． <span class="math display">\[
+\text{FTFS: } u^{n+1}_{i} = u^{n}_{i} - \left( \frac{c \Delta t}{\Delta x} \right)
+\left( u^{n}_{i+1} - u^{n}_{i} \right)
+\quad
+\quad
+\text{FTBS: } u^{n+1}_{i} = u^{n}_{i} - \left( \frac{c \Delta t}{\Delta x} \right)
+\left( u^{n}_{i} - u^{n}_{i-1} \right)
+\]</span></p>
+</section>
+<section class="slide level0">
+
+<h3 id="例ftcsスキームによる数値解">例：FTCSスキームによる数値解</h3>
+<p><img data-src="figure/ftcs_rect.png" class="absolute" style="top: 200px; left: 50px; height: 350px; "> <img data-src="figure/ftcs_sine.png" class="absolute" style="top: 200px; left: 700px; height: 350px; "></p>
+<ul>
+<li>矩形波（急勾配がある場合）の計算結果は明らかにおかしい．</li>
+<li>一見すると初期条件が滑らかな関数であれば良さそうに見えるが・・・？</li>
+<li>FTFSやFTBSはどうだろうか？</li>
+</ul>
+</section>
+<section class="slide level0">
+
+<h2><span class="header-section-number">2.2</span> 数値計算スキームの性質</h2>
+<h3 id="適合性">適合性</h3>
+<p>離散化の刻み幅を小さくしていくにつれて離散近似が元の微分方程式に近づくとき，そのスキームは「適合」すると呼ぶ．適合性は自然に満たされることが多い．</p>
+<h3 id="収束性">収束性</h3>
+<p>離散化の刻み幅を小さくしていくにつれて，数値解が元の微分方程式の解に近づくことを「収束」すると呼ぶ．収束するスキームであれば十分な離散点をとれば（原理的には）誤差をいくらでも小さくすることができる．</p>
+<h3 id="安定性">安定性</h3>
+<p>時間発展型の方程式の数値計算スキームについて適用される概念．スキームの数値的な誤差が時間的に増大しないとき，そのスキームは「安定」であると呼ぶ．数値的に安定でないスキームは実用的には使えない．詳細は次節で述べる．</p>
+</section>
+<section class="slide level0">
+
+<h3 id="例ftcsスキーム移流方程式">例：FTCSスキーム（移流方程式）</h3>
+<p>時間・空間の両方向についてTaylor展開すると <span class="math display">\[
+\begin{aligned}
+\frac{u^{n+1}_{i} - u^{n}_{i}}{\Delta t} + c \frac{u^{n}_{i+1} - u^{n}_{i-1}}{2 \Delta x}
+&amp;=
+\left( \frac{\partial u}{\partial t} \right)^{n}_{i} +
+c \left( \frac{\partial u}{\partial x} \right)^{n}_{i}
+\\
+&amp;+
+\frac{\Delta t}{2} \left( \frac{\partial^2 u}{\partial t^2} \right)^{n}_{i} +
+c\frac{\Delta x^2}{6} \left( \frac{\partial^3 u}{\partial x^3} \right)^{n}_{i}
++ \text{(higher orders)}
+\end{aligned}
+\]</span> これからFTCSスキームの打ち切り誤差は <span class="math inline">\(\mathcal{O}(\Delta t, \Delta x^2)\)</span> であることが分かる．</p>
+<p><span class="math inline">\(\Delta t\)</span>や<span class="math inline">\(\Delta x\)</span>を小さくしていくにつれて差分近似は明らかに元の微分方程式に近づくので，このスキームは適合する．一方で，収束性は実際に得られた数値解によって判断すべきものなので，これだけからは分からない．ただし，我々は実験的にこのスキームが不安定であることを知っているので，収束性も満たさないことは明らかである．</p>
+<div id="exr-ftcs-error-estimate" class="theorem exercise">
+<p><span class="theorem-title"><strong>演習問題 2. 1 </strong></span>Taylor展開によって実際に上記のFTCSスキームの打ち切り誤差評価が正しいことを示せ．</p>
 </div>
-<div id="exr-finite-difference-stencil" class="theorem exercise">
-<p><span class="theorem-title"><strong>演習問題 2. 3 </strong></span>高階微分の差分近似に広いステンシルが必要になるのは何故か．例えば，4階微分<span class="math inline">\(\partial^4 u/\partial x^4\)</span>を表すには最低何点のステンシルが必要になるか考えよ．</p>
+</section>
+<section class="slide level0">
+
+<h3 id="例数値解の収束性">例：数値解の収束性</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figure/convergence.png" height="400"></p>
+<figcaption>数値解の収束性を調べた例 <span class="citation" data-cites="Matsumoto2019a">(<a href="" role="doc-biblioref" onclick="return false;">Matsumoto et al., 2019</a>)</span></figcaption>
+</figure>
 </div>
+</section>
+<section class="slide level0">
+
+<h2><span class="header-section-number">2.3</span> von Neumannの安定性解析</h2>
+<div class="column-body">
+<div class="column-page" width="800" height="600">
+<div class="absolute" style="top: -5px; right: 50px; height: 24px; ">
+<p><a href="https://github.com/amanotk/numerical-geophysics/blob/main/notebook/vonNeumannStabilityAnalysis.ipynb">Notebook on GitHub</a> <a href="https://colab.research.google.com/github/amanotk/numerical-geophysics/blob/main/notebook/vonNeumannStabilityAnalysis.ipynb" target="_blank"><img src="figure/colab-badge.svg" alt="Open in Colab" style="display:inline; vertical-align:-0.2em; height:1.2em;"></a></p>
+</div>
+</div>
+</div>
+<p>差分法の数値的安定性を調べるために最も一般的に使われている手法がvon Neumannの安定性解析である．これは「等間隔格子(<span class="math inline">\(\Delta t\)</span>および<span class="math inline">\(\Delta x\)</span>が一定)で構成した線形差分近似式による初期値問題の解法」に適用可能な手法である．適用可能範囲が狭いようにも思われるが，実用的にはこれによって十分に有用な結果が得られる．</p>
+<p>上記の定義により線形の問題を考えよう．周期境界の問題では，空間方向の任意の関数はFourier級数で現すことができるが，各波数のモードは互いに独立であるから，一つの波数<span class="math inline">\(k\)</span>について考えれば十分である．既に空間方向の格子点の添字に<span class="math inline">\(i\)</span>を使っているので，以降では<span class="math inline">\(j\)</span>を虚数単位として用いることとする．（すなわち <span class="math inline">\(j^2 = -1\)</span>．）</p>
+<p><span class="math inline">\(x_{i} = i \Delta x\)</span>とすれば，波数<span class="math inline">\(k\)</span>のモードの解は以下のように書ける． <span class="math display">\[
+u^{n}_{i} = \tilde{u}^n \exp[j (i k \Delta x)] = \tilde{u}^n \exp[j (i \theta)]
+\quad (\theta = k \Delta x)
+\]</span> ここで <span class="math inline">\(\tilde{u}^n\)</span> は複素振幅である．これを差分式に代入して解の時間発展の性質を調べてみよう．</p>
+<p>なお，以降では <span class="math display">\[
+\nu \equiv \frac{c \Delta t}{\Delta x}
+\]</span> と置き，これを<strong>Courant数</strong>と呼ぶ．すぐに明らかになるように，Courant数は特に双曲型偏微分方程式の数値解の性質を決定する非常に重要な量である．</p>
+</section>
+<section class="slide level0">
+
+<h3 id="波長と解像度の関係">波長と解像度の関係</h3>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figure/kdx.png" height="600"></p>
+<figcaption><span class="citation" data-cites="LaneyTextbook">Laney (<a href="" role="doc-biblioref" onclick="return false;">1998</a>)</span></figcaption>
+</figure>
+</div>
+</section>
+<section class="slide level0">
+
+<h3 id="例ftcsスキーム">例：FTCSスキーム</h3>
+<p>FTCSスキームの差分式に<span class="math inline">\(u^{n}_{i}\)</span>を代入して整理すると <span class="math display">\[
+g = 1 - \frac{1}{2} \nu
+\left( e^{j\theta} - e^{-j\theta} \right) = 1 - j \nu \sin \theta
+\]</span> を得る．ここで<span class="math inline">\(g = \tilde{u}^{n+1}/\tilde{u}^{n}\)</span>は複素増幅率などと呼ばれる．</p>
+<p>もう少し分かり易くするために，<span class="math inline">\(g = |g| e^{j\phi}\)</span>と書いておこう．ここで<span class="math inline">\(|g|\)</span>は<span class="math inline">\(u^{n}_{i}\)</span>から<span class="math inline">\(u^{n+1}_{i}\)</span>へ数値解を時間発展させた際の振幅の絶対値の増幅率，<span class="math inline">\(\phi\)</span>は位相差を現す．具体的に評価すると <span class="math display">\[
+|g|^2 = 1 + \nu^2 \sin^2 \theta, \quad \tan \phi =- \nu \sin\theta
+\]</span> である．一方で厳密解については以下で与えられることが簡単に示せる． <span class="math display">\[
+|g|^2 = 1, \quad \phi = -\nu \theta
+\]</span></p>
+<p>つまり，厳密解は振幅が増大も減衰もせず一定なのにも関わらず，FTCSスキームによって得られる数値解の振幅は<span class="math inline">\(\nu\)</span>や<span class="math inline">\(\theta\)</span>の値に関わらず(すなわち<span class="math inline">\(\Delta t\)</span>や<span class="math inline">\(\Delta x\)</span>によらず)常に指数関数的に増大する． これはFTCSスキームが数値的に<strong>無条件不安定</strong>であることを意味する．</p>
+<div id="exr-linear-advection-solution" class="theorem exercise">
+<p><span class="theorem-title"><strong>演習問題 2. 2 </strong></span>線形移流方程式の厳密解では<span class="math inline">\(|g|^2 = 1\)</span>および<span class="math inline">\(\phi = - \nu\theta\)</span>となることを示せ．</p>
+</div>
+</section>
+<section class="slide level0">
+
+<h3 id="位相誤差">位相誤差</h3>
+<p>絶対値<span class="math inline">\(|g|\)</span>は数値的な成長率（減衰率）を表すのに対して偏角<span class="math inline">\(\phi\)</span>は数値的な位相速度を表す．一般に数値誤差は<span class="math inline">\(\theta (= k \Delta x)\)</span>依存性（波長依存性）を持つので，数値解は波長に依存して異なる位相速度を与えることになる．</p>
+<p>数値誤差によって短波長で位相速度が速くなる場合には，物理的な波の伝播方向よりも前に，また位相速度が遅くなる場合には後ろに数値的な分散性のwave trainが伝播することになる．</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><img data-src="figure/vonneumann_ftcs.png" height="300"></p>
+</div><div class="column" style="width:50%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figure/dispersivewave.png" height="300"></p>
+<figcaption>物理的に分散性を持つ例 <span class="citation" data-cites="Mellott1984a">(<a href="" role="doc-biblioref" onclick="return false;">Mellott &amp; Greenstadt, 1984</a>)</span></figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section class="slide level0">
+
+<h3 id="例拡散方程式へのftcsスキームの適用">例：拡散方程式へのFTCSスキームの適用</h3>
+<p>放物型の偏微分方程式である拡散方程式 <span class="math display">\[
+\frac{\partial u}{\partial t} = D \frac{\partial^2 u}{\partial x^2}
+\]</span> にも時間方向には前進差分，空間方向には中心差分をとったFTCSスキーム <span class="math display">\[
+\frac{u^{n+1}_{i} - u^{n}_{i}}{\Delta t} =
+D \frac{u^{n}_{i+1} - 2 u^{n}_{i} + u^{n}_{i-1}}{\Delta x^2}
+\]</span> を考えてvon Neumannの安定性解析を適用すると <span class="math display">\[
+g = 1 - 2 \mu (1 - \cos \theta)
+\]</span> を得る．ただし <span class="math inline">\(\mu = D \Delta t /\Delta x^2\)</span> である．従って安定性の条件は<span class="math inline">\(\mu \leq 1/2\)</span>で与えられる． すなわち，移流方程式では無条件不安定であったFTCSスキームが，拡散方程式では適切な条件のもとでは安定になっている． これは方程式の性質に合わせたスキーム選択が重要なことを示す好例である．</p>
+<p>なお，<span class="math inline">\(\Delta x\)</span>を細かくするには<span class="math inline">\(\Delta t \propto \Delta x^2\)</span>となるように<span class="math inline">\(\Delta t\)</span>も小さくとらなければならないことに注意しよう．</p>
+<div id="exr-ftcs-amplification-factor" class="theorem exercise">
+<p><span class="theorem-title"><strong>演習問題 2. 3 </strong></span>上記の例で複素増幅率が実際に<span class="math inline">\(g = 1 - 2 \mu (1 - \cos \theta)\)</span>で与えられることを示せ．</p>
+</div>
+</section>
+<section class="slide level0">
+
+<h3 id="例ftfsスキームおよびftbsスキーム">例：FTFSスキームおよびFTBSスキーム</h3>
+<p>移流方程式において，FTFS（空間方向に前進差分; Forward in Space）やFTBS（空間方向に後退差分; Backward in Space）を採用した場合はどうなるだろうか． <span class="math display">\[
+\text{FTFS:} \,
+u^{n+1}_{i} = u^{n}_{i} - \nu \left( u^{n}_{i+1} - u^{n}_{i} \right)
+\quad
+\text{FTBS:} \,
+u^{n+1}_{i} = u^{n}_{i} - \nu \left( u^{n}_{i} - u^{n}_{i-1} \right)
+\]</span> と書けるので， <span class="math display">\[
+\text{FTFS:} \,
+g = 1 + \nu \left[ (1 - \cos \theta) + j \sin \theta \right]
+\quad
+\text{FTBS:} \,
+g = 1 - \nu \left[ (1 - \cos \theta) + j \sin \theta \right]
+\]</span> となる．すなわち<span class="math inline">\(c \rightarrow -c\)</span>（<span class="math inline">\(\nu \rightarrow -\nu\)</span>）として流れの符号を反転させれば同じ結果が得られるので，どちらか一方だけを考えればよい．</p>
+<p>ここではFTFSを考えると，安定性<span class="math inline">\(|g| \leq 1\)</span>を満たすためには <span class="math display">\[
+-1 \leq \nu \leq 0
+\]</span> が必要なことが直ちに分かる．（同様にFTBSでは<span class="math inline">\(0 \leq \nu \leq 1\)</span>が安定性の条件である．）</p>
+<div id="exr-ftcs-stability-condition" class="theorem exercise">
+<p><span class="theorem-title"><strong>演習問題 2. 4 </strong></span>FTFSの安定性条件が<span class="math inline">\(-1 \leq \nu \leq 0\)</span>で与えられることを示せ． （この結果よりFTBSの安定性条件も直ちに明らかである．）</p>
+</div>
+</section>
+<section class="slide level0">
+
+<h2><span class="header-section-number">2.4</span> 風上差分法</h2>
+<p>移流方程式におけるFTFSおよびFTBSの安定性条件についてもう少し考えてみよう．例えばFTBSスキーム <span class="math display">\[
+u^{n+1}_{i} = u^{n}_{i} - \nu \left( u^{n}_{i} - u^{n}_{i-1} \right)
+\]</span> の安定性条件<span class="math inline">\(0 \leq \nu \leq 1\)</span>の下限および上限は以下のように解釈することができる．</p>
+<ul>
+<li><span class="math inline">\(0 \leq \nu\)</span> であれば<span class="math inline">\(u_{i}\)</span>を更新する際に用いる点<span class="math inline">\(x_{i}, x_{i-1}\)</span>が物理的な情報伝播の「風上」に対応する．</li>
+<li><span class="math inline">\(\nu \leq 1\)</span> であれば<span class="math inline">\(u_{i}\)</span>に情報を運ぶ「風上」の点が<span class="math inline">\(x_{i}, x_{i-1}\)</span>の間に位置する．</li>
+</ul>
+<p>一般に（特別に設計されたスキームを除き），系の最大情報伝播速度<span class="math inline">\(c_{\rm max}\)</span>に対応したCourant数に対して <span class="math display">\[
+\frac{c_{\rm max} \Delta t}{\Delta x} \leq 1
+\]</span> が数値的安定性の必要条件（十分条件とは限らない！）となることが多い． これを<strong>CFL(Courant-Friedrichs-Lewy)条件</strong>と呼ぶ．</p>
+<ul>
+<li>非線形や多次元問題についての厳密な安定性解析が難しいが，経験上はこれよりも少し厳しい条件が安定性として課されることが多いようである．従って，これよりも小さなCourant数を採用することが常である．</li>
+<li>上記の風上差分スキームは空間精度が1次精度であり実用的ではない．しかし，現代の高精度数値流体計算スキームの多くはこのような風上差分の考え方を基に設計されており，この考え方は極めて重要である．</li>
+<li>このような背景を考えればFTFSスキームの安定性が<span class="math inline">\(-1 \leq \nu \leq 0\)</span>となることは直感的にも自然である．</li>
+</ul>
+</section>
+<section class="slide level0">
+
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figure/first-order-upwind.png" height="500"></p>
+<figcaption><span class="citation" data-cites="ToroTextbook">Toro (<a href="" role="doc-biblioref" onclick="return false;">2009</a>)</span></figcaption>
+</figure>
+</div>
+<p>物理的にはCFL条件は1ステップの間に情報が伝播する距離が1グリッド以下であることを意味する．もし1ステップの間に情報が1グリッド以上風上の点から伝播してくるのであれば，隣のグリッドの情報しか用いないスキームは物理的に妥当とは言えないであろう．</p>
+</section>
+<section class="slide level0">
+
+<h2><span class="header-section-number">2.5</span> Lax-Friedrichsスキーム</h2>
+<p>移流方程式においては空間1次精度の風上差分は安定であり，FTCSスキームは空間2次精度であるにも関わらず不安定となる．実用的には2次精度以上のスキームが欲しくなるので，空間精度を向上させるためにもFTCSスキームについてもう少し考察してみよう． 打切り誤差の評価において，最低次の<span class="math inline">\(\mathcal{O}(\Delta t)\)</span>の項の時間微分を<span class="math inline">\(\partial u/\partial t = - c \partial u/\partial x\)</span>を使って書き換えると <span class="math display">\[
+\begin{aligned}
+\frac{u^{n+1}_{i} - u^{n}_{i}}{\Delta t} + c \frac{u^{n}_{i+1} - u^{n}_{i-1}}{2 \Delta x}
+&amp;=
+\left( \frac{\partial u}{\partial t} \right)^{n}_{i} +
+c \left( \frac{\partial u}{\partial x} \right)^{n}_{i} +
+c^2 \frac{\Delta t}{2} \left( \frac{\partial^2 u}{\partial x^2} \right)^{n}_{i}
++ \text{(higher orders)}
+\end{aligned}
+\]</span> となる．この誤差の最低次の項は拡散項の形をしているが，通常の拡散とは符号が逆になっている．すなわち，この項が実質的な逆拡散として作用するため，FTCSスキームが無条件不安定になると解釈できる．逆に考えれば，FTCSスキームに逆拡散を打ち消すような拡散効果を加えればスキームは安定化すると予想される．</p>
+<p>ここでは<span class="math inline">\(u^{n}_{i} \rightarrow (u^{n}_{i+1} + u^{n}_{i-1})/2\)</span>のような平均化操作を加えて，以下のように修正したスキームを考えよう． <span class="math display">\[
+\begin{aligned}
+\frac{u^{n+1}_{i} - (u^{n}_{i+1} + u^{n}_{i-1})/2}{\Delta t} +
+c \frac{u^{n}_{i+1} - u^{n}_{i-1}}{2 \Delta x}
+= 0
+\end{aligned}
+\]</span> これをLax-Friedrichsスキームと呼ぶ．</p>
+</section>
+<section class="slide level0">
+
+<div id="exr-lf-amplification-factor" class="theorem exercise">
+<p><span class="theorem-title"><strong>演習問題 2. 5 </strong></span>Lax-Friedrichsスキームについてvon Neumannの安定性解析を行い，複素増幅率が <span class="math display">\[
+g = \cos \theta - j \nu \sin \theta
+\]</span> となることを示せ．これから直ちに<span class="math inline">\(|\nu| \leq 1\)</span>のときにはこのスキームが安定となることが分かる．</p>
+</div>
+<div id="exr-lf-error-estimate" class="theorem exercise">
+<p><span class="theorem-title"><strong>演習問題 2. 6 </strong></span>Lax-Friedrichsスキームについても同様にTaylor展開によって誤差評価を行うと <span class="math display">\[
+\begin{aligned}
+\frac{u^{n+1}_{i} - (u^{n}_{i+1} + u^{n}_{i-1})/2}{\Delta t} +
+c \frac{u^{n}_{i+1} - u^{n}_{i-1}}{2 \Delta x}
+&amp;=
+\left( \frac{\partial u}{\partial t} \right)^{n}_{i} +
+c \left( \frac{\partial u}{\partial x} \right)^{n}_{i} -
+\frac{\Delta x^2}{2 \Delta t} \left( 1- \nu^2 \right)
+\left( \frac{\partial^2 u}{\partial x^2} \right)^{n}_{i} +
+\text{(higher orders)}
+\end{aligned}
+\]</span> となることを示せ．これより<span class="math inline">\(|\nu| \leq 1\)</span>のときには最低次の項が通常の拡散項として作用し，スキームは安定となる．ただしCFL条件より<span class="math inline">\(c \Delta t \lesssim \Delta x\)</span>であることを考えれば，このスキームは空間1次精度でしかないことに注意せよ．</p>
+</div>
+</section>
+<section class="slide level0">
+
+<h2><span class="header-section-number">2.6</span> Lax-Wendroffスキーム</h2>
+<p>時間方向のTaylor展開に解析的な関係式<span class="math inline">\(\partial u/\partial t = - c \partial u/\partial x\)</span>を代入すると <span class="math display">\[
+\begin{aligned}
+u^{n+1}_{i} &amp;
+= u^{n}_{i} +
+\left( \frac{\partial u}{\partial t} \right)^{n}_{i} \Delta t +
+\left( \frac{\partial^2 u}{\partial t^2} \right)^{n}_{i} \frac{1}{2} \Delta t^2 +
+\mathcal{O} (\Delta t^3)
+\\
+&amp;= u^{n}_{i} -
+\left( \frac{\partial u}{\partial x} \right)^{n}_{i}
+\left( c \Delta t \right) +
+\left( \frac{\partial^2 u}{\partial x^2} \right)^{n}_{i}
+\frac{1}{2} \left( c \Delta t \right)^2 +
+\mathcal{O} (\Delta t^3)
+\end{aligned}
+\]</span> ここで空間微分を2次精度中心差分で置き換えると <span class="math display">\[
+u^{n+1}_{i} = u^{n}_{i} -
+\frac{1}{2} \nu \left( u^{n}_{i+1} - u^{n}_{i-1} \right) +
+\frac{1}{2} \nu^2 \left( u^{n}_{i+1} - 2 u^{n}_{i} + u^{n}_{i-1} \right)
+\]</span> を得る．これをLax-Wendroffスキームと呼ぶ．</p>
+</section>
+<section class="slide level0">
+
+<div id="exr-lw-amplification-factor" class="theorem exercise">
+<p><span class="theorem-title"><strong>演習問題 2. 7 </strong></span>Lax-Wendroffスキームについてvon Neumannの安定性解析を行い，複素増幅率が <span class="math display">\[
+g = 1 - \nu^2 (1 - \cos \theta) - j \nu \sin \theta
+\]</span> となることを示せ．このときも<span class="math inline">\(|\nu| \leq 1\)</span>が安定性の条件となる．</p>
+</div>
+<div id="exr-lw-error-estimate" class="theorem exercise">
+<p><span class="theorem-title"><strong>演習問題 2. 8 </strong></span>Lax-Wendroffスキームの誤差評価を行い，以下の式を示せ． <span class="math display">\[
+\begin{aligned}
+&amp; \frac{u^{n+1}_{i} - u^{n}_{i}}{\Delta t} +
+c \frac{u^{n}_{i+1} - u^{n}_{i-1}}{2 \Delta x} -
+\frac{c^2 \Delta t}{2}
+\frac{u^{n}_{i+1} - 2 u^{n}_{i} + u^{n}_{i-1}}{\Delta x^2}
+\\
+&amp; =
+\left( \frac{\partial u}{\partial t} \right)^{n}_{i} +
+c \left( \frac{\partial u}{\partial x} \right)^{n}_{i} +
+\mathcal{O(\Delta t^2)} +
+\mathcal{O(\Delta x^2)}
+\end{aligned}
+\]</span> これよりこのスキームの精度は時間・空間ともに2次精度となることが分かる．</p>
+</div>
+</section>
+<section class="slide level0">
+
+<p><img data-src="figure/linear_advection_lw.png" class="absolute" style="top: 100px; left: 25px; width: 600px; "> <img data-src="figure/lax-wendroff-stability.png" class="absolute" style="top: 100px; left: 650px; width: 600px; "></p>
+<ul>
+<li>Lax-Wendroffスキームで得られる数値解と安定性解析から得られる位相誤差の関係について確認しよう．</li>
+</ul>
+</section>
+<section class="slide level0">
+
+<h2><span class="header-section-number">2.7</span> 線形波動方程式</h2>
+<div class="column-body">
+<div class="column-page" width="800" height="600">
+<div class="absolute" style="top: -5px; right: 50px; height: 24px; ">
+<p><a href="https://github.com/amanotk/numerical-geophysics/blob/main/notebook/LinearWaveEquation.ipynb">Notebook on GitHub</a> <a href="https://colab.research.google.com/github/amanotk/numerical-geophysics/blob/main/notebook/LinearWaveEquation.ipynb" target="_blank"><img src="figure/colab-badge.svg" alt="Open in Colab" style="display:inline; vertical-align:-0.2em; height:1.2em;"></a></p>
+</div>
+</div>
+</div>
+<p>等温の状態方程式<span class="math inline">\(p = \rho R T = \rho C_s^2\)</span>を採用した1次元のEuler方程式（圧縮性流体方程式）は以下のように書ける． <span class="math display">\[
+\begin{aligned}
+&amp; \frac{\partial}{\partial t} \rho +
+\frac{\partial}{\partial x} \left( \rho v \right) = 0,
+\\
+&amp; \rho \left(
+  \frac{\partial}{\partial t} v +
+  v \frac{\partial}{\partial x} v
+\right) = -
+\frac{\partial}{\partial x} p = -
+C_s^2 \frac{\partial}{\partial x} \rho.
+\end{aligned}
+\]</span> ここで<span class="math inline">\(C_s = \sqrt{p/\rho}\)</span>は音速である．平衡状態<span class="math inline">\(\rho = \rho_0, v = 0\)</span>に対する摂動<span class="math inline">\(\delta \rho, \delta v\)</span>を考えて線形化（摂動の2次以上の項を無視）すると</p>
+<p><span class="math display">\[
+\begin{cases}
+\displaystyle
+\frac{\partial f}{\partial t} + C_s \frac{\partial g}{\partial x} = 0
+\\
+\displaystyle
+\frac{\partial g}{\partial t} + C_s \frac{\partial f}{\partial x} = 0
+\end{cases}
+\tag{3.6.1} \label{eq:wave}
+\]</span> となる．ただし，ここで<span class="math inline">\(f = \delta \rho/\rho_0, g = \delta v/C_s\)</span>と置いた．</p>
+</section>
+<section class="slide level0">
+
+<p>ここで，式(<span class="math inline">\(\ref{eq:wave}\)</span>)より<span class="math inline">\(g\)</span>を消去すれば線形波動方程式 <span class="math display">\[
+\frac{\partial^2 f}{\partial t^2} + C_s^2 \frac{\partial^2 f}{\partial x^2} = 0
+\]</span> を得る．または，式(<span class="math inline">\(\ref{eq:wave}\)</span>)の和および差から <span class="math display">\[
+\frac{\partial}{\partial t} (f \pm g) \pm C_s
+\frac{\partial}{\partial x} (f \pm g) = 0
+\]</span> が得られる．すなわち波動方程式の解は<span class="math inline">\(u_{\pm} = f \pm g\)</span>に対する速度<span class="math inline">\(c = \pm C_s\)</span>の線形移流方程式の解の線形結合から得られる．</p>
+<div id="exr-linear-euler-wave" class="theorem exercise">
+<p><span class="theorem-title"><strong>演習問題 2. 9 </strong></span>等温の状態方程式を用いた1次元Euler方程式を線形化し，実際に式(<span class="math inline">\(\ref{eq:wave}\)</span>)が得られることを示せ．</p>
+</div>
+<div id="exr-linear-wave-solution" class="theorem exercise">
+<p><span class="theorem-title"><strong>演習問題 2. 10 </strong></span>周期境界条件のもとで任意の初期条件<span class="math inline">\(f(x, t=0) = f_0(x)\)</span>および<span class="math inline">\(g(x, t=0) = g_0(x)\)</span>が与えられたときの解析解<span class="math inline">\(f(x, t)\)</span>および<span class="math inline">\(g(x, t)\)</span>を求めよ．</p>
+</div>
+</section>
+<section class="slide level0">
+
+<h3 id="数値解">数値解</h3>
+<p><img data-src="figure/wave-solution1.png" class="absolute" style="top: 250px; left: 50px; width: 600px; "> <img data-src="figure/wave-solution2.png" class="absolute" style="top: 250px; left: 700px; width: 600px; "></p>
+<ul>
+<li>初期条件の<span class="math inline">\(f_0\)</span>が同じであっても，<span class="math inline">\(g_0\)</span>の選び方によって波動が左右両方向に伝播する解（左図）や，右方向のみに伝播する解（右図）が得られる．</li>
+<li>波動が左側のみに伝播する解を得るには初期条件をどのように選べば良いか？</li>
+<li>数値解と解析解を比較してみよう．</li>
+</ul>
+</section>
+<section class="slide level0">
+
+<h2><span class="header-section-number">2.8</span> 保存形式</h2>
+<p>多くの物理的に興味ある双曲型偏微分方程式は以下のような保存形（双曲型保存則）で書かれる． <span class="math display">\[
+\frac{\partial}{\partial t} \bm{u} +
+\frac{\partial}{\partial x} \bm{f}(\bm{u}) = 0.
+\]</span> ここで<span class="math inline">\(\bm{u} = u_1, u_2, \ldots\)</span>は独立変数，<span class="math inline">\(\bm{f} (\bm{u}) = f_1(\bm{u}), f_2(\bm{u}), \ldots\)</span>は流束関数である．独立変数<span class="math inline">\(\bm{u}\)</span>が境界条件の影響を除いて保存量となることは簡単に示すことができる．</p>
+<p>これまで考えてきた線形移流方程式や流体力学のEuler方程式もこの形式で書き下せる．Euler方程式においては質量，運動量，エネルギーなどの保存量が<span class="math inline">\(\bm{u}\)</span>に対応する．</p>
+<div id="exr-conservation-form" class="theorem exercise">
+<p><span class="theorem-title"><strong>演習問題 2. 11 </strong></span>保存形で書かれた上式において<span class="math inline">\(\displaystyle \int \bm{u} dx\)</span> が境界条件の影響を除いて保存することを示せ．</p>
+</div>
+<div id="exr-linear-advection-flux" class="theorem exercise">
+<p><span class="theorem-title"><strong>演習問題 2. 12 </strong></span>線形移流方程式を保存形で書き表し，流束関数<span class="math inline">\(f(u)\)</span>の表式を求めよ．</p>
+</div>
+</section>
+<section class="slide level0">
+
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="figure/conservative-scheme.png" height="400"></p>
+<figcaption><span class="citation" data-cites="ToroTextbook">Toro (<a href="" role="doc-biblioref" onclick="return false;">2009</a>)</span></figcaption>
+</figure>
+</div>
+<p>保存すべき量を正しく保存させるような数値計算スキームを保存形スキームと呼ぶ．これは元の微分形ではなく，積分形で評価することによって得られる．具体的には図に示す領域 <span class="math inline">\([t^{n}, t^{n+1}] \times [x_{i-1/2}, x_{i+1/2}]\)</span> で積分する． <span class="math display">\[
+\frac{1}{\Delta t \Delta x}
+\int_{t^{n}}^{t^{n+1}} dt \int_{x_{i-1/2}}^{x_{i+1/2}} dx
+\left[
+  \frac{\partial}{\partial t} \bm{u} + \frac{\partial}{\partial x} \bm{f}
+\right] = 0
+\]</span></p>
+</section>
+<section class="slide level0">
+
+<p>積分形を離散化表現に直すと <span class="math display">\[
+\frac{\bar{\bm{u}}^{n+1}_{i} - \bar{\bm{u}}^{n}_{i}}{\Delta t} +
+\frac{\hat{\bm{f}}_{i+1/2} - \hat{\bm{f}}_{i-1/2}}{\Delta x} = 0
+\tag{3.7.1} \label{eq:discrete-form}
+\]</span> を得る．ここでセル平均値<span class="math inline">\(\bar{\bm{u}}_{i}\)</span>および数値流束<span class="math inline">\(\hat{\bm{f}}^{i+1/2}\)</span>は以下で定義される． <span class="math display">\[
+\bar{\bm{u}}^{n}_{i} = \frac{1}{\Delta x}
+\int_{x_{i-1/2}}^{x+1/2} \bm{u}(x,t^n) dx
+\quad \quad
+\hat{\bm{f}}_{i+1/2} = \frac{1}{\Delta t}
+\int_{t^{n}}^{t^{n+1}} \bm{f}(\bm{u}(x_{i+1/2}, t)) dt
+\]</span> この形式で書いておけば数値流束としてどんな近似をとったとしても，厳密に（丸め誤差などの計算機の誤差の範囲内で）保存則を満たす．そのため，この形式を<strong>保存形式</strong>と呼ぶ．</p>
+<p>なお，厳密にはこれは<strong>有限体積法</strong>に分類される手法であり，特に圧縮性流体力学の数値解法としてよく用いられる．ただし，簡単に分かるように<span class="math inline">\(\bar{\bm{u}}_{i} = \bm{u}_{i} + \mathcal{O} (\Delta x^2)\)</span>であり，2次精度以下ではこれまで扱ってきた有限差分法と有限体積法の差はほとんどない．この講義では3次精度以上のスキームは扱わないので，以下では<span class="math inline">\(\bar{\bm{u}}_{i} \approx \bm{u}_{i}\)</span>として両者を区別せずに用いる．</p>
+<div id="exr-discrete-conservation-law" class="theorem exercise">
+<p><span class="theorem-title"><strong>演習問題 2. 13 </strong></span>保存形式のスキームであれば境界条件の影響を除いて保存則が厳密に満たされる．したがって，周期境界条件の場合には以下の式が満たされる．このことを示せ． <span class="math display">\[
+\sum_{i} \bar{\bm{u}}_{i} = \text{const}
+\]</span></p>
+</div>
+</section>
+<section class="slide level0">
+
+<p>これまで線形移流方程式(<span class="math inline">\(f(u) = cu\)</span>)について考えてきたスキームは以下のように保存形式で書くことができる．</p>
+<h3 id="ftcsスキーム">FTCSスキーム</h3>
+<p><span class="math display">\[
+\hat{f}_{i+1/2} =
+\frac{1}{2} \left( f_{i} + f_{i+1} \right)
+\]</span></p>
+<h3 id="次精度風上差分スキーム">1次精度風上差分スキーム</h3>
+<p><span class="math display">\[
+\hat{f}_{i+1/2} =
+\frac{1}{2} \left( f_{i} + f_{i+1} \right) -
+\frac{|c|}{2} \left( u_{i+1} - u_{i} \right)
+\]</span></p>
+<h3 id="lax-friedrichsスキーム-1">Lax-Friedrichsスキーム</h3>
+<p><span class="math display">\[
+\hat{f}_{i+1/2} =
+\frac{1}{2} \left( f_{i} + f_{i+1} \right) -
+\frac{\Delta x}{2 \Delta t} \left( u_{i+1} - u_{i} \right)
+\]</span></p>
+<h3 id="lax-wendroffスキーム-1">Lax-Wendroffスキーム</h3>
+<p><span class="math display">\[
+\hat{f}_{i+1/2} =
+\frac{1}{2} \left( f_{i} + f_{i+1} \right) -
+\frac{c^2 \Delta t}{2 \Delta x}  \left( u_{i+1} - u_{i} \right)
+\]</span></p>
+</section>
+<section class="slide level0">
+
+<p>よく用いられる保存形スキームは <span class="math display">\[
+\hat{f}_{i+1/2} =
+\frac{\alpha f_{i} + \beta f_{i+1}}{\alpha + \beta} -
+\gamma (u_{i+1} -u_{i})
+\tag{3.7.2} \label{eq:numerical-flux}
+\]</span> の形で書けることが多い．ここで第1項は<span class="math inline">\(f_{i}\)</span>と<span class="math inline">\(f_{i+1}\)</span>の何らかの平均，第2項は<span class="math inline">\(\hat{f}_{i+1/2} - \hat{f}_{i-1/2}\)</span>の形にしたときに数値拡散項として働くことが分かる．</p>
+<p>数値流束の評価は第1項だけでできるのが理想であるが，FTCSスキーム(<span class="math inline">\(\gamma = 0\)</span>)が数値的に不安定であるように，この項だけでは不安定になりやすい．そこで第2項を加えてスキームを安定化させていると考えることができる．</p>
+<div id="exr-numerical-flux-dissipation" class="theorem exercise">
+<p><span class="theorem-title"><strong>演習問題 2. 14 </strong></span>式(<span class="math inline">\(\ref{eq:numerical-flux}\)</span>)を式(<span class="math inline">\(\ref{eq:discrete-form}\)</span>)に代入することにより，式(<span class="math inline">\(\ref{eq:numerical-flux}\)</span>)の第2項が<span class="math inline">\(\gamma\)</span>に比例する数値拡散を表す項になっていることを確かめよ．</p>
+</div>
+<div id="exr-compare-dissipation" class="theorem exercise">
+<p><span class="theorem-title"><strong>演習問題 2. 15 </strong></span>各スキームに含まれる数値拡散項の大きさを比較せよ．</p>
+</div>
+</section>
+<section class="slide level0">
+
+<h2><span class="header-section-number">2.9</span> Godunovの定理</h2>
+<p>線形移流方程式に対して，以下の形の線形スキームを考えよう． <span class="math display">\[
+u^{n+1}_{i} = \sum_{k} c_k u^{n}_{i+k}
+\]</span> このとき，2次以上の精度を持ついかなるスキームも単調性を維持することができない．これを<strong>Godunovの定理</strong>と呼ぶ．</p>
+<p>単調正を維持できないということは数値振動が避けられないことを意味する．実用上は2次精度以上はほぼ必須であることを考えると，スキームに何らかの非線形性を導入することが必要になってくる．単調性が崩れるのは不連続面など急峻な勾配が存在する場合であることを考えると，例えば</p>
+<ol type="1">
+<li>滑らかな領域では高次精度を用い，急勾配が存在する領域では数値拡散を強くする</li>
+<li>急勾配が存在する領域を上手く避けるステンシルを選ぶ</li>
+</ol>
+<p>などによってできるだけ単調正を維持するようなスキームを設計することが多い．いずれにせよ数値拡散項（<span class="math inline">\(\gamma\)</span>）の選び方が鍵になる．</p>
+</section>
+<section class="slide level0">
+
+<h2><span class="header-section-number">2.10</span> 人工粘性</h2>
+<p>数値振動を抑えながら安定に急峻な解を扱うための古典的な手法として，人工粘性が挙げられる．例えば，時間・空間2次精度のLax-Wendroffスキームをベースとし，急勾配がある領域にだけ人工的に大きな数値拡散項を加えて精度を局所的に1次精度に落とし，数値振動を防ぐ．この数値拡散項をうまく解の勾配等によって決定すればスキームは非線形となり，Godunovの定理の前提条件である線形性を回避することができる．</p>
+<p>ここでは最も簡単なモデルとして， <span class="math display">\[
+\kappa = \varepsilon
+\lvert u^{n}_{i+1} - 2 u^{n}_{i} + u^{n}_{i-1} \rvert
+\]</span> によって決定する拡散項をLax-Wendroff法に付加したスキームを考えよう． <span class="math display">\[
+u^{n+1}_{i} = u^{n}_{i} -
+\frac{1}{2} \nu \left( u^{n}_{i+1} - u^{n}_{i-1} \right) +
+\left( \frac{1}{2} \nu^2 + \kappa \right)
+\left( u^{n}_{i+1} - 2 u^{n}_{i} + u^{n}_{i-1} \right)
+\]</span> ここで，<span class="math inline">\(\varepsilon\)</span>は経験的に決められる定数である．このとき，数値拡散項<span class="math inline">\(\kappa\)</span>は<span class="math inline">\(|\partial^2 u/\partial x^2|\)</span>に比例して大きくなるように選ばれていることが分かる．</p>
+<ul>
+<li>スカラー方程式以外の場合についても，何らかの基準で決めた拡散項を追加することで局所的に拡散を強くし，数値振動を抑えた滑らかな解を実現することを狙う．</li>
+<li>流体力学における粘性は速度の空間2階微分であるが，数値拡散は物理的な粘性項ではないので，これにはこだわらない．</li>
+<li>通常の拡散項（2階微分）では拡散が強く効きすぎるので，4階微分や6階微分などの高階微分項を数値的に導入し，より短い波長の振動のみを効果的に減衰させることも多い．これはhyper viscosityと呼ばれる．</li>
+</ul>
+</section>
+<section class="slide level0">
+
+<p><img data-src="figure/linear_advection_lw_v0.png" class="absolute" style="top: 250px; left: 50px; width: 600px; "> <img data-src="figure/linear_advection_lw_v1.png" class="absolute" style="top: 250px; left: 650px; width: 600px; "></p>
+<p>オリジナルのLax-Wendroffスキーム（左）と，<span class="math inline">\(\epsilon = 0.2\)</span>とした人工粘性入りLax-Wendroffスキーム（右）の比較．数値振動が抑えられていることが分かる．ただし，一般に必要な人工粘性の強さは経験的に決められるもので，また必要な粘性の強さは問題に依存する．</p>
+<p>※ 近年はこのような職人芸的な人工粘性の選び方をせずとも，数値振動を抑えつつ急峻な勾配を捉えられる手法を使うのがトレンドである．人工粘性のファインチューニングにいそしむよりも，より現代的なスキームの勉強をしよう．</p>
 
 <div class="footer footer-default">
 <p><a href="index.html"> トップページに戻る </a></p>
