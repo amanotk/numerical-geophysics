@@ -10,10 +10,10 @@ format: html
 PDFに変換したい場合には左下のメニューから「Tools」→「PDF Export Mode」を選択した上でPDFファイルとして印刷してください．
 
 ## 目次
-0. [この講義について](introduction.html)
-1. [様々な微分方程式と差分法の基礎](chap01.html)
-2. [双曲型偏微分方程式の解法 (1)：線形問題](chap02.html)
-3. [双曲型偏微分方程式の解法 (2)：非線形問題](chap03.html)
+0. [この講義について](introduction.html) [[PDF]](introduction.pdf)
+1. [様々な微分方程式と差分法の基礎](chap01.html) [[PDF]](chap01.pdf)
+2. [双曲型偏微分方程式の解法 (1)：線形問題](chap02.html) [[PDF]](chap02.pdf)
+3. [双曲型偏微分方程式の解法 (2)：非線形問題](chap03.html) [[PDF]](chap03.pdf)
 
 # サンプルコード
 ## Jupyter Notebook

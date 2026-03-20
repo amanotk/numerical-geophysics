@@ -1,4 +1,4 @@
-.PHONY: setup render preview clean check help
+.PHONY: setup render preview clean check help pdf
 
 # Default target
 help:
@@ -10,6 +10,7 @@ help:
 	@echo "  preview - Start preview server (port 4200)"
 	@echo "  clean   - Remove generated HTML files"
 	@echo "  check   - Verify environment setup"
+	@echo "  pdf     - Generate PDFs from slides (requires decktape)"
 	@echo ""
 
 setup:
@@ -65,3 +66,13 @@ check:
 	@echo "Checking Python environment..."
 	@uv sync --check
 	@echo "✓ Environment check passed"
+
+pdf:
+	@echo "Generating PDFs with decktape..."
+	@python -m http.server 8080 --directory docs &
+	@sleep 3
+	@for slide in introduction chap01 chap02 chap03; do \
+		decktape -s 1280x720 reveal http://localhost:8080/$${slide}.html docs/$${slide}.pdf; \
+	done
+	@pkill -f "http.server 8080" || true
+	@echo "✓ PDF generation complete"
