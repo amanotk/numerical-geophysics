@@ -1,6 +1,54 @@
 /* @theme lecture-theme */
 
-@import url('https://fonts.googleapis.com/css2?family=BIZ+UDGothic:wght@400;600&display=swap');
+@font-face {
+  font-family: 'BIZ UDGothic Local';
+  src: url('fonts/BIZUDGothic-Regular.ttf') format('truetype');
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'BIZ UDGothic Local';
+  src: url('fonts/BIZUDGothic-Bold.ttf') format('truetype');
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+}
+
+:root {
+  --jp-slide-font: 'BIZ UDGothic Local', 'BIZ UDGothic', 'Noto Sans JP',
+    'Hiragino Sans', 'Yu Gothic', sans-serif;
+  --r-main-font: var(--jp-slide-font);
+  --r-heading-font: var(--jp-slide-font);
+}
+
+.reveal,
+.reveal p,
+.reveal li,
+.reveal ul,
+.reveal ol,
+.reveal table,
+.reveal th,
+.reveal td,
+.reveal blockquote,
+.reveal figcaption,
+.reveal .slide-number,
+.reveal .reveal-header,
+.reveal .footer,
+.reveal .cjk_fallback,
+.reveal .slide #refs.references.csl-bib-body {
+  font-family: var(--jp-slide-font);
+}
+
+.reveal h1,
+.reveal h2,
+.reveal h3,
+.reveal h4,
+.reveal h5,
+.reveal h6 {
+  font-family: var(--jp-slide-font);
+}
 
 /* ------- .reveal .slides ------- */
 .reveal .slides {
@@ -32,7 +80,6 @@
 
 /* ------- .reveal .cjk_fallback ------- */
 .reveal .cjk_fallback {
-  font-family: 'BIZ UDGothic';
   font-size: 150%;
 }
 
@@ -50,7 +97,6 @@
 
 /* ------- .reveal h1 ------- */
 .reveal h1 {
-  font-family: 'BIZ UDGothic';
   font-weight: 600;
   font-size: 48px;
   text-align: center;
@@ -95,7 +141,6 @@
 
 /* ------- .reveal section ------- */
 .reveal section {
-  font-family: 'BIZ UDGothic';
   font-weight: 400;
   font-size: 20px;
   line-height: 1.0;
@@ -106,7 +151,6 @@
 /* overwrite #refs */
 
 .reveal .slide #refs.references.csl-bib-body {
-  font-family: 'BIZ UDGothic';
   font-weight: 400;
   font-size: 20px;
   line-height: 1.0;
@@ -137,4 +181,3 @@
 .reveal .slide#references h2 {
   font-size: 32px;
 }
-
