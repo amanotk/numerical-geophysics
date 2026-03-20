@@ -72,7 +72,7 @@ pdf:
 	@python -m http.server 8080 --directory docs &
 	@sleep 3
 	@for slide in introduction chap01 chap02 chap03; do \
-		decktape -s 1280x720 reveal http://localhost:8080/$${slide}.html docs/$${slide}.pdf; \
+		decktape -s 1280x720 --load-pause 2000 reveal http://localhost:8080/$${slide}.html docs/$${slide}.pdf; \
 	done
 	@pkill -f "http.server 8080" || true
 	@echo "✓ PDF generation complete"

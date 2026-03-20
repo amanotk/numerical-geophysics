@@ -43,7 +43,7 @@ jobs:
           for slide in introduction chap01 chap02 chap03; do
             docker run --rm --net=host -v ${{ github.workspace }}:/workspace \
               ghcr.io/astefanutti/decktape:3.15.0 \
-              -s 1280x720 --chrome-arg=--no-sandbox \
+              -s 1280x720 --load-pause 2000 --chrome-arg=--no-sandbox \
               reveal http://localhost:8080/${slide}.html /workspace/docs/${slide}.pdf
           done
           pkill -f "http.server 8080" || true
