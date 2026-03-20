@@ -1,5 +1,7 @@
 /* @theme lecture-theme */
 
+@import url('https://fonts.googleapis.com/css2?family=BIZ+UDGothic:wght@400;600&display=swap');
+
 /* ------- .reveal .slides ------- */
 .reveal .slides {
   text-align: left;
@@ -30,7 +32,7 @@
 
 /* ------- .reveal .cjk_fallback ------- */
 .reveal .cjk_fallback {
-  font-family: 'Noto Sans CJK JP';
+  font-family: 'BIZ UDGothic';
   font-size: 150%;
 }
 
@@ -48,7 +50,7 @@
 
 /* ------- .reveal h1 ------- */
 .reveal h1 {
-  font-family: 'Noto Sans CJK JP';
+  font-family: 'BIZ UDGothic';
   font-weight: 600;
   font-size: 48px;
   text-align: center;
@@ -93,7 +95,7 @@
 
 /* ------- .reveal section ------- */
 .reveal section {
-  font-family: 'Noto Sans CJK JP';
+  font-family: 'BIZ UDGothic';
   font-weight: 400;
   font-size: 20px;
   line-height: 1.0;
@@ -104,7 +106,7 @@
 /* overwrite #refs */
 
 .reveal .slide #refs.references.csl-bib-body {
-  font-family: 'Noto Sans CJK JP';
+  font-family: 'BIZ UDGothic';
   font-weight: 400;
   font-size: 20px;
   line-height: 1.0;
