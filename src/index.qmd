@@ -6,8 +6,7 @@ format: html
 これは東京大学理学部・理学系研究科の学部大学院共通講義「地球物理数値解析」の講義スライドおよびサンプルコードです．
 
 # 講義スライド
-スライドはHTMLで用意してあります．一部のブラウザ（Safari）では正しく表示されないことがあるようです．Google ChromeやFirefoxなどでご覧ください．  
-PDFに変換したい場合には左下のメニューから「Tools」→「PDF Export Mode」を選択した上でPDFファイルとして印刷してください．
+HTMLのスライドは一部のブラウザ（Safari）では正しく表示されないことがあるようです．Google ChromeやFirefoxなどでご覧ください．  
 
 ## 目次
 0. [この講義について](introduction.html) [[PDF]](introduction.pdf)
