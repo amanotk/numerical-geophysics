@@ -8,12 +8,49 @@
 # 環境セットアップ（初回のみ）
 make setup
 
-# スライド生成
+# スライド生成（ビルド）
 make render
 
-# プレビュー
-make preview
+# ローカルプレビュー（推奨）
+# CI／公開と同じ出力を確認するには、レンダリングして生成された docs/ を静的に配信してください。
+# 例:
+python -m http.server 8080 --directory docs &
+# ブラウザで http://localhost:8080/ を開き、生成された HTML を確認します。
+
+# 注: `make preview` は Quarto の開発サーバーを起動しますが、preview はソースを /src/ 下で提供するため
+# 相対パスの振る舞いが CI/公開時と異なる場合があります。公開と同じ見た目を確認するには上記の手順を推奨します。
 ```
+
+## クイック確認 (file:// と HTTP サーバー)
+
+生成された HTML を手早く確認するだけなら、ファイルをブラウザで直接開く（file:// URL）でも動作することが多いです。例: ブラウザで `docs/chap02.html` を開く。
+
+ただし、前述のとおり絶対パス（先頭 `/`）、Quarto のランタイム JavaScript、MIME タイプなどにより挙動が異なる場合があります。公開時と同一の表示を確認したい場合は、`python -m http.server --directory docs` で docs/ を配信して確認することを推奨します。
+
+## ローカルプレビューの注意点
+
+- docs/ を配信する場合はリポジトリのルートからコマンドを実行してください（`docs/` ディレクトリが存在することを確認）。
+- Unix シェルの例（推奨、簡潔）:
+
+```bash
+# レンダリング
+make render
+# docs/ を配信してブラウザで確認
+python -m http.server 8080 --directory docs &
+# ブラウザで http://localhost:8080/ を開く。停止は `kill %1` や `pkill -f "http.server"` などで行えます。
+```
+
+- PowerShell の例（Windows）:
+
+```powershell
+# レンダリング
+make render
+# サーバー起動（PowerShell）
+Start-Process -NoNewWindow -FilePath python -ArgumentList '-m','http.server','8080','--directory','docs'
+# ブラウザで http://localhost:8080/ を開く。停止はタスクマネージャー等で python プロセスを終了してください。
+```
+
+- 簡易チェックとしてファイルを直接開く（file://）こともできますが、絶対パスや Quarto ランタイム依存機能の差異に注意してください。
 
 ## 環境詳細
 
@@ -55,7 +92,7 @@ pip install numpy matplotlib jupyter
 |---------|-------------|
 | `make setup` | Quarto と Python 依存関係をインストール |
 | `make render` | ドキュメントをビルド |
-| `make preview` | プレビューサーバーを起動（ポート 4200） |
+| `make preview` | Quarto の開発サーバーを起動（ポート 4200）。詳細は下の「ローカルプレビューの注意点」を参照 |
 | `make clean` | 生成された HTML ファイルを削除 |
 | `make check` | 環境セットアップを確認 |
 
