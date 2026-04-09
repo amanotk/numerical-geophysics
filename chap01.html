@@ -372,7 +372,7 @@ a x^2 + b xy + c y^2 = F(x, y)
 <ul>
 <li>偏微分方程式の解は対象とする領域の境界で与えられる何らかの拘束条件（境界条件）によって決定される．変数の一つが時間(<span class="math inline">\(t\)</span>)であるときは，<span class="math inline">\(t = 0\)</span>で与える境界条件を初期条件と呼ぶのが通例である．</li>
 <li>必要とされる境界条件の個数は微分の階数によって異なる．</li>
-<li>境界における解の値を与える境界条件を<strong>Direchlet型境界条件</strong>と呼ぶ．一方で境界における解の一階微分値を与える境界条件を<strong>Neumann型境界条件</strong>と呼ぶ．</li>
+<li>境界における解の値を与える境界条件を<strong>Dirichlet型境界条件</strong>と呼ぶ．一方で境界における解の一階微分値を与える境界条件を<strong>Neumann型境界条件</strong>と呼ぶ．</li>
 <li>実用的には数値シミュレーションにおいて一番難しいのは適切な境界条件を設定することかもしれない．初心者は境界条件を適当に設定しがちであるが，物理的に意味のある境界条件を設定することは非常に重要である．</li>
 </ul>
 </section>
@@ -390,7 +390,7 @@ x(t) = x_0 + v_0 t - \frac{1}{2} g t^2
 \]</span> である．この解を決定するには<span class="math inline">\(t = 0\)</span>における条件（初期条件）<span class="math inline">\(x(0) = x_0\)</span>および<span class="math inline">\(v(0) = v_0\)</span>が必要．</p>
 <p>この問題を境界値問題として見れば，<span class="math inline">\(t = 0\)</span>および<span class="math inline">\(t = T\)</span>の2点において一つずつ条件を与えることでも解を決定できる．</p>
 <ul>
-<li><p>Direchlet型境界条件 <span class="math inline">\(x(0) = x_0\)</span> や <span class="math inline">\(x(T) = x_1\)</span> を与える．</p></li>
+<li><p>Dirichlet型境界条件 <span class="math inline">\(x(0) = x_0\)</span> や <span class="math inline">\(x(T) = x_1\)</span> を与える．</p></li>
 <li><p>Neumann型境界条件 <span class="math inline">\(x'(0) = v_0\)</span> や <span class="math inline">\(x'(T) = v_1\)</span> を与える．</p></li>
 </ul>
 <p>偏微分方程式においても基本的に事情は同じであり，微分の階数に等しい条件を指定しなければならない．（境界条件を適当に与えると場合によっては解が無いということもあり得る！）</p>
