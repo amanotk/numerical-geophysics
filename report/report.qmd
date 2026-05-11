@@ -5,7 +5,6 @@ format:
     papersize: a4
     mainfont: "Harano Aji Gothic"
     font-paths: fonts
-    include-in-header: _blank.typ
 execute:
   freeze: auto
 lang: ja
@@ -15,6 +14,16 @@ lang: ja
 # $ quarto render report.qmd --to typst
 #
 ---
+
+```{=typst}
+#let blank(n) = box(
+  width: 5em,
+  height: 1.2em,
+  stroke: (thickness: 0.4pt),
+  align(center + horizon, text(size: 11pt, fill: luma(50%), [(#n)])),
+  baseline: 0.2em,
+)
+```
 
 - 2026年5月31日の23:59 JST（日本標準時）までにUTOLにPDFファイルをアップロードすること．
 - 満点は100点とし，これ以上になった場合には満点とする．ただし，出席点はこれとは別に全体で評価する．
