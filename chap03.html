@@ -8,7 +8,7 @@
 <link href="site_libs/quarto-html/light-border.css" rel="stylesheet">
 <link href="site_libs/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
 <link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.3.450">
+  <meta name="generator" content="quarto-1.5.57">
 
   <title>chap03</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -156,7 +156,8 @@
   }
 
   .callout.callout-titled .callout-body > .callout-content > :last-child {
-    margin-bottom: 0.5rem;
+    padding-bottom: 0.5rem;
+    margin-bottom: 0;
   }
 
   .callout.callout-titled .callout-icon::before {
@@ -338,11 +339,7 @@
 <div class="column-body">
 <div class="column-page" width="800" height="600">
 <div class="absolute" style="top: 0px; right: 50px; height: 32px; ">
-<div class="quarto-figure quarto-figure-center">
-<figure>
 <p><a href="https://colab.research.google.com/github/amanotk/numerical-geophysics/blob/main/notebook/BurgersEquation.ipynb" target="_blank"><img data-src="figure/colab-badge.svg"></a></p>
-</figure>
-</div>
 </div>
 </div>
 </div>
@@ -353,7 +350,7 @@
 <div class="quarto-figure quarto-figure-center">
 <figure>
 <p><img data-src="figure/steepening.png" height="380"></p>
-<figcaption><span class="citation" data-cites="BurgessTextbook">Burgess &amp; Scholer (<a href="" role="doc-biblioref" onclick="return false;">2015</a>)</span></figcaption>
+<figcaption><span class="citation" data-cites="BurgessTextbook">Burgess &amp; Scholer (2015)</span></figcaption>
 </figure>
 </div>
 </section>
@@ -366,7 +363,7 @@
 \frac{d x}{d t} = \lambda(u)
 \]</span> を特性曲線と呼ぶ．特性曲線に沿って物理量<span class="math inline">\(u\)</span>が保存することは簡単に示すことができる．特性曲線に沿って一定となる量は特性量やRiemann不変量などと呼ばれる． 線形移流方程式では<span class="math inline">\(\lambda(u) = c\)</span>で一定であるため，異なる特性曲線が交わることはない．一方でBurgers方程式では<span class="math inline">\(\lambda(u) = u\)</span>であるため，一般には有限時間で異なる特性曲線が交わることになる．このとき数学的に一意な解が存在しない．数学的には有限の粘性<span class="math inline">\(\alpha \neq 0\)</span>があれば，それが局所的に散逸として働き不連続な<strong>衝撃波</strong>が形成する．</p>
 <div id="exr-characteristic-variable" class="theorem exercise">
-<p><span class="theorem-title"><strong>演習問題 3. 1 </strong></span>特性曲線に沿った物理量<span class="math inline">\(u\)</span>の微分をとることによって，特性曲線に沿って<span class="math inline">\(u\)</span>が保存することを示せ． <span class="math display">\[
+<p><span class="theorem-title"><strong>演習問題 3. 1</strong></span> 特性曲線に沿った物理量<span class="math inline">\(u\)</span>の微分をとることによって，特性曲線に沿って<span class="math inline">\(u\)</span>が保存することを示せ． <span class="math display">\[
 \frac{d}{d t} = \frac{\partial}{\partial t} +
 \frac{d x}{d t} \frac{\partial}{\partial x}
 \]</span> を用いればよい．</p>
@@ -391,7 +388,7 @@ S = \frac{f(u_{R}) - f(u_{L})}{u_{R} - u_{L}}
 \]</span> 非粘性のBurgers方程式(<span class="math inline">\(\alpha = 0\)</span>, <span class="math inline">\(f(u) = u^2/2\)</span>)について考えると，<span class="math inline">\(S = (u_{\rm R} + u_{\rm L})/2\)</span>となることがすぐに分かる．</p>
 <p>このように微分方程式の解のうち，滑らかな領域で微分形を満足し，不連続な領域も含めて至るところで積分形を満足する解を弱解（weak solution）と呼ぶ．</p>
 <div id="exr-shock-speed" class="theorem exercise">
-<p><span class="theorem-title"><strong>演習問題 3. 2 </strong></span>上記の積分形式において<span class="math inline">\(x_1 &lt; x &lt; St\)</span>では<span class="math inline">\(u = u_{L}\)</span>, <span class="math inline">\(St &lt; x &lt; x_2\)</span>では<span class="math inline">\(u = u_{R}\)</span>であることを用いて，衝撃波の伝播速度<span class="math inline">\(S\)</span>を求めよ．ただし積分区間<span class="math inline">\([x_1, x_2]\)</span>は（この区間に衝撃波を含むよう十分大きくとれば）任意である．</p>
+<p><span class="theorem-title"><strong>演習問題 3. 2</strong></span> 上記の積分形式において<span class="math inline">\(x_1 &lt; x &lt; St\)</span>では<span class="math inline">\(u = u_{L}\)</span>, <span class="math inline">\(St &lt; x &lt; x_2\)</span>では<span class="math inline">\(u = u_{R}\)</span>であることを用いて，衝撃波の伝播速度<span class="math inline">\(S\)</span>を求めよ．ただし積分区間<span class="math inline">\([x_1, x_2]\)</span>は（この区間に衝撃波を含むよう十分大きくとれば）任意である．</p>
 </div>
 </section>
 <section class="slide level0">
@@ -400,7 +397,7 @@ S = \frac{f(u_{R}) - f(u_{L})}{u_{R} - u_{L}}
 <div class="quarto-figure quarto-figure-center">
 <figure>
 <p><img data-src="figure/burgers-shock.png" height="600"></p>
-<figcaption><span class="citation" data-cites="ToroTextbook">Toro (<a href="" role="doc-biblioref" onclick="return false;">2009</a>)</span></figcaption>
+<figcaption><span class="citation" data-cites="ToroTextbook">Toro (2009)</span></figcaption>
 </figure>
 </div>
 </section>
@@ -410,7 +407,7 @@ S = \frac{f(u_{R}) - f(u_{L})}{u_{R} - u_{L}}
 <div class="quarto-figure quarto-figure-center">
 <figure>
 <p><img data-src="figure/burgers-expansion-shock.png" height="600"></p>
-<figcaption><span class="citation" data-cites="ToroTextbook">Toro (<a href="" role="doc-biblioref" onclick="return false;">2009</a>)</span></figcaption>
+<figcaption><span class="citation" data-cites="ToroTextbook">Toro (2009)</span></figcaption>
 </figure>
 </div>
 </section>
@@ -420,7 +417,7 @@ S = \frac{f(u_{R}) - f(u_{L})}{u_{R} - u_{L}}
 <div class="quarto-figure quarto-figure-center">
 <figure>
 <p><img data-src="figure/burgers-rarefaction.png" height="600"></p>
-<figcaption><span class="citation" data-cites="ToroTextbook">Toro (<a href="" role="doc-biblioref" onclick="return false;">2009</a>)</span></figcaption>
+<figcaption><span class="citation" data-cites="ToroTextbook">Toro (2009)</span></figcaption>
 </figure>
 </div>
 </section>
@@ -512,11 +509,7 @@ u^{n}_{i-1} \frac{u^{n}_{i} - u^{n}_{i-1}}{\Delta x}
 <div class="column-body">
 <div class="column-page" width="800" height="600">
 <div class="absolute" style="top: 0px; right: 50px; height: 32px; ">
-<div class="quarto-figure quarto-figure-center">
-<figure>
 <p><a href="https://colab.research.google.com/github/amanotk/numerical-geophysics/blob/main/notebook/EulerEquation.ipynb" target="_blank"><img data-src="figure/colab-badge.svg"></a></p>
-</figure>
-</div>
 </div>
 </div>
 </div>
@@ -542,15 +535,15 @@ u^{n}_{i-1} \frac{u^{n}_{i} - u^{n}_{i-1}}{\Delta x}
 <section class="slide level0">
 
 <div id="exr-linear-sound-wave" class="theorem exercise">
-<p><span class="theorem-title"><strong>演習問題 3. 3 </strong></span>一様で静止した流体を平衡状態とし，これに対する微小摂動を考えることにより音波の分散関係<span class="math inline">\(\omega^2 = k^2 C_s^2\)</span>が得られることを示せ．ただし，<span class="math inline">\(C_s = \sqrt{\gamma p_0/\rho_0}\)</span>は音速である．</p>
+<p><span class="theorem-title"><strong>演習問題 3. 3</strong></span> 一様で静止した流体を平衡状態とし，これに対する微小摂動を考えることにより音波の分散関係<span class="math inline">\(\omega^2 = k^2 C_s^2\)</span>が得られることを示せ．ただし，<span class="math inline">\(C_s = \sqrt{\gamma p_0/\rho_0}\)</span>は音速である．</p>
 </div>
 <div id="exr-euler-adiabatic-condition" class="theorem exercise">
-<p><span class="theorem-title"><strong>演習問題 3. 4 </strong></span>Euler方程式のエネルギー保存則を書き換えると断熱の条件（流体素片の運動に沿ってエントロピーが一定） <span class="math display">\[
+<p><span class="theorem-title"><strong>演習問題 3. 4</strong></span> Euler方程式のエネルギー保存則を書き換えると断熱の条件（流体素片の運動に沿ってエントロピーが一定） <span class="math display">\[
 \frac{d}{dt} \left( \frac{p}{\rho^{\gamma}} \right) = 0
 \]</span> が得られる．このことを示せ．</p>
 </div>
 <div id="exr-euler-entropy-mode" class="theorem exercise">
-<p><span class="theorem-title"><strong>演習問題 3. 5 </strong></span>Euler方程式の固有モードには，音波以外にエントロピー波と呼ばれるモードが存在する．これは密度は非一様で圧力が一定（すなわちエントロピーが非一様）の構造が流体に流されているものと考えることができる．具体的に<span class="math inline">\(v = v_0 = const\)</span>, <span class="math inline">\(p = p_0 = const\)</span>の条件のとき， <span class="math display">\[
+<p><span class="theorem-title"><strong>演習問題 3. 5</strong></span> Euler方程式の固有モードには，音波以外にエントロピー波と呼ばれるモードが存在する．これは密度は非一様で圧力が一定（すなわちエントロピーが非一様）の構造が流体に流されているものと考えることができる．具体的に<span class="math inline">\(v = v_0 = const\)</span>, <span class="math inline">\(p = p_0 = const\)</span>の条件のとき， <span class="math display">\[
 \frac{d}{dt} \rho = 0
 \]</span> であればEuler方程式が満たされることを示せ．</p>
 </div>
@@ -585,7 +578,7 @@ u^{n}_{i-1} \frac{u^{n}_{i} - u^{n}_{i-1}}{\Delta x}
 \frac{dx}{dt} = \lambda_{\pm} = v \pm C_s.
 \]</span></p>
 <div id="exr-riemann-invariant" class="theorem exercise">
-<p><span class="theorem-title"><strong>演習問題 3. 6 </strong></span>式(<span class="math inline">\(\ref{eq:riemann-invariant}\)</span>)を示せ．</p>
+<p><span class="theorem-title"><strong>演習問題 3. 6</strong></span> 式(<span class="math inline">\(\ref{eq:riemann-invariant}\)</span>)を示せ．</p>
 </div>
 </section>
 <section class="slide level0">
@@ -598,7 +591,7 @@ u^{n}_{i-1} \frac{u^{n}_{i} - u^{n}_{i-1}}{\Delta x}
 <div class="quarto-figure quarto-figure-center">
 <figure>
 <p><img data-src="figure/characteristics.png" height="500"></p>
-<figcaption><span class="citation" data-cites="LaneyTextbook">Laney (<a href="" role="doc-biblioref" onclick="return false;">1998</a>)</span></figcaption>
+<figcaption><span class="citation" data-cites="LaneyTextbook">Laney (1998)</span></figcaption>
 </figure>
 </div>
 <ul>
@@ -628,7 +621,7 @@ u^{n}_{i-1} \frac{u^{n}_{i} - u^{n}_{i-1}}{\Delta x}
 <div class="quarto-figure quarto-figure-center">
 <figure>
 <p><img data-src="figure/riemann.png" height="300"></p>
-<figcaption><span class="citation" data-cites="ToroTextbook">Toro (<a href="" role="doc-biblioref" onclick="return false;">2009</a>)</span></figcaption>
+<figcaption><span class="citation" data-cites="ToroTextbook">Toro (2009)</span></figcaption>
 </figure>
 </div>
 </section>
@@ -676,7 +669,7 @@ u^{n}_{i-1} \frac{u^{n}_{i} - u^{n}_{i-1}}{\Delta x}
 <div class="quarto-figure quarto-figure-center">
 <figure>
 <p><img data-src="figure/piecewise-linear.png" height="300"></p>
-<figcaption><span class="citation" data-cites="LaneyTextbook">Laney (<a href="" role="doc-biblioref" onclick="return false;">1998</a>)</span></figcaption>
+<figcaption><span class="citation" data-cites="LaneyTextbook">Laney (1998)</span></figcaption>
 </figure>
 </div>
 <p>圧縮性流体力学では一般に不連続な解が発生するため，セル境界における解の連続性を要請しないスキームが好まれる．セル境界での数値流束<span class="math inline">\(\hat{\bm{f}}_{i+1/2}\)</span>が決められれば <span class="math display">\[
@@ -699,14 +692,14 @@ u^{n}_{i-1} \frac{u^{n}_{i} - u^{n}_{i-1}}{\Delta x}
 <div class="quarto-figure quarto-figure-center">
 <figure>
 <p><img data-src="figure/linear-riemann-problem.png" height="300"></p>
-<figcaption><span class="citation" data-cites="LaneyTextbook">Laney (<a href="" role="doc-biblioref" onclick="return false;">1998</a>)</span></figcaption>
+<figcaption><span class="citation" data-cites="LaneyTextbook">Laney (1998)</span></figcaption>
 </figure>
 </div>
 </section>
 <section class="slide level0">
 
 <div id="exr-liner-riemann-problem" class="theorem exercise">
-<p><span class="theorem-title"><strong>演習問題 3. 7 </strong></span>簡単な例として等温の状態方程式を採用した線形化されたEuler方程式を考えよう． 規格化された <span class="math inline">\(\bm{u} = \left(\delta \rho / \rho_0, \delta v / C_s \right)\)</span>を独立変数にとるとEuler方程式は以下のように書ける． <span class="math display">\[
+<p><span class="theorem-title"><strong>演習問題 3. 7</strong></span> 簡単な例として等温の状態方程式を採用した線形化されたEuler方程式を考えよう． 規格化された <span class="math inline">\(\bm{u} = \left(\delta \rho / \rho_0, \delta v / C_s \right)\)</span>を独立変数にとるとEuler方程式は以下のように書ける． <span class="math display">\[
 \frac{\partial}{\partial t} \bm{u} +
 \begin{pmatrix}
 0 &amp; C_s \\
@@ -781,7 +774,7 @@ C_s &amp; 0
 <div class="quarto-figure quarto-figure-center">
 <figure>
 <p><img data-src="figure/hll-riemann-solver.png" height="250"></p>
-<figcaption><span class="citation" data-cites="ToroTextbook">Toro (<a href="" role="doc-biblioref" onclick="return false;">2009</a>)</span></figcaption>
+<figcaption><span class="citation" data-cites="ToroTextbook">Toro (2009)</span></figcaption>
 </figure>
 </div>
 <p>基礎方程式を<span class="math inline">\([0, T] \times [S_L T, S_R T]\)</span>で積分すると，Riemann fan内部での平均として <span class="math display">\[
@@ -793,7 +786,7 @@ C_s &amp; 0
 \tag{4.5.1} \label{eq:hll-average}
 \]</span> が得られ，これをHLL平均と呼ぶ． ただし<span class="math inline">\(\bm{f}_L = f(\bm{u}_L)\)</span>，<span class="math inline">\(\bm{f}_R = f(\bm{u}_R)\)</span>である．</p>
 <div id="exr-hll-average" class="theorem exercise">
-<p><span class="theorem-title"><strong>演習問題 3. 8 </strong></span>HLL平均の式<span class="math inline">\((\ref{eq:hll-average})\)</span>を示し，これが基礎方程式やRiemann fanの内部状態に依存しないことを確認せよ．</p>
+<p><span class="theorem-title"><strong>演習問題 3. 8</strong></span> HLL平均の式<span class="math inline">\((\ref{eq:hll-average})\)</span>を示し，これが基礎方程式やRiemann fanの内部状態に依存しないことを確認せよ．</p>
 </div>
 </section>
 <section class="slide level0">
@@ -824,7 +817,7 @@ C_s &amp; 0
 \tag{4.5.2} \label{eq:hll-flux}
 \]</span> で与えられる．これがHLL法の数値流束である．流束の重み付き平均に散逸項<span class="math inline">\(\bm{u}_R - \bm{u}_L\)</span>が付加されていることが分かる．</p>
 <div id="exr-hll-flux-formula" class="theorem exercise">
-<p><span class="theorem-title"><strong>演習問題 3. 9 </strong></span>HLL法の数値流束が式<span class="math inline">\((\ref{eq:hll-flux})\)</span>で与えられることを示せ．</p>
+<p><span class="theorem-title"><strong>演習問題 3. 9</strong></span> HLL法の数値流束が式<span class="math inline">\((\ref{eq:hll-flux})\)</span>で与えられることを示せ．</p>
 </div>
 </section>
 <section class="slide level0">
@@ -849,7 +842,7 @@ C_s &amp; 0
 <div class="quarto-figure quarto-figure-center">
 <figure>
 <p><img data-src="figure/hllc-riemann-solver.png" height="300"></p>
-<figcaption><span class="citation" data-cites="ToroTextbook">Toro (<a href="" role="doc-biblioref" onclick="return false;">2009</a>)</span></figcaption>
+<figcaption><span class="citation" data-cites="ToroTextbook">Toro (2009)</span></figcaption>
 </figure>
 </div>
 </section>
@@ -869,10 +862,10 @@ C_s &amp; 0
 \tag{4.5.4} \label{eq:conservation-law}
 \]</span></p>
 <div id="exr-hllc-average" class="theorem exercise">
-<p><span class="theorem-title"><strong>演習問題 3. 10 </strong></span>式<span class="math inline">\((\ref{eq:hllc-average})\)</span>を示せ．</p>
+<p><span class="theorem-title"><strong>演習問題 3. 10</strong></span> 式<span class="math inline">\((\ref{eq:hllc-average})\)</span>を示せ．</p>
 </div>
 <div id="exr-conservation-law" class="theorem exercise">
-<p><span class="theorem-title"><strong>演習問題 3. 11 </strong></span>基礎方程式を積分する際の検査体積<span class="math inline">\([T_1, T_2] \times [X_1, X_2]\)</span>が1つの構造のみを含むように領域を選ぶ．このとき，構造の伝播速度<span class="math inline">\(S\)</span>と<span class="math inline">\(\bm{u}\)</span>および<span class="math inline">\(\bm{f}(\bm{u})\)</span>の間に以下の関係式が成り立つことを示せ． <span class="math display">\[
+<p><span class="theorem-title"><strong>演習問題 3. 11</strong></span> 基礎方程式を積分する際の検査体積<span class="math inline">\([T_1, T_2] \times [X_1, X_2]\)</span>が1つの構造のみを含むように領域を選ぶ．このとき，構造の伝播速度<span class="math inline">\(S\)</span>と<span class="math inline">\(\bm{u}\)</span>および<span class="math inline">\(\bm{f}(\bm{u})\)</span>の間に以下の関係式が成り立つことを示せ． <span class="math display">\[
 \bm{f}(\bm{u}) - S \bm{u} = \mathrm{const.}
 \]</span> 式<span class="math inline">\((\ref{eq:conservation-law})\)</span>はこの関係式から導かれる．</p>
 </div>
@@ -930,7 +923,7 @@ S_{*} =
 <div class="quarto-figure quarto-figure-center">
 <figure>
 <p><img data-src="figure/hll-family.png" height="500"></p>
-<figcaption><span class="citation" data-cites="Miyoshi2005a">Miyoshi &amp; Kusano (<a href="" role="doc-biblioref" onclick="return false;">2005</a>)</span></figcaption>
+<figcaption><span class="citation" data-cites="Miyoshi2005a">Miyoshi &amp; Kusano (2005)</span></figcaption>
 </figure>
 </div>
 <ul>
@@ -939,8 +932,10 @@ S_{*} =
 <li>より正確に内部構造を考慮するRiemann解法は解像度は高いが，数値的には不安定になりやすい．</li>
 </ul>
 
+<div class="quarto-auto-generated-content">
 <div class="footer footer-default">
 <p><a href="index.html"> トップページに戻る </a></p>
+</div>
 </div>
 </section>
     </div>
@@ -969,7 +964,6 @@ S_{*} =
       Reveal.initialize({
 'controlsAuto': true,
 'previewLinksAuto': false,
-'smaller': false,
 'pdfSeparateFragments': false,
 'autoAnimateEasing': "ease",
 'autoAnimateDuration': 1,
@@ -1186,18 +1180,7 @@ S_{*} =
         }
         return false;
       }
-      const clipboard = new window.ClipboardJS('.code-copy-button', {
-        text: function(trigger) {
-          const codeEl = trigger.previousElementSibling.cloneNode(true);
-          for (const childEl of codeEl.children) {
-            if (isCodeAnnotation(childEl)) {
-              childEl.remove();
-            }
-          }
-          return codeEl.innerText;
-        }
-      });
-      clipboard.on('success', function(e) {
+      const onCopySuccess = function(e) {
         // button target
         const button = e.trigger;
         // don't keep focus
@@ -1229,11 +1212,50 @@ S_{*} =
         }, 1000);
         // clear code selection
         e.clearSelection();
+      }
+      const getTextToCopy = function(trigger) {
+          const codeEl = trigger.previousElementSibling.cloneNode(true);
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
+            }
+          }
+          return codeEl.innerText;
+      }
+      const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+        text: getTextToCopy
       });
-      function tippyHover(el, contentFn) {
+      clipboard.on('success', onCopySuccess);
+      if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+        // For code content inside modals, clipBoardJS needs to be initialized with a container option
+        // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+        const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+          text: getTextToCopy,
+          container: window.document.getElementById('quarto-embedded-source-code-modal')
+        });
+        clipboardModal.on('success', onCopySuccess);
+      }
+        var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+        var mailtoRegex = new RegExp(/^mailto:/);
+          var filterRegex = new RegExp('/' + window.location.host + '/');
+        var isInternal = (href) => {
+            return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+        }
+        // Inspect non-navigation links and adorn them if external
+     	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+        for (var i=0; i<links.length; i++) {
+          const link = links[i];
+          if (!isInternal(link.href)) {
+            // undo the damage that might have been done by quarto-nav.js in the case of
+            // links that we want to consider external
+            if (link.dataset.originalHref !== undefined) {
+              link.href = link.dataset.originalHref;
+            }
+          }
+        }
+      function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
         const config = {
           allowHTML: true,
-          content: contentFn,
           maxWidth: 500,
           delay: 100,
           arrow: false,
@@ -1243,8 +1265,17 @@ S_{*} =
           interactive: true,
           interactiveBorder: 10,
           theme: 'light-border',
-          placement: 'bottom-start'
+          placement: 'bottom-start',
         };
+        if (contentFn) {
+          config.content = contentFn;
+        }
+        if (onTriggerFn) {
+          config.onTrigger = onTriggerFn;
+        }
+        if (onUntriggerFn) {
+          config.onUntrigger = onUntriggerFn;
+        }
           config['offset'] = [0,0];
           config['maxWidth'] = 700;
         window.tippy(el, config); 
@@ -1258,7 +1289,11 @@ S_{*} =
           try { href = new URL(href).hash; } catch {}
           const id = href.replace(/^#\/?/, "");
           const note = window.document.getElementById(id);
-          return note.innerHTML;
+          if (note) {
+            return note.innerHTML;
+          } else {
+            return "";
+          }
         });
       }
       const findCites = (el) => {
