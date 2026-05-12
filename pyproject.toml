@@ -7,6 +7,7 @@ dependencies = [
     "numpy>=1.24.0",
     "matplotlib>=3.7.0",
     "jupyter>=1.0.0",
+    "quarto-cli==1.5.57",
 ]
 
 [dependency-groups]

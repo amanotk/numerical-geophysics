@@ -55,7 +55,7 @@ Start-Process -NoNewWindow -FilePath python -ArgumentList '-m','http.server','80
 ## 環境詳細
 
 使用されるバージョン：
-- **Quarto**: 1.3.450（`.quarto-version` で管理）
+- **Quarto**: 1.5.57（`.quarto-version` と `pyproject.toml` で管理）
 - **Python**: 3.11（`.python-version` で管理）
 - **Python パッケージ**: `pyproject.toml` と `uv.lock` で管理
   - numpy >= 1.24.0
@@ -122,7 +122,7 @@ numerical-geophysics/
 ### 仕組み
 
 - main ブランチへのプッシュ時に GitHub Actions が：
-  1. Quarto 1.3.450 をセットアップ
+  1. Quarto 1.5.57 をセットアップ
   2. Python 3.11 と uv をセットアップ
   3. `uv.lock` から依存関係をインストール
   4. すべての QMD ファイルをレンダリング

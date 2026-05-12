@@ -1,5 +1,7 @@
 .PHONY: setup render preview clean check help pdf
 
+QUARTO := uv run quarto
+
 # Default target
 help:
 	@echo "Numerical Geophysics - Build Commands"
@@ -22,7 +24,7 @@ setup:
 
 render:
 	@echo "Building documentation..."
-	@quarto render
+	@$(QUARTO) render
 	@echo "Flattening output directory..."
 	@if [ -d docs/src ]; then \
 		mv docs/src/* docs/; \
@@ -33,7 +35,7 @@ render:
 
 preview:
 	@echo "Starting preview server..."
-	@quarto preview --port 4200
+	@$(QUARTO) preview --port 4200
 
 clean:
 	@echo "Cleaning generated files..."
@@ -43,12 +45,7 @@ clean:
 check:
 	@echo "Checking environment..."
 	@echo -n "Quarto: "
-	@if command -v quarto >/dev/null 2>&1; then \
-		quarto --version; \
-	else \
-		echo "NOT INSTALLED"; \
-		exit 1; \
-	fi
+	@$(QUARTO) --version
 	@echo -n "Python: "
 	@if command -v python3 >/dev/null 2>&1; then \
 		python3 --version; \

@@ -21,7 +21,7 @@ The following versions are pinned for reproducibility:
 
 | Component | Version | Managed By |
 |-----------|---------|------------|
-| Quarto | 1.3.450 | `.quarto-version` + `install-quarto.sh` |
+| Quarto | 1.5.57 | `.quarto-version` + `install-quarto.sh` + `quarto-cli` in `pyproject.toml` |
 | Python | 3.11 | `.python-version` + uv |
 | numpy | >=1.24.0 | `pyproject.toml` + `uv.lock` |
 | matplotlib | >=3.7.0 | `pyproject.toml` + `uv.lock` |
@@ -87,7 +87,7 @@ Managed by [uv](https://docs.astral.sh/uv/):
 
 1. Edit `.quarto-version`:
    ```bash
-   echo "1.4.0" > .quarto-version
+   echo "1.5.57" > .quarto-version
    ```
 
 2. Run setup to install new version:
@@ -99,7 +99,7 @@ Managed by [uv](https://docs.astral.sh/uv/):
    ```yaml
    # .github/workflows/publish.yml
    with:
-     version: 1.4.0
+     version: 1.5.57
    ```
 
 ### Update Python Packages
@@ -168,7 +168,7 @@ This repository uses GitHub Actions to automatically build and deploy to GitHub 
 ### How it works
 
 - On every push to the `main` branch, GitHub Actions:
-  1. Sets up Quarto 1.3.450
+  1. Sets up Quarto 1.5.57
   2. Sets up Python 3.11 with uv
   3. Installs dependencies from `uv.lock`
   4. Renders all QMD files
@@ -201,4 +201,3 @@ Before GitHub Actions can deploy:
 1. Run `quarto publish gh-pages` locally once (creates `_publish.yml`)
 2. Ensure repository has **Read and write permissions** for Actions
 3. GitHub Pages source should be set to `gh-pages` branch
-
