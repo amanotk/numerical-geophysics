@@ -90,9 +90,9 @@ $$
 $$
 u(x) =
 \begin{cases}
-& 0 \quad -1 < x < -\frac{1}{3} \\
-& 1 \quad -\frac{1}{3} < x < +\frac{1}{3} \\
-& 0 \quad +\frac{1}{3} < x < 1 \\
+0 \quad & -1 < x < -\frac{1}{3} \\
+1 \quad & -\frac{1}{3} < x < +\frac{1}{3} \\
+0 \quad & +\frac{1}{3} < x < 1 \\
 \end{cases}
 $$
 とする．
@@ -105,8 +105,8 @@ $$
 $$
 (\rho, v, p) =
 \begin{cases}
-& (\rho_L, v_L, p_L) \quad & x < 0 \\
-& (\rho_R, v_R, p_R) \quad & x > 0 \\
+(\rho_L, v_L, p_L) \quad & x < 0 \\
+(\rho_R, v_R, p_R) \quad & x > 0 \\
 \end{cases}
 $$
 を考えよう．ただし全ての問題で $\gamma = 1.4$ ，計算領域は $-1 \leq x \leq 1$，境界条件は全ての物理量に対して $\partial/\partial x = 0$ とする．
